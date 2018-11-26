@@ -1,6 +1,8 @@
 {
   "name": "cwteam",
   "version": "0.1.0",
+  "description": "CwTeam Project Management System",
+  "license": "ISC",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.5.1",
