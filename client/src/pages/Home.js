@@ -157,6 +157,9 @@ class Home extends Component {
                         <Button color="primary" size="large" variant="contained" className={classes.marginTopBottom} href="/auth">
                             BAĞLAN
                         </Button>
+                        <Typography variant="h6" align="center" color="textSecondary" component="p">
+                            {this.state.responseToPost.express}
+                        </Typography>
                     </div>
 
                 </main>

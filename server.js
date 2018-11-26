@@ -1,12 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const path = require('path');
+const cors = require('cors');
+const morgan = require('morgan');
 const BasecampStrategy = require('passport-basecamp').Strategy;
 
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+app.use(morgan('combined'));
 
 //passport uses
 app.use(passport.initialize());
@@ -80,9 +85,8 @@ app.get('/callback',
 
 
 // Index route
-app.get('/', function (req, res) {
-    res.send("hello moto!")
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
 });
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
