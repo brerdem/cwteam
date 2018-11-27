@@ -9,6 +9,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import Icon from '@material-ui/core/Icon';
 import {withStyles} from '@material-ui/core/styles';
 import bc from '../images/logo-bc.png';
+import {OauthSender} from "react-oauth-flow";
 
 const styles = theme => ({
     '@global': {
@@ -95,6 +96,19 @@ class Home extends Component {
             responseToPost: '',
         };
 
+        this.credentials = {
+            client: {
+                id: '5fccfc8fcf0fa68e8ceab31a5ed7422beb4e1f2b',
+                secret: 'ffa278b2c0a9d6b8430b33758899a1f679f9eb04'
+            },
+            auth: {
+
+                tokenHost: 'https://launchpad.37signals.com/',
+                authorizePath: 'authorization/new',
+                tokenPath: 'authorization/token'
+            }
+        }
+
     }
 
 
@@ -105,22 +119,9 @@ class Home extends Component {
     }
 
     callApi = async () => {
-        const response = await fetch('/api/hello');
+        const response = await fetch('/api/test/hello');
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
-        this.setState({responseToPost: body});
-    }
-
-    handleSubmit = async e => {
-        e.preventDefault();
-        const response = await fetch('/api/world', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({post: this.state.post}),
-        });
-        const body = await response.text();
         this.setState({responseToPost: body});
     }
 
@@ -154,9 +155,21 @@ class Home extends Component {
                         <Typography variant="h6" align="center" color="textSecondary" component="p">
                             Projeleri seçmek için önce Basecamp'e bağlanmalısın.
                         </Typography>
-                        <Button color="primary" size="large" variant="contained" className={classes.marginTopBottom} href="/auth">
-                            BAĞLAN
-                        </Button>
+
+                        //todo move credentials to process.env variables
+                        <OauthSender
+                            authorizeUrl="https://launchpad.37signals.com/authorization/new?type=web_server"
+                            clientId={this.credentials.client.id}
+                            redirectUri="https://cwteam.ngrok.io/callback"
+                            state={{ from: '/' }}
+                            render={({ url }) =>
+
+                                <Button color="primary" size="large" variant="contained" className={classes.marginTopBottom} href={url}>
+                                    BAĞLAN
+                                </Button>
+                            }
+                        />
+
                         <Typography variant="h6" align="center" color="textSecondary" component="p">
                             {this.state.responseToPost.express}
                         </Typography>

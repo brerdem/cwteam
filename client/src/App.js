@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
+import BasecampCallback from "./pages/BasecampCallback";
 
 class App extends Component {
     render() {
@@ -10,6 +11,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path='/' component={Home}/>
                     <Route path='/projects' component={Projects}/>
+                    <Route path='/callback' component={BasecampCallback}/>
                 </Switch>
             </div>
         )
