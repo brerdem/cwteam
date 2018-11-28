@@ -1,64 +1,49 @@
 import React, {Component} from 'react';
-import {OauthReceiver} from "react-oauth-flow";
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom';
+import queryString from 'query-string';
+
+import axios from 'axios';
+import Utils from '../components/Utils'
+import BasecampAuth from "../components/auth/BasecampAuth";
 
 export default class BasecampCallback extends Component {
 
-    constructor(props) {
-        super(props);
-        this.credentials = {
-            client: {
-                id: '5fccfc8fcf0fa68e8ceab31a5ed7422beb4e1f2b',
-                secret: 'ffa278b2c0a9d6b8430b33758899a1f679f9eb04'
-            },
-            auth: {
 
-                tokenHost: 'https://launchpad.37signals.com/',
-                authorizePath: 'authorization/new',
-                tokenPath: 'authorization/token'
-            }
-        };
-        this.tokenObj = {method: 'POST', headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }}
 
+    componentDidMount() {
+        const values = queryString.parse(this.props.location.search);
+        console.log(values.code);// "top"
+
+
+        axios.post(BasecampAuth.credentials.tokenHost, {
+            type: 'user_agent',
+            code: values.code,
+            client_id: BasecampAuth.credentials.client_id,
+            client_secret: BasecampAuth.credentials.client_secret,
+            redirect_uri: BasecampAuth.credentials.redirect_uri
+
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log('error from axios:' + error);
+        });
 
     }
+
     renderRedirect = (from) => {
         if (this.state.redirect) {
-            return <Redirect to={from} />
+            return <Redirect to={from}/>
         }
-    }
-
-
-    handleSuccess = async (accessToken, {response, state}) => {
-        console.log('Successfully authorized');
-        //await setProfileFromDropbox(accessToken);
-        await this.renderRedirect(state.from);
     };
 
-    handleError = error => {
-        console.error('An error occured');
-        console.error(error.message);
-    };
+
+
 
     render() {
         return (
-            <OauthReceiver
-                tokenUrl="https://launchpad.37signals.com/authorization/token?type=web_server"
-                clientId={this.credentials.client.id}
-                clientSecret={this.credentials.client.secret}
-                redirectUri="https://cwteam.ngrok.io/callback"
-                onAuthSuccess={this.handleSuccess}
-                onAuthError={this.handleError}
-                location=""
-                tokenFetchArgs={this.tokenObj}
-                render={({processing, state, error}) => (
-                    <div>
-                        {processing && <p>Authorization in progress</p>}
-                        {state && <p>Will redirect you to {state.from}</p>}
-                        {error && <p className="error">Error: {error.message}</p>}
-                    </div>
-                )}
-            />
+            <p>{Utils.getParameterByName('access_token')}</p>
         );
     }
 

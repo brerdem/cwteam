@@ -9,7 +9,8 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import Icon from '@material-ui/core/Icon';
 import {withStyles} from '@material-ui/core/styles';
 import bc from '../images/logo-bc.png';
-import {OauthSender} from "react-oauth-flow";
+import BasecampAuth from "../components/auth/BasecampAuth";
+
 
 const styles = theme => ({
     '@global': {
@@ -95,21 +96,25 @@ class Home extends Component {
             post: '',
             responseToPost: '',
         };
-
-        this.credentials = {
-            client: {
-                id: '5fccfc8fcf0fa68e8ceab31a5ed7422beb4e1f2b',
-                secret: 'ffa278b2c0a9d6b8430b33758899a1f679f9eb04'
-            },
-            auth: {
-
-                tokenHost: 'https://launchpad.37signals.com/',
-                authorizePath: 'authorization/new',
-                tokenPath: 'authorization/token'
-            }
-        }
-
     }
+
+    authURI = BasecampAuth.credentials.authorizeURI + '&client_id=' + BasecampAuth.credentials.client_id + '&redirect_uri=' + BasecampAuth.credentials.redirect_uri;
+
+
+
+
+    handleSuccess = (accessToken, {response, state}) => {
+        console.log('Success!');
+        console.log('AccessToken: ', accessToken);
+        console.log('Response: ', response);
+        console.log('State: ', state);
+    };
+
+    handleError = async error => {
+        console.error('Error: ', error.message);
+        const text = await error.response.text();
+        console.log(text);
+    };
 
 
     componentDidMount() {
@@ -123,10 +128,10 @@ class Home extends Component {
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
         this.setState({responseToPost: body});
-    }
+    };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <React.Fragment>
@@ -156,23 +161,22 @@ class Home extends Component {
                             Projeleri seçmek için önce Basecamp'e bağlanmalısın.
                         </Typography>
 
-                        //todo move credentials to process.env variables
-                        <OauthSender
-                            authorizeUrl="https://launchpad.37signals.com/authorization/new?type=web_server"
-                            clientId={this.credentials.client.id}
-                            redirectUri="https://cwteam.ngrok.io/callback"
-                            state={{ from: '/' }}
-                            render={({ url }) =>
+                        <Typography variant="caption" align="center" color="error" component="p">
+                            //todo ID ve secret -> process.env
+                        </Typography>
 
-                                <Button color="primary" size="large" variant="contained" className={classes.marginTopBottom} href={url}>
-                                    BAĞLAN
-                                </Button>
-                            }
-                        />
 
-                        <Typography variant="h6" align="center" color="textSecondary" component="p">
+                        <Button color="primary" size="large" variant="contained"
+                                className={classes.marginTopBottom} href={this.authURI}>
+                            BAĞLAN
+                        </Button>
+
+
+                        <Typography variant="h6" align="center" color="primary" component="p">
                             {this.state.responseToPost.express}
                         </Typography>
+
+
                     </div>
 
                 </main>
