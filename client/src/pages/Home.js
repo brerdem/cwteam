@@ -9,6 +9,8 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import Icon from '@material-ui/core/Icon';
 import {withStyles} from '@material-ui/core/styles';
 import bc from '../images/logo-bc.png';
+import BasecampAuth from "../components/auth/BasecampAuth";
+
 
 const styles = theme => ({
     '@global': {
@@ -94,8 +96,25 @@ class Home extends Component {
             post: '',
             responseToPost: '',
         };
-
     }
+
+    authURI = BasecampAuth.credentials.authorizeURI + '&client_id=' + BasecampAuth.credentials.client_id + '&redirect_uri=' + BasecampAuth.credentials.redirect_uri;
+
+
+
+
+    handleSuccess = (accessToken, {response, state}) => {
+        console.log('Success!');
+        console.log('AccessToken: ', accessToken);
+        console.log('Response: ', response);
+        console.log('State: ', state);
+    };
+
+    handleError = async error => {
+        console.error('Error: ', error.message);
+        const text = await error.response.text();
+        console.log(text);
+    };
 
 
     componentDidMount() {
@@ -105,27 +124,14 @@ class Home extends Component {
     }
 
     callApi = async () => {
-        const response = await fetch('/api/hello');
+        const response = await fetch('/api/test/hello');
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
         this.setState({responseToPost: body});
-    }
-
-    handleSubmit = async e => {
-        e.preventDefault();
-        const response = await fetch('/api/world', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({post: this.state.post}),
-        });
-        const body = await response.text();
-        this.setState({responseToPost: body});
-    }
+    };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <React.Fragment>
@@ -154,12 +160,23 @@ class Home extends Component {
                         <Typography variant="h6" align="center" color="textSecondary" component="p">
                             Projeleri seçmek için önce Basecamp'e bağlanmalısın.
                         </Typography>
-                        <Button color="primary" size="large" variant="contained" className={classes.marginTopBottom} href="/auth">
+
+                        <Typography variant="caption" align="center" color="error" component="p">
+                            //todo ID ve secret -> process.env
+                        </Typography>
+
+
+                        <Button color="primary" size="large" variant="contained"
+                                className={classes.marginTopBottom} href={this.authURI}>
                             BAĞLAN
                         </Button>
-                        <Typography variant="h6" align="center" color="textSecondary" component="p">
+
+
+                        <Typography variant="h6" align="center" color="primary" component="p">
                             {this.state.responseToPost.express}
                         </Typography>
+
+
                     </div>
 
                 </main>
