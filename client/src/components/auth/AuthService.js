@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class AuthService {
     // Initializing important variables
     constructor() {
@@ -63,9 +65,7 @@ export default class AuthService {
     }
 
 
-    getProfile() {
 
-    }
 
 
     fetch(url, options) {

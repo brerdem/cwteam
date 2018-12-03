@@ -6,10 +6,14 @@ import BasecampAuth from "../components/auth/BasecampAuth";
 import AuthService from "../components/auth/AuthService";
 
 
-
 const Auth = new AuthService();
 
 export default class BasecampCallback extends Component {
+
+    constructor(props) {
+        super(props);
+        this.gotoProjects = this.gotoProjects.bind(this);
+    }
 
 
     componentDidMount() {
@@ -45,11 +49,30 @@ export default class BasecampCallback extends Component {
             const refresh_token = Utils.getParameterByName('refresh_token');
             const token_info = {'access_token': access_token, 'expires_in': expires_in, 'refresh_token': refresh_token};
             Auth.setToken(JSON.stringify(token_info));
-            this.props.history.push('/projects');
+            axios.post('/api/auth/write', {
+                access_token: access_token,
+                expires_in: expires_in,
+                refresh_token: refresh_token
+
+            }).then((response) => {
+                //todo get info about es6 promise calls
+                console.log(response);
+               this.gotoProjects();
+
+
+            }).catch(function (error) {
+                console.log('error from axios write auth:' + error);
+
+            });
+
 
         }
 
     }
+
+    gotoProjects = () => {
+        this.props.history.push('/projects');
+    };
 
 
     render() {

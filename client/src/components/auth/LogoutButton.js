@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
-import Icon from "@material-ui/core/Icon";
+import Avatar from '@material-ui/core/Avatar';
 import withAuth from "./withAuth";
 import AuthService from "./AuthService";
 import {withStyles} from '@material-ui/core/styles';
@@ -17,9 +17,11 @@ class LogoutButton extends Component {
         const {classes} = this.props;
 
         return (
+
             <Button color="primary" variant="outlined" onClick={this.handleLogout}>
-                <Icon className={classes.leftIcon}>exit_to_app</Icon>
-                ÇIKIŞ
+                <Avatar className={classes.avatar}>{this.props.inits}</Avatar>
+
+ÇIKIŞ
             </Button>
         );
     }
@@ -27,7 +29,7 @@ class LogoutButton extends Component {
     handleLogout = () => {
         Auth.logout();
         console.log(this.props.history);
-        this.props.history.push("/")
+        this.props.history.push("/");
     }
 
 }

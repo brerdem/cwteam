@@ -78,6 +78,11 @@ export default theme => ({
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
     },
+    avatar: {
+        marginRight: theme.spacing.unit,
+        color: '#fff',
+        backgroundColor: '#990000'
+    }
 });
 
 
