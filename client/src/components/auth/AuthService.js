@@ -1,17 +1,10 @@
-import axios from "axios";
-import BasecampAuth from "./BasecampAuth";
-
 export default class AuthService {
     // Initializing important variables
     constructor() {
         this.fetch = this.fetch.bind(this); // React binding stuff
         this.login = this.login.bind(this);
-        this.requestAccessToken = this.requestAccessToken.bind(this);
 
     }
-
-
-
 
     login(username, password) {
         // Get a token from api server using the fetch api
@@ -36,11 +29,7 @@ export default class AuthService {
     isTokenExpired(token) {
         try {
 
-            if (token < Date.now() / 1000) { // Checking if token is expired. N
-                return true;
-            }
-            else
-                return false;
+            return this.getExpireDate() < Date.now() / 1000;
         }
         catch (err) {
             return false;
@@ -58,11 +47,20 @@ export default class AuthService {
         return localStorage.getItem('id_token')
     };
 
+    getRefreshToken = () => {
+        // Retrieves the user token from localStorage
+        return JSON.parse(localStorage.getItem('id_token')).refresh_token;
+    };
+    getExpireDate = () => {
+        // Retrieves the user token from localStorage
+        return JSON.parse(localStorage.getItem('id_token')).expires_in;
+    };
+
+
     logout() {
         // Clear user token and profile data from localStorage
         localStorage.removeItem('id_token');
     }
-
 
 
     getProfile() {
@@ -80,7 +78,7 @@ export default class AuthService {
         // Setting Authorization header
         // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
         if (this.loggedIn()) {
-            headers['Authorization'] = 'Bearer ' + AuthService.getToken()
+            headers['Authorization'] = 'Bearer ' + this.getToken()
         }
 
         return fetch(url, {
