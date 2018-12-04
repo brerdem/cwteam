@@ -31,7 +31,6 @@ export default function withAuth(AuthComponent) {
                                     user: response.data
                                 })
 
-
                             })
                             .catch(function (error) {
 

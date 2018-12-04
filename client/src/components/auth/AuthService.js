@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export default class AuthService {
     // Initializing important variables
     constructor() {

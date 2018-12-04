@@ -1,3 +1,6 @@
+
+import green from '@material-ui/core/colors/green';
+
 export default theme => ({
     '@global': {
         body: {
@@ -22,7 +25,7 @@ export default theme => ({
         },
     },
     heroContent: {
-        maxWidth: 600,
+        width: 'auto',
         margin: '0 auto',
         padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
         display: 'flex',
@@ -71,10 +74,7 @@ export default theme => ({
     iconSmall: {
         fontSize: 20,
     },
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-    },
+
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
     },
@@ -82,7 +82,35 @@ export default theme => ({
         marginRight: theme.spacing.unit,
         color: '#fff',
         backgroundColor: '#990000'
+    },
+    headerRightGrid: {
+        width: theme.spacing.unit *100
+
+    },
+    success: {
+        backgroundColor: green[600],
+    },
+    progress: {
+        margin: theme.spacing.unit * 2,
+    },
+    cardGrid: {
+        padding: `${theme.spacing.unit * 6}px 0`,
+    },
+    card: {
+        height: '200px',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+
+    cardContent: {
+       flexGrow: 1
+    },
+    gridItem: {
+        minHeight: '300px',
+        flexGrow: 1
+
     }
+
 });
 
 
