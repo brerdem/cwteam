@@ -12,7 +12,7 @@ export default class BasecampCallback extends Component {
 
     constructor(props) {
         super(props);
-        this.gotoProjects = this.gotoProjects.bind(this);
+        this.gotoDashboard = this.gotoDashboard.bind(this);
     }
 
 
@@ -57,7 +57,7 @@ export default class BasecampCallback extends Component {
             }).then((response) => {
                 //todo get info about es6 promise calls
                 console.log(response);
-               this.gotoProjects();
+               this.gotoDashboard();
 
 
             }).catch(function (error) {
@@ -70,8 +70,8 @@ export default class BasecampCallback extends Component {
 
     }
 
-    gotoProjects = () => {
-        this.props.history.push('/projects');
+    gotoDashboard = () => {
+        this.props.history.push('/dashboard');
     };
 
 

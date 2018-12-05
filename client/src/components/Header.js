@@ -7,6 +7,7 @@ import Icon from '@material-ui/core/Icon';
 import {withStyles} from "@material-ui/core/styles/index";
 import {compose} from 'recompose';
 import LoginGroup from "./auth/LoginGroup";
+import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
 
 const styles = theme => ({
@@ -35,7 +36,9 @@ class Header extends Component {
 
             <AppBar position="static" color="default" className={classes.appBar}>
                 <Toolbar>
-                    <Icon>people</Icon>
+                    <IconButton href="/dashboard">
+                        <Icon>people</Icon>
+                    </IconButton>
                     <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
                         CW Team
                     </Typography>

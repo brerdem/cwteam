@@ -22,7 +22,7 @@ function ProjectGrid(props)  {
 
             <Grid container spacing={40}>
                 {props.projects.map(project => (
-                    <Grid item sm={8} md={6} lg={4} className={classes.gridItem}>
+                    <Grid item xs={4}>
                         <Card className={classes.card}>
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2" color="textPrimary">

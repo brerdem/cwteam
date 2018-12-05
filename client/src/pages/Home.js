@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import bc from '../images/logo-bc.png';
+import bc from '../static/media/logo-bc.png';
 import BasecampAuth from "../components/auth/BasecampAuth";
 import Header from "../components/Header";
 import theme from "../components/Styles";

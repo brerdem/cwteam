@@ -1,4 +1,3 @@
-
 import green from '@material-ui/core/colors/green';
 
 export default theme => ({
@@ -11,7 +10,7 @@ export default theme => ({
         position: 'relative',
     },
     toolbarTitle: {
-        padding: theme.spacing.unit * 2,
+        padding: theme.spacing.unit * 1,
         flex: 1,
     },
     layout: {
@@ -84,7 +83,7 @@ export default theme => ({
         backgroundColor: '#990000'
     },
     headerRightGrid: {
-        width: theme.spacing.unit *100
+        width: theme.spacing.unit * 100
 
     },
     success: {
@@ -97,19 +96,24 @@ export default theme => ({
         padding: `${theme.spacing.unit * 6}px 0`,
     },
     card: {
-        height: '200px',
+        height: 200,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    cardDashboard: {
+        height: 300,
         display: 'flex',
         flexDirection: 'column',
     },
 
     cardContent: {
-       flexGrow: 1
-    },
-    gridItem: {
-        minHeight: '300px',
         flexGrow: 1
+    },
 
+    cardmedia: {
+        height: 169,
     }
+
 
 });
 
