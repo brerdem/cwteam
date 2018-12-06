@@ -119,8 +119,12 @@ export default theme => ({
     heading: {
         fontSize: theme.typography.pxToRem(20),
         flexBasis: '33.33%',
-        flexShrink: 0
+        flexShrink: 0,
+        fontWeight: 500
     },
+    todoBackground: {
+        backgroundColor: theme.palette.grey[200]
+    }
 
 
 });

@@ -7,6 +7,8 @@ import classNames from 'classnames';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
+import Avatar from "@material-ui/core/es/Avatar/Avatar";
+import barkin from '../../static/media/barkin.png';
 
 
 const styles = theme => ({
@@ -18,7 +20,7 @@ const styles = theme => ({
     },
 
     taskText: {
-       color: '#203ac0'
+        color: '#203ac0'
     },
 
     taskItemDragging: {
@@ -29,10 +31,17 @@ const styles = theme => ({
     dueIcon: {
         fontSize: 18,
         color: theme.palette.secondary,
-        margin:2
+        margin: 2
 
     },
+    avatar: {
+        width: 30,
+        height: 30,
+        fontSize: 15,
+        color:'#FFF',
+        backgroundColor: '#ff6c00'
 
+    }
 
 
 });
@@ -65,7 +74,7 @@ class Task extends Component {
                                     </Typography>
 
                                 </Grid>
-                                <Grid item xs={8} container direction="row" alignItems="center">
+                                <Grid item xs={8} container alignItems="center">
                                     <Grid item>
                                         <Icon className={classes.dueIcon}>access_alarm</Icon>
                                     </Grid>
@@ -75,13 +84,18 @@ class Task extends Component {
                                         </Typography>
                                     </Grid>
                                 </Grid>
-
-
-                            <Grid item>
-
+                                <Grid item>
+                                    <Grid container spacing={8} direction="row" justify="flex-end">
+                                        <Grid item>
+                                            <Avatar className={classes.avatar}>BE</Avatar>
+                                        </Grid>
+                                        <Grid item>
+                                            <Avatar className={classes.avatar} src={barkin} alt="Barkın Bulutbeyaz"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Paper>
+                        </Paper>
                     </div>
                 }
             </Draggable>

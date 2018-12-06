@@ -5,6 +5,7 @@ import Task from "./Task";
 import {withStyles} from '@material-ui/core/styles';
 import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
+import Divider from "@material-ui/core/es/Divider/Divider";
 
 
 const styles = theme => ({
@@ -16,7 +17,7 @@ const styles = theme => ({
     },
 
     columnItemDraggingOver: {
-      backgroundColor: '#c7fdff',
+        backgroundColor: '#c7fdff',
 
 
     },
@@ -37,10 +38,12 @@ class Column extends Component {
         return (
 
 
-            <Grid item xs={4} className={classes.columnItem} direction="column">
-                <Typography gutterBottom variant="h5" component="h2" style={{color: this.props.column.color}}>
+            <Grid item xs={4} className={classes.columnItem}>
+                <div style={{backgroundColor: this.props.column.columnTitleColor}}>
+                <Typography gutterBottom variant="h6" component="h2" style={{color: '#fff'}} align="center">
                     {this.props.column.title}
                 </Typography>
+                </div>
 
                 <Droppable droppableId={this.props.column.id}>
                     {(provided, snapshot) => (

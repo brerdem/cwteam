@@ -17,19 +17,19 @@ const initialData = {
             id: 'column-1',
             title: 'Atanmamış',
             taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
-            color: 'red'
+            columnTitleColor: 'red'
         },
         'column-2': {
             id: 'column-2',
             title: 'Devam Ediyor',
             taskIds: [],
-            color: 'orange'
+            columnTitleColor: 'orange'
         },
         'column-3': {
             id: 'column-3',
             title: 'Bitti',
             taskIds: [],
-            color: 'green'
+            columnTitleColor: 'green'
         },
     },
     columnOrder: ['column-1', 'column-2', 'column-3'],
@@ -117,7 +117,7 @@ class Board extends Component {
     render() {
         return (
 
-            <Grid container padding={24}>
+            <Grid container spacing={8}>
             <DragDropContext onDragEnd={this.onDragEnd}>
                 {this.state.columnOrder.map(columnId => {
 

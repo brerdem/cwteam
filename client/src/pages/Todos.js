@@ -58,7 +58,7 @@ class Todos extends Component {
         } else {
             content =
 
-                <Grid container spacing={24}>
+                <Grid container spacing={24} className={classes.todoBackground}>
                     <Grid item xs={12}>
                         {this.state.projects.map((project, index) => (
                             <ExpansionPanel expanded={expanded === `panel${index}`}
