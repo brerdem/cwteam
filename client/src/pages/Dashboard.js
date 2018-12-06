@@ -17,7 +17,7 @@ function DashboardGrid(props) {
 
     const cardsContent = [
         { title: "Projeler", link: "/projects", description: "Proje bazlı gösterim", img: "projects.png" },
-        { title: "To-Dos", link: "/todos", description: "To-do'ların Kanban gösterimi", img: "todos.png" },
+        { title: "İşler", link: "/todos", description: "İşlerin Kanban gösterimi", img: "todos.png" },
         { title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png" },
     ];
 
@@ -107,7 +107,7 @@ class Dashboard extends Component {
                 <main className={classes.layout}>
                     {/* Hero unit */}
                     <div className={classes.heroContent}>
-                        <Typography component="h1" variant="h2" align="center" color="primary" gutterBottom>
+                        <Typography component="h1" variant="h2" align="center" color="primary" className={classes.headingPadding}>
                             DASHBOARD
                         </Typography>
                         <DashboardGridWrapper />

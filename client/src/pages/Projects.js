@@ -12,41 +12,42 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
+import {withSnackbar} from 'notistack';
+import {compose} from "recompose";
 
 
-function ProjectGrid(props)  {
+function ProjectGrid(props) {
 
 
-        const {classes} = props;
-        return (
+    const {classes} = props;
+    return (
 
-            <Grid container spacing={40}>
-                {props.projects.map(project => (
-                    <Grid item xs={4}>
-                        <Card className={classes.card}>
-                            <CardContent className={classes.cardContent}>
-                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
-                                    {project.name}
-                                </Typography>
-                                <Typography>
-                                    {project.description}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" color="primary">
-                                    SEÇ
-                                </Button>
-                                <Button size="small" color="secondary">
-                                    SİL
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                ))
-                }
-            </Grid>
-        )
-
+        <Grid container spacing={40}>
+            {props.projects.map(project => (
+                <Grid item xs={4}>
+                    <Card className={classes.card}>
+                        <CardContent className={classes.cardContent}>
+                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                {project.name}
+                            </Typography>
+                            <Typography>
+                                {project.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small" color="primary">
+                                SEÇ
+                            </Button>
+                            <Button size="small" color="secondary">
+                                SİL
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid>
+            ))
+            }
+        </Grid>
+    )
 
 }
 
@@ -65,17 +66,16 @@ class Projects extends Component {
             project: '',
             projects: [],
             labelWidth: 0,
-            loading: false
+            loading: true
 
 
         };
     }
 
-    handleChange = event => {
-        //this.setState({ [event.target.name]: event.target.value });
-    };
 
     componentDidMount() {
+
+
         axios.post('/api/projects', {
 
             access_token: JSON.parse(localStorage.getItem('id_token')).access_token
@@ -93,11 +93,17 @@ class Projects extends Component {
 
 
     render() {
-        const {classes} = this.props;
+
+        const {classes, enqueueSnackbar} = this.props;
         let content;
         if (this.state.loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
+
+            enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
+                variant: 'warning'
+            });
+
             content = <ProjectGridWrapper projects={this.state.projects} classes={this.props}/>
 
         }
@@ -110,8 +116,9 @@ class Projects extends Component {
                 <main className={classes.layout}>
                     {/* Hero unit */}
                     <div className={classes.heroContent}>
-                        <Typography component="h1" variant="h2" align="center" color="primary" gutterBottom>
-                            Projeni Seç
+                        <Typography component="h1" variant="h2" align="center" color="primary"
+                                    className={classes.headingPadding}>
+                            PROJELER
                         </Typography>
                         {content}
 
@@ -125,10 +132,11 @@ class Projects extends Component {
 }
 
 
-
-
 Projects.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(theme)(Projects);
+export default compose(
+    withStyles(theme),
+    withSnackbar
+)(Projects);

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import BasecampCallback from "./pages/BasecampCallback";
 import Dashboard from "./pages/Dashboard";
+import Todos from "./pages/Todos";
 
 class App extends Component {
     render() {
@@ -13,6 +14,7 @@ class App extends Component {
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/projects' component={Projects}/>
                     <Route exact path='/dashboard' component={Dashboard}/>
+                    <Route exact path='/todos' component={Todos}/>
                     <Route exact path='/callback' component={BasecampCallback}/>
                 </Switch>
             </div>

@@ -112,7 +112,15 @@ export default theme => ({
 
     cardmedia: {
         height: 169,
-    }
+    },
+    headingPadding: {
+       marginBottom: theme.spacing.unit * 5
+    },
+    heading: {
+        fontSize: theme.typography.pxToRem(20),
+        flexBasis: '33.33%',
+        flexShrink: 0
+    },
 
 
 });

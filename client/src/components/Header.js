@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import {withStyles} from "@material-ui/core/styles/index";
-import {compose} from 'recompose';
 import LoginGroup from "./auth/LoginGroup";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
@@ -42,7 +41,7 @@ class Header extends Component {
                     <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
                         CW Team
                     </Typography>
-                    <LoginGroup logout="/" history={this.props.history} />
+                    <LoginGroup logout="/" history={this.props.history}/>
 
                 </Toolbar>
             </AppBar>
@@ -52,9 +51,7 @@ class Header extends Component {
 
 }
 
-export default compose(
-    withStyles(styles)
-)(Header);
+export default withStyles(styles)(Header);
 
 
 
