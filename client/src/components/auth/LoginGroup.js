@@ -20,21 +20,6 @@ import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 
 const Auth = new AuthService();
 
-const styles_inner = theme => ({
-    menuItem: {
-        '&:focus': {
-            backgroundColor: theme.palette.primary.main,
-            '& $primary, & $icon': {
-                color: theme.palette.common.white,
-            },
-        },
-    },
-    primary: {},
-    icon: {},
-});
-
-
-
 class LoginGroup extends Component {
 
 
@@ -132,7 +117,6 @@ LoginGroup.propTypes = {
 export default compose(
     withAuth,
     withSnackbar,
-    withStyles(theme),
-    withStyles(styles_inner)
+    withStyles(theme)
 
 )(LoginGroup)

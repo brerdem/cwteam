@@ -11,14 +11,18 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
-
+import Paper from "@material-ui/core/Paper";
+import CircularProgressbar from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import CountUp from 'react-countup';
+import Avatar from "@material-ui/core/es/Avatar/Avatar";
 
 function DashboardGrid(props) {
 
     const cardsContent = [
-        { title: "Projeler", link: "/projects", description: "Proje bazlı gösterim", img: "projects.png" },
-        { title: "İşler", link: "/todos", description: "İşlerin Kanban gösterimi", img: "todos.png" },
-        { title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png" },
+        {title: "Projeler", link: "/projects", description: "Proje bazlı gösterim", img: "projects.png"},
+        {title: "İşler", link: "/todos", description: "İşlerin Kanban gösterimi", img: "todos.png"},
+        {title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png"},
     ];
 
 
@@ -26,6 +30,72 @@ function DashboardGrid(props) {
     return (
 
         <Grid container spacing={24}>
+
+            <Grid item xs={4}>
+                <Paper className={classes.dashboardPaper}>
+                    <Grid container spacing={24} direction="column" justify="center" alignItems="center">
+                        <Grid item xs={8} className={classes.dashboardHeight}>
+                            <CircularProgressbar
+                                percentage={61}
+                                text={`${61}%`}
+                                className={classes.dashboardProgress}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
+                                Performans
+                            </Typography>
+
+                        </Grid>
+                    </Grid>
+
+                </Paper>
+
+            </Grid>
+            <Grid item xs={4}>
+                <Paper className={classes.dashboardPaper}>
+                    <Grid container spacing={24} direction="column" justify="center" alignItems="center">
+                        <Grid item xs={8} className={classes.dashboardHeight}>
+                            <Avatar className={classes.dashboardAvatar}>
+                            <CountUp end={38} duration={5} delay={0}>
+                                {({countUpRef}) => (
+                                    <span ref={countUpRef} className={classes.dashboardHeading} />
+
+
+                                )}
+                            </CountUp>
+                            </Avatar>
+                        </Grid>
+                        <Grid item>
+                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
+                                Atanmamış İş
+                            </Typography>
+
+                        </Grid>
+                    </Grid>
+
+                </Paper>
+
+            </Grid>
+            <Grid item xs={4}>
+                <Paper className={classes.dashboardPaper}>
+                    <Grid container spacing={24} direction="column" justify="center" alignItems="center">
+                        <Grid item xs={8} className={classes.dashboardHeight}>
+
+                        </Grid>
+                        <Grid item>
+                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
+                                Diğer
+                            </Typography>
+
+                        </Grid>
+                    </Grid>
+
+                </Paper>
+
+            </Grid>
+
+
             {cardsContent.map(item => (
                 <Grid item xs={4}>
                     <Card className={classes.cardDashboard}>
@@ -35,14 +105,14 @@ function DashboardGrid(props) {
                                 image={require(`../static/media/${item.img}`)}
                                 title={item.title}
                             />
-                        <CardContent className={classes.cardContent}>
-                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
-                                {item.title}
-                            </Typography>
-                            <Typography>
-                                {item.description}
-                            </Typography>
-                        </CardContent>
+                            <CardContent className={classes.cardContent}>
+                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                    {item.title}
+                                </Typography>
+                                <Typography>
+                                    {item.description}
+                                </Typography>
+                            </CardContent>
                         </CardActionArea>
 
                     </Card>
@@ -107,10 +177,11 @@ class Dashboard extends Component {
                 <main className={classes.layout}>
                     {/* Hero unit */}
                     <div className={classes.heroContent}>
-                        <Typography component="h1" variant="h2" align="center" color="primary" className={classes.headingPadding}>
+                        <Typography component="h1" variant="h2" align="center" color="primary"
+                                    className={classes.headingPadding}>
                             DASHBOARD
                         </Typography>
-                        <DashboardGridWrapper />
+                        <DashboardGridWrapper/>
 
                     </div>
 

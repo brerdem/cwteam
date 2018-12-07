@@ -10,7 +10,7 @@ export default theme => ({
         },
     },
     appBar: {
-        position: 'relative',
+        position: 'static',
     },
     toolbarTitle: {
         padding: theme.spacing.unit,
@@ -159,6 +159,32 @@ export default theme => ({
         minHeight: 300,
         height: '90%'
     },
+    dashboardProgress: {
+        width: 120,
+
+    },
+
+    dashboardPaper: {
+        height: 200,
+
+    },
+    dashboardHeading: {
+        fontSize: 64,
+        fontWeight: 500,
+        color: red[400]
+
+    },
+    dashboardHeight: {
+       height:140
+
+    },
+    dashboardAvatar: {
+        width:120,
+        height:120,
+        backgroundColor: theme.palette.grey[200]
+
+    },
+
 
 
 
