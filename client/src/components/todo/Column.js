@@ -5,41 +5,18 @@ import Task from "./Task";
 import {withStyles} from '@material-ui/core/styles';
 import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
-import Divider from "@material-ui/core/es/Divider/Divider";
-
-
-const styles = theme => ({
-
-    columnItem: {
-        border: 'solid 1px lightgray',
-        padding: 18,
-
-    },
-
-    columnItemDraggingOver: {
-        backgroundColor: '#c7fdff',
-
-
-    },
-    columnInner: {
-        padding: '10px 0',
-        flexGrow: 1,
-        minHeight: 300,
-        height: '90%'
-    }
-
-});
-
+import theme from '../styles/Styles'
 
 class Column extends Component {
 
     render() {
         const {classes} = this.props;
+
         return (
 
 
             <Grid item xs={4} className={classes.columnItem}>
-                <div style={{backgroundColor: this.props.column.columnTitleColor}}>
+                <div className={classes[this.props.column.columnTitleColor]}>
                 <Typography gutterBottom variant="h6" component="h2" style={{color: '#fff'}} align="center">
                     {this.props.column.title}
                 </Typography>
@@ -65,4 +42,4 @@ class Column extends Component {
     }
 }
 
-export default withStyles(styles)(Column);
+export default withStyles(theme)(Column);

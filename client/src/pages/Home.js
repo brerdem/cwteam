@@ -7,7 +7,7 @@ import {withStyles} from '@material-ui/core/styles';
 import bc from '../static/media/logo-bc.png';
 import BasecampAuth from "../components/auth/BasecampAuth";
 import Header from "../components/Header";
-import theme from "../components/Styles";
+import theme from "../components/styles/Styles";
 
 
 

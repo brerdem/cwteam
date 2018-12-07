@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import Header from "../components/Header";
-import theme from "../components/Styles";
+import theme from "../components/styles/Styles";
 import axios from 'axios';
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";

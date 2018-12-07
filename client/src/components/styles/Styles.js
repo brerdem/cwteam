@@ -1,4 +1,7 @@
 import green from '@material-ui/core/colors/green';
+import orange from "@material-ui/core/colors/orange";
+import red from "@material-ui/core/colors/red";
+
 
 export default theme => ({
     '@global': {
@@ -10,7 +13,7 @@ export default theme => ({
         position: 'relative',
     },
     toolbarTitle: {
-        padding: theme.spacing.unit * 1,
+        padding: theme.spacing.unit,
         flex: 1,
     },
     layout: {
@@ -78,9 +81,8 @@ export default theme => ({
         marginTop: theme.spacing.unit * 2,
     },
     avatar: {
-        marginRight: theme.spacing.unit,
-        color: '#fff',
-        backgroundColor: '#990000'
+        color: '#203ac0',
+        backgroundColor: '#fff'
     },
     headerRightGrid: {
         width: theme.spacing.unit * 100
@@ -124,7 +126,42 @@ export default theme => ({
     },
     todoBackground: {
         backgroundColor: theme.palette.grey[200]
-    }
+    },
+
+    columnTitleGreen: {
+        backgroundColor: green[400]
+    },
+    columnTitleOrange: {
+        backgroundColor: orange[400]
+    },
+    columnTitleRed: {
+        backgroundColor: red[400]
+    },
+    avatarSmall: {
+        width: 30,
+        height: 30,
+        fontSize: 14
+    },
+    columnItem: {
+        border: 'solid 1px lightgray',
+        padding: 18,
+
+    },
+
+    columnItemDraggingOver: {
+        backgroundColor: '#c7fdff',
+
+
+    },
+    columnInner: {
+        padding: '10px 0',
+        flexGrow: 1,
+        minHeight: 300,
+        height: '90%'
+    },
+
+
+
 
 
 });
