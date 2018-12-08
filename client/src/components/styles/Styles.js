@@ -1,0 +1,195 @@
+import green from '@material-ui/core/colors/green';
+import orange from "@material-ui/core/colors/orange";
+import red from "@material-ui/core/colors/red";
+
+
+export default theme => ({
+    '@global': {
+        body: {
+            backgroundColor: theme.palette.common.white,
+        },
+    },
+    appBar: {
+        position: 'static',
+    },
+    toolbarTitle: {
+        padding: theme.spacing.unit,
+        flex: 1,
+    },
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
+            width: 900,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    heroContent: {
+        width: 'auto',
+        margin: '0 auto',
+        padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'start'
+    },
+
+    img_bc: {
+        width: 150,
+        margin: '0 auto',
+        padding: `${theme.spacing.unit * 4}px 0`,
+
+    },
+    marginTopBottom: {
+        margin: `${theme.spacing.unit * 4}px 0`,
+    },
+    cardHeader: {
+        backgroundColor: theme.palette.grey[200],
+    },
+    cardPricing: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'baseline',
+        marginBottom: theme.spacing.unit * 2,
+    },
+    cardActions: {
+        [theme.breakpoints.up('sm')]: {
+            paddingBottom: theme.spacing.unit * 2,
+        },
+    },
+    footer: {
+        marginTop: theme.spacing.unit * 8,
+        borderTop: `1px solid ${theme.palette.divider}`,
+        padding: `${theme.spacing.unit * 6}px 0`,
+    },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    leftIcon: {
+        marginRight: theme.spacing.unit,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    iconSmall: {
+        fontSize: 20,
+    },
+
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
+    avatar: {
+        color: '#203ac0',
+        backgroundColor: '#fff'
+    },
+    headerRightGrid: {
+        width: theme.spacing.unit * 100
+
+    },
+    success: {
+        backgroundColor: green[600],
+    },
+    progress: {
+        margin: theme.spacing.unit * 2,
+    },
+    cardGrid: {
+        padding: `${theme.spacing.unit * 6}px 0`,
+    },
+    card: {
+        height: 200,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    cardDashboard: {
+        height: 300,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+
+    cardContent: {
+        flexGrow: 1
+    },
+
+    cardmedia: {
+        height: 169,
+    },
+    headingPadding: {
+       marginBottom: theme.spacing.unit * 5
+    },
+    heading: {
+        fontSize: theme.typography.pxToRem(20),
+        flexBasis: '33.33%',
+        flexShrink: 0,
+        fontWeight: 500
+    },
+    todoBackground: {
+        backgroundColor: theme.palette.grey[200]
+    },
+
+    columnTitleGreen: {
+        backgroundColor: green[400]
+    },
+    columnTitleOrange: {
+        backgroundColor: orange[400]
+    },
+    columnTitleRed: {
+        backgroundColor: red[400]
+    },
+    avatarSmall: {
+        width: 30,
+        height: 30,
+        fontSize: 14
+    },
+    columnItem: {
+        border: 'solid 1px lightgray',
+        padding: 18,
+
+    },
+
+    columnItemDraggingOver: {
+        backgroundColor: '#c7fdff',
+
+
+    },
+    columnInner: {
+        padding: '10px 0',
+        flexGrow: 1,
+        minHeight: 300,
+        height: '90%'
+    },
+    dashboardProgress: {
+        width: 120,
+
+    },
+
+    dashboardPaper: {
+        height: 200,
+
+    },
+    dashboardHeading: {
+        fontSize: 64,
+        fontWeight: 500,
+        color: red[400]
+
+    },
+    dashboardHeight: {
+       height:140
+
+    },
+    dashboardAvatar: {
+        width:120,
+        height:120,
+        backgroundColor: theme.palette.grey[200]
+
+    },
+
+
+
+
+
+
+});
+
+

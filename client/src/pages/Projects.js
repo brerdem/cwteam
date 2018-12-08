@@ -1,73 +1,142 @@
-import React, { Component } from 'react';
-import logo from '../images/logo.svg';
-import '../css/App.css';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import {withStyles} from '@material-ui/core/styles';
+import Header from "../components/Header";
+import theme from "../components/styles/Styles";
+import axios from 'axios';
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import {withSnackbar} from 'notistack';
+import {compose} from "recompose";
+
+
+function ProjectGrid(props) {
+
+
+    const {classes} = props;
+    return (
+
+        <Grid container spacing={40}>
+            {props.projects.map(project => (
+                <Grid item xs={4}>
+                    <Card className={classes.card}>
+                        <CardContent className={classes.cardContent}>
+                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                {project.name}
+                            </Typography>
+                            <Typography>
+                                {project.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small" color="primary">
+                                SEÇ
+                            </Button>
+                            <Button size="small" color="secondary">
+                                SİL
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid>
+            ))
+            }
+        </Grid>
+    )
+
+}
+
+
+ProjectGrid.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+const ProjectGridWrapper = withStyles(theme)(ProjectGrid);
+
 
 class Projects extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            project: '',
+            projects: [],
+            labelWidth: 0,
+            loading: true
 
-    state = {
-        response: '',
-        post: '',
-        responseToPost: '',
-    };
 
-    componentDidMount() {
-        this.callApi()
-            .then(res => this.setState({response: res.express}))
-            .catch(err => console.log(err));
+        };
     }
 
-    callApi = async () => {
-        const response = await fetch('/api/hello');
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.message);
-        return body;
-    };
-    handleSubmit = async e => {
-        e.preventDefault();
-        const response = await fetch('/api/world', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({post: this.state.post}),
-        });
-        const body = await response.text();
-        this.setState({responseToPost: body});
-    };
+
+    componentDidMount() {
+
+
+        axios.post('/api/projects', {
+
+            access_token: JSON.parse(localStorage.getItem('id_token')).access_token
+
+        }).then((response) => {
+            this.setState({
+                loading: false,
+                projects: response.data
+            })
+
+        })
+
+
+    }
+
 
     render() {
+
+        const {classes, enqueueSnackbar} = this.props;
+        let content;
+        if (this.state.loading) {
+            content = <CircularProgress className={classes.progress} color="secondary"/>
+        } else {
+
+            enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
+                variant: 'warning'
+            });
+
+            content = <ProjectGridWrapper projects={this.state.projects} classes={this.props}/>
+
+        }
+
+
         return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <p>
-                        Edit <code>src/App.js</code> and save to reload.
-                    </p>
-                    <a
-                        className="App-link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Learn React
-                    </a>
-                </header>
-                <p>{this.state.response}</p>
-                <form onSubmit={this.handleSubmit}>
-                    <p>
-                        <strong>Post to Server Now:</strong>
-                    </p>
-                    <input
-                        type="text"
-                        value={this.state.post}
-                        onChange={e => this.setState({post: e.target.value})}
-                    />
-                    <button type="submit">Submit</button>
-                </form>
-                <p>{this.state.responseToPost}</p>
-            </div>
-        );
+            <React.Fragment>
+                <CssBaseline/>
+                <Header history={this.props.history}/>
+                <main className={classes.layout}>
+                    {/* Hero unit */}
+                    <div className={classes.heroContent}>
+                        <Typography component="h1" variant="h2" align="center" color="primary"
+                                    className={classes.headingPadding}>
+                            PROJELER
+                        </Typography>
+                        {content}
+
+                    </div>
+
+                </main>
+
+            </React.Fragment>
+        )
     }
 }
 
-export default Projects;
+
+Projects.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default compose(
+    withStyles(theme),
+    withSnackbar
+)(Projects);
