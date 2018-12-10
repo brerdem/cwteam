@@ -26,7 +26,8 @@ const styles = theme => ({
     taskItem: {
         margin: theme.spacing.unit,
         padding: '12px 12px 2px 12px',
-        backgroundColor: theme.palette.grey[200]
+        backgroundColor: theme.palette.grey[200],
+
     },
 
     taskText: {
@@ -55,6 +56,7 @@ const styles = theme => ({
     chip: {
         margin: theme.spacing.unit,
     },
+
 
 });
 
@@ -191,13 +193,20 @@ class Task extends Component {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                         >
+
+
                             <Paper
+
                                 onClick={this.handleClickOpen}
                                 className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
+                                style={{borderLeft: `solid 5px ${this.props.task.categoryColor}`}}
                                 elevation={1}>
+
+
                                 <Grid container justify="space-between" alignItems="center">
                                     <Grid item xs={12}>
-                                        <Typography gutterBottom variant="subtitle1" className={classes.taskText}>
+                                        <Typography gutterBottom variant="subtitle1"
+                                                    className={classes.taskText}>
                                             {this.props.task.content}
                                         </Typography>
 
@@ -233,7 +242,9 @@ class Task extends Component {
                                         </Grid>
                                     </Grid>
                                 </Grid>
+
                             </Paper>
+
                         </div>
                     }
                 </Draggable>

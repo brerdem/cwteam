@@ -149,7 +149,7 @@ export default theme => ({
     },
 
     columnItemDraggingOver: {
-        backgroundColor: '#c7fdff',
+        backgroundColor: '#ebebeb',
 
 
     },

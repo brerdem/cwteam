@@ -11,11 +11,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Project from "../components/todo/Project";
 
 
-const colors = {
-    orange: {
-        backgroundColor: '#99000'
-    }
-}
 
 
 class Todos extends Component {

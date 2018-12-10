@@ -15,10 +15,10 @@ import Board from "./Board";
 
 const initialData = {
     tasks: {
-        'task-1': {id: 'task-1', content: 'Form güncellemeleri'},
-        'task-2': {id: 'task-2', content: 'Banner çalışması'},
-        'task-3': {id: 'task-3', content: 'ID sorunu'},
-        'task-4': {id: 'task-4', content: 'Modeller sayfasının yapılması ve diğer güncellemelerin yayına alınması'},
+        'task-1': {id: 'task-1', content: 'Form güncellemeleri', categoryColor: '#9c27b0' },
+        'task-2': {id: 'task-2', content: 'Banner çalışması', categoryColor: '#8bc34a'},
+        'task-3': {id: 'task-3', content: 'ID sorunu', categoryColor: '#9c27b0'},
+        'task-4': {id: 'task-4', content: 'Müşteri onayının alınması ve ilgili birimlere brief verilmesi', categoryColor: '#2196f3'},
     },
     columns: {
         'column-1': {
