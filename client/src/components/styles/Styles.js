@@ -165,7 +165,8 @@ export default theme => ({
     },
 
     dashboardPaper: {
-        height: 200,
+        minHeight: 200,
+        padding: 10
 
     },
     dashboardHeading: {

@@ -47,6 +47,13 @@ function DashboardGrid(props) {
                             </Typography>
 
                         </Grid>
+
+                        <Grid item>
+                            <Typography gutterBottom variant="caption" color="textPrimary" align="center">
+                                Performans, bütün projelerdeki biten işlerin, devam eden ya da atanmamış işlere oranıyla elde edilir.
+                            </Typography>
+
+                        </Grid>
                     </Grid>
 
                 </Paper>
@@ -60,8 +67,6 @@ function DashboardGrid(props) {
                             <CountUp end={38} duration={5} delay={0}>
                                 {({countUpRef}) => (
                                     <span ref={countUpRef} className={classes.dashboardHeading} />
-
-
                                 )}
                             </CountUp>
                             </Avatar>
@@ -69,6 +74,12 @@ function DashboardGrid(props) {
                         <Grid item>
                             <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
                                 Atanmamış İş
+                            </Typography>
+
+                        </Grid>
+                        <Grid item>
+                            <Typography gutterBottom variant="caption" color="textPrimary" align="center">
+                                Bütün projelerdeki atanmamış ya da henüz başlamamış işler
                             </Typography>
 
                         </Grid>
@@ -87,6 +98,10 @@ function DashboardGrid(props) {
                             <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
                                 Diğer
                             </Typography>
+
+                        </Grid>
+                        <Grid item>
+
 
                         </Grid>
                     </Grid>
