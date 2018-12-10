@@ -6,7 +6,8 @@ import {Draggable} from "react-beautiful-dnd";
 import classNames from 'classnames';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Icon from "@material-ui/core/Icon";
+import Rowing from "@material-ui/icons/Rowing";
+import HourglassFull from "@material-ui/icons/HourglassFull";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import barkin from '../../static/media/barkin.png';
 import Dialog from "@material-ui/core/Dialog";
@@ -16,7 +17,7 @@ import Button from "@material-ui/core/Button";
 import DialogContent from "@material-ui/core/DialogContent";
 import Chip from "@material-ui/core/es/Chip/Chip";
 import Divider from "@material-ui/core/es/Divider/Divider";
-import { DateTimePicker } from 'material-ui-pickers';
+import {DateTimePicker} from 'material-ui-pickers';
 import TextField from "@material-ui/core/es/TextField/TextField";
 
 
@@ -24,7 +25,7 @@ const styles = theme => ({
 
     taskItem: {
         margin: theme.spacing.unit,
-        padding: 12,
+        padding: '12px 12px 2px 12px',
         backgroundColor: theme.palette.grey[200]
     },
 
@@ -33,14 +34,13 @@ const styles = theme => ({
     },
 
     taskItemDragging: {
-
         backgroundColor: '#ffb576'
     },
 
     dueIcon: {
-        fontSize: 18,
+        width: 14,
         color: theme.palette.secondary,
-        margin: 2
+        margin: 0
 
     },
     avatar: {
@@ -80,7 +80,7 @@ class Task extends Component {
     };
 
     handleDateChange = date => {
-        this.setState({ selectedDate: date });
+        this.setState({selectedDate: date});
     };
 
 
@@ -103,7 +103,7 @@ class Task extends Component {
                     </DialogTitle>
                     <DialogContent>
                         <Typography gutterBottom>
-                           İşle ilgili açıklamalar ve detaylar
+                            İşle ilgili açıklamalar ve detaylar
                         </Typography>
                         <Divider/>
                         <Grid container direction="row" alignItems="center">
@@ -126,7 +126,7 @@ class Task extends Component {
                                 />
                             </Grid>
 
-                         </Grid>
+                        </Grid>
 
                         <Grid container direction="row" alignItems="center" spacing={24}>
                             <Grid item>
@@ -134,7 +134,7 @@ class Task extends Component {
                             </Grid>
 
                             <Grid item>
-                                <DateTimePicker value={selectedDate} onChange={this.handleDateChange} />
+                                <DateTimePicker value={selectedDate} onChange={this.handleDateChange}/>
                             </Grid>
 
                         </Grid>
@@ -145,7 +145,7 @@ class Task extends Component {
                             </Grid>
 
                             <Grid item>
-                                <DateTimePicker value={selectedDate} onChange={this.handleDateChange} />
+                                <DateTimePicker value={selectedDate} onChange={this.handleDateChange}/>
                             </Grid>
 
                         </Grid>
@@ -158,10 +158,8 @@ class Task extends Component {
                             <Grid item>
                                 <TextField
                                     id="Number"
-
                                     type="number"
                                     defaultValue="1"
-
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -197,25 +195,34 @@ class Task extends Component {
                                 onClick={this.handleClickOpen}
                                 className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
                                 elevation={1}>
-                                <Grid container spacing={8}>
+                                <Grid container justify="space-between" alignItems="center">
                                     <Grid item xs={12}>
                                         <Typography gutterBottom variant="subtitle1" className={classes.taskText}>
                                             {this.props.task.content}
                                         </Typography>
 
                                     </Grid>
-                                    <Grid item xs={8} container alignItems="center">
+                                    <Grid item xs={5} container alignItems="center">
                                         <Grid item>
-                                            <Icon className={classes.dueIcon}>access_alarm</Icon>
+                                            <HourglassFull className={classes.dueIcon}/>
                                         </Grid>
                                         <Grid item>
-                                            <Typography gutterBottom variant="caption" color="textSecondary">
+                                            <Typography variant="caption" color="textSecondary">
                                                 2 gün 13 saat
                                             </Typography>
                                         </Grid>
+                                        <Grid item>
+                                            <Rowing className={classes.dueIcon}/>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="caption" color="textSecondary">
+                                                15 saat
+                                            </Typography>
+                                        </Grid>
+
                                     </Grid>
                                     <Grid item>
-                                        <Grid container spacing={8} direction="row" justify="flex-end">
+                                        <Grid container spacing={8} direction="row" alignItems="center">
                                             <Grid item>
                                                 <Avatar className={classes.avatar}>BE</Avatar>
                                             </Grid>

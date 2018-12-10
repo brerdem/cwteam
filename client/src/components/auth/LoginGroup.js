@@ -79,13 +79,24 @@ class LoginGroup extends Component {
                         </ListItemIcon>
                         <ListItemText classes={{ primary: classes.primary }} inset primary="Profilim" />
                     </MenuItem>
+                    <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon className={classes.icon}>
+                            <Icon>settings</Icon>
+                        </ListItemIcon>
+                        <ListItemText classes={{ primary: classes.primary }} inset primary="Ayarlar" />
+
+                    </MenuItem>
+
                     <MenuItem onClick={this.handleLogout}>
                         <ListItemIcon className={classes.icon}>
                             <Icon>exit_to_app</Icon>
                         </ListItemIcon>
+
+
                         <ListItemText classes={{ primary: classes.primary }} inset primary="Çıkış" />
 
                     </MenuItem>
+
                 </Menu>
             </Grid>
 
