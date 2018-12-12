@@ -5,7 +5,7 @@ import Task from "./Task";
 import {withStyles} from '@material-ui/core/styles';
 import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
-import theme from '../styles/Styles'
+import theme from '../../styles/Styles'
 import Paper from "@material-ui/core/Paper";
 
 class Column extends Component {

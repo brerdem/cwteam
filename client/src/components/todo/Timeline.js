@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Gantt from "./Gantt";
+import Gantt from "./timeline/Gantt";
 
 const data = {
     data: [

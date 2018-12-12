@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Rowing from "@material-ui/icons/Rowing";
 import HourglassFull from "@material-ui/icons/HourglassFull";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import barkin from '../../static/media/barkin.png';
+import barkin from '../../../static/media/barkin.png';
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
