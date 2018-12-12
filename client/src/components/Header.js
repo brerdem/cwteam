@@ -10,16 +10,11 @@ import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from '@material-ui/icons/Search';
-import blue from '@material-ui/core/colors/blue';
+
 
 
 const styles = theme => ({
-    appBar: {
 
-        backgroundColor: blue[500]
-
-
-    },
     toolbarTitle: {
         padding: theme.spacing.unit * 2,
         flex: 1,
@@ -85,7 +80,7 @@ class Header extends Component {
 
         return (
 
-            <AppBar position="sticky" className={classes.appBar}>
+            <AppBar position="sticky">
                 <Toolbar>
                     <IconButton href="/dashboard" className={classes.whiteColor}>
                         <Icon>people</Icon>

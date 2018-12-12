@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
+import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
 import Header from "../components/Header";
 import theme from "../components/styles/Styles";
 import Tabs from '@material-ui/core/Tabs';
@@ -13,18 +13,28 @@ import axios from "axios/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Kanban from "../components/todo/Kanban";
 import Timeline from "../components/todo/Timeline";
-import {Link, Route, BrowserRouter, Switch} from "react-router-dom";
-import {withRouter} from "react-router-dom";
-import {compose} from "recompose";
+import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
+import blue from '@material-ui/core/colors/blue';
 
+
+const extraTheme = createMuiTheme({
+    palette: {
+
+        secondary: {
+            main: blue[200]
+        }
+    },
+
+
+});
 
 
 
 class Todos extends Component {
     state = {
         loading: true,
-        value: ''
+        value: 0
     };
 
 
@@ -41,15 +51,16 @@ class Todos extends Component {
             })
 
         });
+        this.setState({
+            value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
+        })
 
 
     };
 
-    handleChange = (value) => {
+    handleChange = (event, value) => {
 
-        this.setState({
-            value: value
-        })
+        this.setState({value})
     };
 
 
@@ -58,8 +69,6 @@ class Todos extends Component {
 
     render() {
         const {classes} = this.props;
-        const {value} = this.state;
-
 
         let content;
         if (this.state.loading) {
@@ -68,12 +77,15 @@ class Todos extends Component {
             content =
                 <BrowserRouter>
                     <div className={classes.todoTabContainer}>
-                        <AppBar position="static" className={classes.root}>
+                        <MuiThemeProvider theme={extraTheme}>
+                        <AppBar position="static" color="primary">
+
+
                             <Tabs
                                 value={this.state.value}
                                 onChange={this.handleChange}
                                 fullWidth
-                                indicatorColor="inherit"
+                                indicatorColor="secondary"
                                 textColor="inherit"
                             >
                                 <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/todos/kanban"/>
@@ -81,7 +93,9 @@ class Todos extends Component {
 
                             </Tabs>
 
+
                         </AppBar>
+                        </MuiThemeProvider>
                         <Switch>
                             <Route path="/todos/kanban" render={() => <Kanban projects={this.state.projects}/>}/>
                             <Route path="/todos/timeline" render={() => <Timeline projects={this.state.projects}/>}/>
@@ -120,7 +134,4 @@ Todos.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default compose(
-    withStyles(theme),
-    withRouter
-)(Todos);
+export default withStyles(theme)(Todos);

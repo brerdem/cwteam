@@ -21,7 +21,7 @@ function DashboardGrid(props) {
 
     const cardsContent = [
         {title: "Projeler", link: "/projects", description: "Proje bazlı gösterim", img: "projects.png"},
-        {title: "İşler", link: "/todos", description: "İşlerin Kanban gösterimi", img: "todos.png"},
+        {title: "İşler", link: "/todos/kanban", description: "İşlerin Kanban gösterimi", img: "todos.png"},
         {title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png"},
     ];
 

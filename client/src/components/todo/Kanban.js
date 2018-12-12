@@ -1,7 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from "@material-ui/core/styles";
-import theme from "../styles/Styles";
+import React, {Component} from 'react';
 import Grid from "@material-ui/core/Grid";
 import Project from "./Project";
 
@@ -12,7 +9,7 @@ class Kanban extends Component {
 
   render() {
 
-      const {classes} = this.props;
+
 
     return (
         <Grid container spacing={24} >
@@ -26,4 +23,4 @@ class Kanban extends Component {
   }
 }
 
-export default withStyles(theme)(Kanban);
+export default Kanban;

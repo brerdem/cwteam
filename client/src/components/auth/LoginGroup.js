@@ -47,7 +47,7 @@ class LoginGroup extends Component {
             <Grid container direction="row" justify="flex-end" alignItems="center" className={classes.headerRightGrid}
                   spacing={16}>
 
-                <Button color="primary" variant="contained" href="https://www.basecamp.com" target="_blank"
+                <Button color="inherit" variant="outlined" href="https://www.basecamp.com" target="_blank"
                         className={classes.leftIcon}>
                     <Icon className={classes.leftIcon}>launch</Icon>
                     BASECAMP'E GİT

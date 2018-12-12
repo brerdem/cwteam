@@ -188,6 +188,10 @@ export default theme => ({
 
     todoTabContainer: {
         width: '100%'
+    },
+
+    expansionPanel: {
+        backgroundColor: theme.palette.grey[100]
     }
 
 

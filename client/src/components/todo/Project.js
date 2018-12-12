@@ -23,19 +23,19 @@ const initialData = {
     columns: {
         'column-1': {
             id: 'column-1',
-            title: 'Atanmamış',
+            title: 'Backlog',
             taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
             columnTitleColor: 'columnTitleRed'
         },
         'column-2': {
             id: 'column-2',
-            title: 'Devam Ediyor',
+            title: 'In Progress',
             taskIds: [],
             columnTitleColor: 'columnTitleOrange'
         },
         'column-3': {
             id: 'column-3',
-            title: 'Bitti',
+            title: 'Done',
             taskIds: [],
             columnTitleColor: 'columnTitleGreen'
         },
@@ -73,7 +73,7 @@ class Project extends Component {
 
         return (
             <ExpansionPanel expanded={expanded === `panel${index}`}
-                            onChange={this.handleChange(`panel${index}`)}>
+                            onChange={this.handleChange(`panel${index}`)} className={classes.expansionPanel}>
 
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                     <Grid container>
@@ -109,5 +109,9 @@ class Project extends Component {
         )
     }
 }
+
+Project.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(theme)(Project);
