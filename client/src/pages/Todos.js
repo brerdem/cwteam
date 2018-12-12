@@ -9,6 +9,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
+import Fullscreen from '@material-ui/icons/Fullscreen'
 import axios from "axios/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Kanban from "../components/todo/Kanban";
@@ -16,11 +17,12 @@ import Timeline from "../components/todo/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
+import SpeedDial from '@material-ui/lab/SpeedDial';
+import Fab from '@material-ui/core/'
 
 
 const extraTheme = createMuiTheme({
     palette: {
-
         secondary: {
             main: blue[200]
         }
@@ -28,7 +30,6 @@ const extraTheme = createMuiTheme({
 
 
 });
-
 
 
 class Todos extends Component {
@@ -63,8 +64,10 @@ class Todos extends Component {
         this.setState({value})
     };
 
+    handleClick = () => {
 
-
+       this.props.history.push()
+    };
 
 
     render() {
@@ -78,23 +81,23 @@ class Todos extends Component {
                 <BrowserRouter>
                     <div className={classes.todoTabContainer}>
                         <MuiThemeProvider theme={extraTheme}>
-                        <AppBar position="static" color="primary">
+                            <AppBar position="static" color="primary">
 
 
-                            <Tabs
-                                value={this.state.value}
-                                onChange={this.handleChange}
-                                fullWidth
-                                indicatorColor="secondary"
-                                textColor="inherit"
-                            >
-                                <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/todos/kanban"/>
-                                <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/todos/timeline"/>
+                                <Tabs
+                                    value={this.state.value}
+                                    onChange={this.handleChange}
+                                    fullWidth
+                                    indicatorColor="secondary"
+                                    textColor="inherit"
+                                >
+                                    <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/todos/kanban"/>
+                                    <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/todos/timeline"/>
 
-                            </Tabs>
+                                </Tabs>
 
 
-                        </AppBar>
+                            </AppBar>
                         </MuiThemeProvider>
                         <Switch>
                             <Route path="/todos/kanban" render={() => <Kanban projects={this.state.projects}/>}/>
@@ -122,9 +125,24 @@ class Todos extends Component {
 
                     </div>
 
+
                 </main>
+                {this.state.value === 1 &&
+                <SpeedDial
+                    ariaLabel="FullScreen"
+                    icon={<Fullscreen/>}
+                    onClick={this.handleClick}
+                    open={false}
+                    direction="left"
+                    style={{margin: 30, position: 'fixed', bottom: 0, right: 0}}
+                />
+                }
+
+
+
 
             </React.Fragment>
+
         )
     }
 }
