@@ -1,7 +1,5 @@
-/*global gantt*/
 import React, {Component} from 'react';
 import Gantt from "./timeline/Gantt";
-import 'dhtmlx-gantt';
 import initialData from './InitialData';
 import Grid from "@material-ui/core/es/Grid/Grid";
 
@@ -21,7 +19,8 @@ function makeDataForGantt(projects) {
                 start_date: '14-12-2018',
                 duration: 2,
                 holder: 'Burak Erdem',
-                parent: `${index}_0`
+                parent: `${index}_0`,
+                color: initialData.tasks["task-1"].categoryColor,
             },
             {
                 id: `${index}_2`,
@@ -29,7 +28,8 @@ function makeDataForGantt(projects) {
                 start_date: '16-12-2018',
                 duration: 3,
                 holder: 'Burak Erdem',
-                parent: `${index}_0`
+                parent: `${index}_0`,
+                color: initialData.tasks["task-2"].categoryColor,
             },
             {
                 id: `${index}_3`,
@@ -37,7 +37,8 @@ function makeDataForGantt(projects) {
                 start_date: '18-12-2018',
                 duration: 4,
                 holder: 'Burak Erdem',
-                parent: `${index}_0`
+                parent: `${index}_0`,
+                color: initialData.tasks["task-3"].categoryColor,
             },
             {
                 id: `${index}_4`,
@@ -45,7 +46,8 @@ function makeDataForGantt(projects) {
                 start_date: '21-12-2018',
                 duration: 4,
                 holder: 'Burak Erdem',
-                parent: `${index}_0`
+                parent: `${index}_0`,
+                color: initialData.tasks["task-4"].categoryColor,
             },
         )
     });
@@ -66,7 +68,7 @@ class Timeline extends Component {
         const {projects} = this.props;
 
         return (
-            <Grid container direction="column" style={{height:500}}>
+            <Grid container direction="column" style={{height:this.props.height}}>
                 <Grid item xs={12}>
                     <Gantt tasks={makeDataForGantt(projects)}/>
                 </Grid>
