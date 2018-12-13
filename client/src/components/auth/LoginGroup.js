@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import withAuth from "./withAuth";
-import {withSnackbar} from 'notistack';
 import AuthService from "./AuthService";
 import {withStyles} from '@material-ui/core/styles';
 import {compose} from "recompose";
@@ -28,13 +27,6 @@ class LoginGroup extends Component {
         anchorEl: null,
     };
 
-    componentDidMount() {
-        const {enqueueSnackbar} = this.props;
-
-        enqueueSnackbar(this.props.user.identity.first_name + ' ' + this.props.user.identity.last_name + ' olarak bağlısınız.', {
-            variant: 'success'
-        });
-    }
 
     render() {
 
@@ -115,7 +107,7 @@ class LoginGroup extends Component {
         this.setState({anchorEl: null});
         Auth.logout();
         this.props.history.push("/");
-    }
+    };
 
     handleMenu = event => {
         this.setState({anchorEl: event.currentTarget});
@@ -135,6 +127,5 @@ LoginGroup.propTypes = {
 
 export default compose(
     withAuth,
-    withSnackbar,
     withStyles(theme)
 )(LoginGroup)

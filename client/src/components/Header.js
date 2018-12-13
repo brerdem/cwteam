@@ -74,7 +74,6 @@ const styles = theme => ({
 
 class Header extends Component {
 
-
     render() {
         const {classes} = this.props;
 

@@ -192,6 +192,13 @@ export default theme => ({
 
     expansionPanel: {
         backgroundColor: theme.palette.grey[100]
+    },
+    fabButton: {
+
+            position: 'fixed',
+            bottom: theme.spacing.unit * 3,
+            right: theme.spacing.unit * 3,
+
     }
 
 

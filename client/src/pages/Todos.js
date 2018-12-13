@@ -19,6 +19,7 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import SpeedDial from '@material-ui/lab/SpeedDial';
+import Fab from "@material-ui/core/Fab";
 
 
 const extraTheme = createMuiTheme({
@@ -141,14 +142,10 @@ class Todos extends Component {
                 }
 
                 {this.state.value === 1 &&
-                <SpeedDial
-                    ariaLabel="FullScreen"
-                    icon={this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
-                    onClick={this.handleClick}
-                    open={false}
-                    direction="left"
-                    style={{margin: 30, position: 'fixed', bottom: 0, right: 0}}
-                />
+                <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
+                    {this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
+
+                </Fab>
                 }
 
 
