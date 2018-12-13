@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
-import Home from './pages/Home';
+import Home from './pages/Login';
 import Projects from './pages/Projects';
 import BasecampCallback from "./pages/BasecampCallback";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Home";
 import Todos from "./pages/Todos";
 
 
