@@ -62,9 +62,13 @@ export default function withAuth(AuthComponent) {
                 return null
             }
         }
+        sendToHome = () => {
 
+        };
 
     }
+
+
 
 
     // Code here now
