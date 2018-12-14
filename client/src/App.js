@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
-import Home from './pages/Login';
+import Login from './pages/Login';
 import Projects from './pages/Projects';
 import BasecampCallback from "./pages/BasecampCallback";
 import Dashboard from "./pages/Home";
@@ -12,14 +12,14 @@ class App extends Component {
         const App = () => (
             <div>
                 <Switch>
-                    <Route exact path='/' component={Home}/>
+                    <Route exact path='/login' component={Login}/>
                     <Route exact path='/projects' component={Projects}/>
-                    <Route exact path='/dashboard' component={Dashboard}/>
+                    <Route exact path='/' component={Dashboard}/>
                     <Route path='/todos' component={Todos}/>
                     <Route exact path='/callback' component={BasecampCallback}/>
                 </Switch>
             </div>
-        )
+        );
         return (
             <Switch>
                 <App/>
