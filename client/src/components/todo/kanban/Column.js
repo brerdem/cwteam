@@ -5,7 +5,8 @@ import Task from "./Task";
 import {withStyles} from '@material-ui/core/styles';
 import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
-import theme from '../styles/Styles'
+import theme from '../../styles/Styles'
+import Paper from "@material-ui/core/Paper";
 
 class Column extends Component {
 
@@ -15,7 +16,8 @@ class Column extends Component {
         return (
 
 
-            <Grid item xs={4} className={classes.columnItem}>
+            <Grid item xs={4}>
+                <Paper className={classes.columnItem} elevation={0}>
                 <div className={classes[this.props.column.columnTitleColor]}>
                 <Typography gutterBottom variant="h6" component="h2" style={{color: '#fff'}} align="center">
                     {this.props.column.title}
@@ -36,7 +38,7 @@ class Column extends Component {
 
                     )}
                 </Droppable>
-
+                </Paper>
             </Grid>
         )
     }

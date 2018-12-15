@@ -6,7 +6,7 @@ import red from "@material-ui/core/colors/red";
 export default theme => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.grey[200],
         },
     },
     appBar: {
@@ -20,8 +20,8 @@ export default theme => ({
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
-            width: 900,
+        [theme.breakpoints.up(1000 + theme.spacing.unit * 3 * 2)]: {
+            width: 1000,
             marginLeft: 'auto',
             marginRight: 'auto',
         },
@@ -149,7 +149,7 @@ export default theme => ({
     },
 
     columnItemDraggingOver: {
-        backgroundColor: '#c7fdff',
+        backgroundColor: '#ebebeb',
 
 
     },
@@ -165,7 +165,8 @@ export default theme => ({
     },
 
     dashboardPaper: {
-        height: 200,
+        minHeight: 200,
+        padding: 10
 
     },
     dashboardHeading: {
@@ -184,6 +185,14 @@ export default theme => ({
         backgroundColor: theme.palette.grey[200]
 
     },
+
+    todoTabContainer: {
+        width: '100%'
+    },
+
+    expansionPanel: {
+        backgroundColor: theme.palette.grey[100]
+    }
 
 
 

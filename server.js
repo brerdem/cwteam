@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 
-mongoose.connect("mongodb://localhost:27017/cwteam").then(() => {
+mongoose.connect("mongodb://localhost:27017/cwteam", { useNewUrlParser: true }).then(() => {
     console.log("Connected to Database");
 }).catch((err) => {
     console.log("Not Connected to Database ERROR! ", err);
