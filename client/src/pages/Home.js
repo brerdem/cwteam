@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import Header from "../components/Header";
 import theme from "../components/styles/Styles";
-import axios from 'axios';
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -149,46 +146,21 @@ const DashboardGridWrapper = withStyles(theme)(DashboardGrid);
 
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            project: '',
-            projects: [],
-            labelWidth: 0,
-            loading: false
+    state = {
+        labelWidth: 0,
+        loading: false
 
 
-        };
-    }
-
-    handleChange = event => {
-        //this.setState({ [event.target.name]: event.target.value });
     };
 
-    componentDidMount() {
-        axios.post('/api/projects', {
 
-            access_token: JSON.parse(localStorage.getItem('id_token')).access_token
-
-        }).then((response) => {
-            this.setState({
-                loading: false,
-                projects: response.data
-            })
-
-        })
-
-
-    }
 
 
     render() {
         const {classes} = this.props;
 
         return (
-            <React.Fragment>
-                <CssBaseline/>
-                <Header history={this.props.history}/>
+
                 <main className={classes.layout}>
                     {/* Hero unit */}
                     <div className={classes.heroContent}>
@@ -202,7 +174,7 @@ class Home extends Component {
 
                 </main>
 
-            </React.Fragment>
+
         )
     }
 }

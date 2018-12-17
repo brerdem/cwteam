@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
 });
 
 
-router.post('/write', (req, res) => {
+router.post('/save_token', (req, res) => {
     const query = {};
     const update = {
         access_token: req.body.access_token,

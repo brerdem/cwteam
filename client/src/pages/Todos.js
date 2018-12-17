@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
-import Header from "../components/Header";
 import theme from "../components/styles/Styles";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -18,7 +16,6 @@ import Timeline from "../components/todo/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
-import SpeedDial from '@material-ui/lab/SpeedDial';
 import Fab from "@material-ui/core/Fab";
 
 
@@ -114,33 +111,26 @@ class Todos extends Component {
         }
 
         return (
-            <React.Fragment>
-                <CssBaseline/>
+            <div>
                 {!this.state.fullscreen &&
-                <div>
-                    <Header history={this.props.history}/>
 
-                    <main className={classes.layout}>
-                        {/* Hero unit */}
-                        <div className={classes.heroContent}>
-                            <Typography component="h1" variant="h2" align="center" color="primary" gutterBottom
-                                        className={classes.headingPadding}>
-                                İŞLER
-                            </Typography>
-                            {content}
-
-
-                        </div>
+                <main className={classes.layout}>
+                    {/* Hero unit */}
+                    <div className={classes.heroContent}>
+                        <Typography component="h1" variant="h2" align="center" color="primary" gutterBottom
+                                    className={classes.headingPadding}>
+                            İŞLER
+                        </Typography>
+                        {content}
+                    </div>
 
 
-                    </main>
-                </div>
+                </main>
                 }
 
                 {this.state.fullscreen &&
                 <Timeline projects={this.state.projects} height="100vh"/>
                 }
-
                 {this.state.value === 1 &&
                 <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
                     {this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
@@ -149,7 +139,9 @@ class Todos extends Component {
                 }
 
 
-            </React.Fragment>
+            </div>
+
+
 
         )
     }

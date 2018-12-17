@@ -67,9 +67,7 @@ export default theme => ({
     button: {
         margin: theme.spacing.unit,
     },
-    leftIcon: {
-        marginRight: theme.spacing.unit,
-    },
+
     rightIcon: {
         marginLeft: theme.spacing.unit,
     },
@@ -80,10 +78,7 @@ export default theme => ({
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
     },
-    avatar: {
-        color: '#203ac0',
-        backgroundColor: '#fff'
-    },
+
     headerRightGrid: {
         width: theme.spacing.unit * 100
 

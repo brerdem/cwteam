@@ -5,6 +5,15 @@ import rootReducer from '../reducers';
 
 const loggerMiddleware = createLogger();
 
+const initialState = {
+
+};
+const startState = {
+    ...initialState,
+    token: localStorage.getItem('id_token')
+};
+
+
 export const store = createStore(
     rootReducer,
     applyMiddleware(

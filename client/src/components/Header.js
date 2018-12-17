@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import {withStyles} from "@material-ui/core/styles/index";
-import LoginGroup from "./auth/LoginGroup";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from '@material-ui/icons/Search';
-
+import MailIcon from '@material-ui/icons/Mail';
+import Button from "@material-ui/core/Button";
+import Badge from "@material-ui/core/Badge";
+import Grid from "@material-ui/core/Grid";
+import Menu from "@material-ui/core/Menu";
+import Avatar from "@material-ui/core/Avatar";
+import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 
 const styles = theme => ({
@@ -66,7 +72,11 @@ const styles = theme => ({
     },
     whiteColor: {
         color: theme.palette.common.white
-    }
+    },
+    avatar: {
+        color: '#203ac0',
+        backgroundColor: '#fff'
+    },
 
 
 });
@@ -74,8 +84,16 @@ const styles = theme => ({
 
 class Header extends Component {
 
+    state = {
+        anchorEl: null,
+    };
+
+
     render() {
-        const {classes} = this.props;
+        const {classes, auth} = this.props;
+        const {anchorEl} = this.state;
+        const open = Boolean(anchorEl);
+
 
         return (
 
@@ -90,7 +108,7 @@ class Header extends Component {
 
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
-                            <SearchIcon />
+                            <SearchIcon/>
                         </div>
                         <InputBase
                             placeholder="Ara…"
@@ -100,13 +118,100 @@ class Header extends Component {
                             }}
                         />
                     </div>
-                    <LoginGroup logout="/" history={this.props.history}/>
+
+
+                    <Grid container direction="row" justify="flex-end" alignItems="center"
+                          className={classes.headerRightGrid}
+                          spacing={16}>
+
+                        <Button color="inherit" variant="outlined" href="https://www.basecamp.com" target="_blank"
+                                className={classes.leftIcon}>
+                            <Icon className={classes.leftIcon}>launch</Icon>
+                            BASECAMP'E GİT
+                        </Button>
+
+
+                        {auth.isLoggedIn &&
+
+                        <div><IconButton color="inherit">
+                            <Badge className={classes.margin} badgeContent={4} color="secondary">
+                                <MailIcon/>
+                            </Badge>
+                        </IconButton>
+
+
+                            <IconButton
+                                aria-owns={open ? 'menu-appbar' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleMenu}
+                                color="inherit"
+                            >
+                                <Avatar className={classes.avatar}>BE</Avatar>
+                            </IconButton>
+
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={open}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem onClick={this.handleClose}>
+
+                                    <ListItemIcon className={classes.icon}>
+                                        <Icon>account_circle</Icon>
+                                    </ListItemIcon>
+                                    <ListItemText classes={{primary: classes.primary}} inset primary="Profilim"/>
+                                </MenuItem>
+                                <MenuItem onClick={this.handleClose}>
+                                    <ListItemIcon className={classes.icon}>
+                                        <Icon>settings</Icon>
+                                    </ListItemIcon>
+                                    <ListItemText classes={{primary: classes.primary}} inset primary="Ayarlar"/>
+
+                                </MenuItem>
+
+                                <MenuItem onClick={this.handleLogout}>
+                                    <ListItemIcon className={classes.icon}>
+                                        <Icon>exit_to_app</Icon>
+                                    </ListItemIcon>
+
+
+                                    <ListItemText classes={{primary: classes.primary}} inset primary="Çıkış"/>
+
+                                </MenuItem>
+
+                            </Menu>
+                        </div>
+
+                        }
+
+                    </Grid>
 
                 </Toolbar>
             </AppBar>
         );
     }
 
+    handleLogout = () => {
+        this.setState({anchorEl: null});
+        this.props.doLogout();
+    };
+
+    handleMenu = event => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+
+    handleClose = () => {
+        this.setState({anchorEl: null});
+    };
 
 }
 

@@ -1,4 +1,5 @@
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const  DELETE_POST = 'DELETE_POST';
 
-export const FETCH_POST = 'FETCH_POST';
+//auth
+export const AUTH_LOGIN = 'AUTH_LOGIN';
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+export const LOGIN_STATUS = 'LOGIN_STATUS';
