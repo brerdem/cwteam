@@ -29,6 +29,7 @@ export default class Gantt extends Component {
 
 
         gantt.config.sort = true;
+        gantt.config.details_on_dblclick = false;
         gantt.templates.leftside_text = function (start, end, task) {
             if (task.task_type) {
                 return "<b style='font-size:14px'>%" + Math.floor(task.progress * 100) + "</b>";
@@ -51,10 +52,12 @@ export default class Gantt extends Component {
         gantt.attachEvent("onTaskDblClick", function (id, e) {
             e.preventDefault();
             if (gantt.hasChild(id)) {
-                gantt.open(id);
+                console.log(gantt.getTask(id).$open);
+                (gantt.getTask(id).$open) ? gantt.close(id) : gantt.open(id);
                 return true;
             }
             return false;
+
 
         });
 
