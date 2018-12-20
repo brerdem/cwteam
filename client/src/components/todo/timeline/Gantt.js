@@ -3,20 +3,30 @@ import React, {Component} from 'react';
 import 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import 'dhtmlx-gantt/codebase/locale/locale_tr'
+import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_fullscreen'
+import Fab from "@material-ui/core/Fab";
+import theme from "../../../components/styles/Styles";
+import {withStyles} from '@material-ui/core/styles';
+
+import Fullscreen from '@material-ui/icons/Fullscreen';
+import FullscreenExit from '@material-ui/icons/FullscreenExit';
 
 
 function setTitleGridRow(task) {
     if (task.task_type) {
-        return "<b style='color:#3F51B5'>"+task.text+"</b>";
+        return "<b style='color:#3F51B5'>" + task.text + "</b>";
     }
     return task.text;
 }
 
 
-export default class Gantt extends Component {
+class Gantt extends Component {
+
+    state= {
+        fullscreen: false
+    };
 
     componentDidMount() {
-
 
 
         gantt.config.columns = [
@@ -27,9 +37,10 @@ export default class Gantt extends Component {
         ];
 
 
-
         gantt.config.sort = true;
-        gantt.config.details_on_dblclick = false;
+        gantt.config.order_branch = true;
+
+        //gantt.config.details_on_dblclick = false;
         gantt.templates.leftside_text = function (start, end, task) {
             if (task.task_type) {
                 return "<b style='font-size:14px'>%" + Math.floor(task.progress * 100) + "</b>";
@@ -49,21 +60,22 @@ export default class Gantt extends Component {
             gantt.refreshData();
         });
 
-        gantt.attachEvent("onTaskDblClick", function (id, e) {
-            e.preventDefault();
-            if (gantt.hasChild(id)) {
-                console.log(gantt.getTask(id).$open);
-                (gantt.getTask(id).$open) ? gantt.close(id) : gantt.open(id);
-                return true;
-            }
-            return false;
+        /* gantt.attachEvent("onTaskDblClick", function (id, e) {
+             e.preventDefault();
+             if (gantt.hasChild(id)) {
+                 console.log(gantt.getTask(id).$open);
+                 (gantt.getTask(id).$open) ? gantt.close(id) : gantt.open(id);
+                 return true;
+             }
+             return false;
 
 
-        });
+         });*/
 
-        gantt.templates.task_class = function(start, end, task){
+
+        gantt.templates.task_class = function (start, end, task) {
             let css = [];
-            if(task.task_type === 'project'){
+            if (task.task_type === 'project') {
                 css.push("no_drag_progress");
             }
             return css.join(" ");
@@ -72,15 +84,54 @@ export default class Gantt extends Component {
 
         gantt.init(this.ganttContainer);
         gantt.parse(this.props.tasks);
+
+
     }
 
+    handleClick = () => {
+        if (!gantt.getState().fullscreen) {
+            // expanding the gantt to full screen
+            gantt.expand();
+            this.setState({
+                fullscreen: true
+            })
+
+
+        }
+        else {
+            // collapsing the gantt to the normal mode
+            gantt.collapse();
+            this.setState({
+                fullscreen: false
+            })
+        }
+
+
+
+    };
+
     render() {
+
+        const {classes} = this.props;
         return (
-            <div ref={(input) => {
+            <div style={{height:500}}>
+                <div ref={(input) => {
                     this.ganttContainer = input
-                }}
-                style={{width: '100%', height: '100%'}}
-            ></div>
+                }} style={{width: '100%', height: '100%'}}/>
+
+                <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
+                    {this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
+
+                </Fab>
+
+            </div>
+
+
         );
     }
+
+
+
 }
+
+export default withStyles(theme)(Gantt);

@@ -7,8 +7,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
-import Fullscreen from '@material-ui/icons/Fullscreen';
-import FullscreenExit from '@material-ui/icons/FullscreenExit';
 import axios from "axios/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Kanban from "../components/todo/Kanban";
@@ -16,7 +14,6 @@ import Timeline from "../components/todo/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
-import Fab from "@material-ui/core/Fab";
 
 
 const extraTheme = createMuiTheme({
@@ -33,8 +30,7 @@ const extraTheme = createMuiTheme({
 class Todos extends Component {
     state = {
         loading: true,
-        value: 0,
-        fullscreen: false
+        value: 0
     };
 
 
@@ -63,11 +59,6 @@ class Todos extends Component {
         this.setState({value})
     };
 
-    handleClick = () => {
-        this.setState({
-            fullscreen: !this.state.fullscreen
-        });
-    };
 
 
     render() {
@@ -102,7 +93,7 @@ class Todos extends Component {
                         <Switch>
                             <Route path="/todos/kanban" render={() => <Kanban projects={this.state.projects}/>}/>
                             <Route path="/todos/timeline"
-                                   render={() => <Timeline projects={this.state.projects} height="500px"/>}/>
+                                   render={() => <Timeline projects={this.state.projects} />}/>
                         </Switch>
 
                     </div>
@@ -112,7 +103,7 @@ class Todos extends Component {
 
         return (
             <div>
-                {!this.state.fullscreen &&
+
 
                 <main className={classes.layout}>
                     {/* Hero unit */}
@@ -126,17 +117,8 @@ class Todos extends Component {
 
 
                 </main>
-                }
 
-                {this.state.fullscreen &&
-                <Timeline projects={this.state.projects} height="100vh"/>
-                }
-                {this.state.value === 1 &&
-                <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
-                    {this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
 
-                </Fab>
-                }
 
 
             </div>

@@ -73,7 +73,7 @@ class Timeline extends Component {
         const {projects} = this.props;
 
         return (
-            <Grid container direction="column" style={{height:this.props.height}}>
+            <Grid container direction="column">
                 <Grid item xs={12}>
                     <Gantt tasks={makeDataForGantt(projects)}/>
                 </Grid>

@@ -1,5 +1,9 @@
 import * as types from "../actions/types";
-import initialState from "../helpers/initialState";
+
+const initialState = {
+    isLoggedIn: false,
+};
+
 
 
 const authReducer = (state = initialState, action) => {
