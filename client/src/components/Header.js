@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import {withStyles} from "@material-ui/core/styles/index";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from '@material-ui/icons/Search';
@@ -17,14 +17,13 @@ import Avatar from "@material-ui/core/Avatar";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import {compose} from 'recompose';
+import {connect} from "react-redux";
+import {push} from "connected-react-router";
 
 
 const styles = theme => ({
 
-    toolbarTitle: {
-        padding: theme.spacing.unit * 2,
-        flex: 1,
-    },
 
     leftIcon: {
         marginRight: theme.spacing.unit,
@@ -37,13 +36,9 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
-        marginRight: theme.spacing.unit * 2,
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing.unit * 3,
-            width: 'auto',
-        },
+        margin: '0 auto'
+
+
     },
     searchIcon: {
         width: theme.spacing.unit * 9,
@@ -98,103 +93,112 @@ class Header extends Component {
         return (
 
             <AppBar position="sticky">
+
                 <Toolbar>
-                    <IconButton href="/dashboard" className={classes.whiteColor}>
-                        <Icon>people</Icon>
-                    </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-                        CW Team
-                    </Typography>
+                    <Grid container direction="row" justify="space-between" alignItems="center">
+                        <Grid item>
 
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon/>
-                        </div>
-                        <InputBase
-                            placeholder="Ara…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                        />
-                    </div>
+                            <Typography variant="h6" color="inherit" noWrap>
+                                <IconButton href="/" className={classes.whiteColor}>
+                                    <Icon>people</Icon>
+                                </IconButton>
+                                CW Team
+                            </Typography>
 
-
-                    <Grid container direction="row" justify="flex-end" alignItems="center"
-                          className={classes.headerRightGrid}
-                          spacing={16}>
-
-                        <Button color="inherit" variant="outlined" href="https://www.basecamp.com" target="_blank"
-                                className={classes.leftIcon}>
-                            <Icon className={classes.leftIcon}>launch</Icon>
-                            BASECAMP'E GİT
-                        </Button>
+                        </Grid>
+                        <Grid item>
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon/>
+                                </div>
+                                <InputBase
+                                    placeholder="Ara…"
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                />
+                            </div>
+                        </Grid>
 
 
-                        {auth.isLoggedIn &&
+                        <Grid item>
 
-                        <div><IconButton color="inherit">
-                            <Badge className={classes.margin} badgeContent={4} color="secondary">
-                                <MailIcon/>
-                            </Badge>
-                        </IconButton>
+                            <Grid container justify="flex-end" alignItems="center">
+
+                            <Button color="inherit" variant="outlined" href="https://www.basecamp.com" target="_blank"
+                                    className={classes.leftIcon}>
+                                <Icon className={classes.leftIcon}>launch</Icon>
+                                BASECAMP'E GİT
+                            </Button>
 
 
-                            <IconButton
-                                aria-owns={open ? 'menu-appbar' : undefined}
-                                aria-haspopup="true"
-                                onClick={this.handleMenu}
-                                color="inherit"
-                            >
-                                <Avatar className={classes.avatar}>BE</Avatar>
+                            {auth.isLoggedIn &&
+
+                            <div><IconButton color="inherit">
+                                <Badge className={classes.margin} badgeContent={4} color="secondary">
+                                    <MailIcon/>
+                                </Badge>
                             </IconButton>
 
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={this.handleClose}
-                            >
-                                <MenuItem onClick={this.handleClose}>
 
-                                    <ListItemIcon className={classes.icon}>
-                                        <Icon>account_circle</Icon>
-                                    </ListItemIcon>
-                                    <ListItemText classes={{primary: classes.primary}} inset primary="Profilim"/>
-                                </MenuItem>
-                                <MenuItem onClick={this.handleClose}>
-                                    <ListItemIcon className={classes.icon}>
-                                        <Icon>settings</Icon>
-                                    </ListItemIcon>
-                                    <ListItemText classes={{primary: classes.primary}} inset primary="Ayarlar"/>
+                                <IconButton
+                                    aria-owns={open ? 'menu-appbar' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={this.handleMenu}
+                                    color="inherit"
+                                >
+                                    <Avatar className={classes.avatar}>BE</Avatar>
+                                </IconButton>
 
-                                </MenuItem>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={open}
+                                    onClose={this.handleClose}
+                                >
+                                    <MenuItem onClick={this.handleClose}>
 
-                                <MenuItem onClick={this.handleLogout}>
-                                    <ListItemIcon className={classes.icon}>
-                                        <Icon>exit_to_app</Icon>
-                                    </ListItemIcon>
+                                        <ListItemIcon className={classes.icon}>
+                                            <Icon>account_circle</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText classes={{primary: classes.primary}} inset primary="Profilim"/>
+                                    </MenuItem>
+                                    <MenuItem onClick={this.handleClose}>
+                                        <ListItemIcon className={classes.icon}>
+                                            <Icon>settings</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText classes={{primary: classes.primary}} inset primary="Ayarlar"/>
+
+                                    </MenuItem>
+
+                                    <MenuItem onClick={this.handleLogout}>
+                                        <ListItemIcon className={classes.icon}>
+                                            <Icon>exit_to_app</Icon>
+                                        </ListItemIcon>
 
 
-                                    <ListItemText classes={{primary: classes.primary}} inset primary="Çıkış"/>
+                                        <ListItemText classes={{primary: classes.primary}} inset primary="Çıkış"/>
 
-                                </MenuItem>
+                                    </MenuItem>
 
-                            </Menu>
-                        </div>
+                                </Menu>
+                            </div>
 
-                        }
+                            }
 
+
+                        </Grid>
                     </Grid>
-
+                    </Grid>
                 </Toolbar>
             </AppBar>
         );
@@ -202,6 +206,7 @@ class Header extends Component {
 
     handleLogout = () => {
         this.setState({anchorEl: null});
+        this.props.push('/login');
         this.props.doLogout();
     };
 
@@ -215,7 +220,12 @@ class Header extends Component {
 
 }
 
-export default withStyles(styles)(Header);
+export default compose(
+    withStyles(styles,
+        {name: 'Header'}
+    ),
+    connect(null, {push})
+) (Header)
 
 
 

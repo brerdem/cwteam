@@ -41,7 +41,7 @@ class Todos extends Component {
     componentDidMount() {
         axios.post('/api/projects', {
 
-            access_token: JSON.parse(localStorage.getItem('id_token')).access_token
+            access_token: localStorage.getItem('id_token')
 
         }).then((response) => {
             this.setState({

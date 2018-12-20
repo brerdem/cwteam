@@ -13,14 +13,22 @@ import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import CountUp from 'react-countup';
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
+import { push } from 'connected-react-router';
+import {compose} from 'recompose';
+import {connect} from "react-redux";
 
-function DashboardGrid(props) {
+
+const DashboardGrid = function(props) {
 
     const cardsContent = [
         {title: "Projeler", link: "/projects", description: "Proje bazlı gösterim", img: "projects.png"},
         {title: "İşler", link: "/todos/kanban", description: "İşlerin Kanban gösterimi", img: "todos.png"},
         {title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png"},
     ];
+
+    const handleCardClick = link => {
+        props.push(link);
+    };
 
 
     const {classes} = props;
@@ -108,10 +116,11 @@ function DashboardGrid(props) {
             </Grid>
 
 
-            {cardsContent.map(item => (
-                <Grid item xs={4}>
+            {cardsContent.map((item, index) => (
+                <Grid item xs={4} key={index}>
                     <Card className={classes.cardDashboard}>
-                        <CardActionArea href={item.link}>
+
+                        <CardActionArea onClick={() => props.push(item.link)} >
                             <CardMedia
                                 className={classes.cardmedia}
                                 image={require(`../static/media/${item.img}`)}
@@ -132,17 +141,25 @@ function DashboardGrid(props) {
             ))
             }
         </Grid>
-    )
+    );
+
+
+
 
 
 }
+
+
 
 
 DashboardGrid.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const DashboardGridWrapper = withStyles(theme)(DashboardGrid);
+export const DashboardGridWrapper = compose (
+    withStyles(theme),
+    connect(null, { push })
+)(DashboardGrid);
 
 
 class Home extends Component {

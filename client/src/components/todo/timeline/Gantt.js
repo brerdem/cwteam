@@ -48,13 +48,23 @@ export default class Gantt extends Component {
             gantt.refreshData();
         });
 
+        gantt.attachEvent("onTaskDblClick", function (id, e) {
+            e.preventDefault();
+            if (gantt.hasChild(id)) {
+                gantt.open(id);
+                return true;
+            }
+            return false;
+
+        });
+
         gantt.templates.task_class = function(start, end, task){
             let css = [];
             if(task.task_type === 'project'){
                 css.push("no_drag_progress");
             }
             return css.join(" ");
-        }
+        };
 
 
         gantt.init(this.ganttContainer);
@@ -63,8 +73,7 @@ export default class Gantt extends Component {
 
     render() {
         return (
-            <div
-                ref={(input) => {
+            <div ref={(input) => {
                     this.ganttContainer = input
                 }}
                 style={{width: '100%', height: '100%'}}

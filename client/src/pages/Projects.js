@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import Header from "../components/Header";
 import theme from "../components/styles/Styles";
 import axios from 'axios';
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -14,6 +12,8 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import {withSnackbar} from 'notistack';
 import {compose} from "recompose";
+import { push } from 'connected-react-router';
+import {connect} from "react-redux";
 
 
 function ProjectGrid(props) {
@@ -76,9 +76,11 @@ class Projects extends Component {
     componentDidMount() {
 
 
+
+
         axios.post('/api/projects', {
 
-            access_token: JSON.parse(localStorage.getItem('id_token')).access_token
+            access_token: localStorage.getItem('id_token')
 
         }).then((response) => {
             this.setState({
@@ -110,9 +112,7 @@ class Projects extends Component {
 
 
         return (
-            <React.Fragment>
-                <CssBaseline/>
-                <Header history={this.props.history}/>
+
                 <main className={classes.layout}>
                     {/* Hero unit */}
                     <div className={classes.heroContent}>
@@ -126,7 +126,6 @@ class Projects extends Component {
 
                 </main>
 
-            </React.Fragment>
         )
     }
 }
@@ -137,6 +136,7 @@ Projects.propTypes = {
 };
 
 export default compose(
+    connect(null, { push }),
     withStyles(theme),
     withSnackbar
 )(Projects);

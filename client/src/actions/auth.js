@@ -1,5 +1,6 @@
 import * as types from "./types";
 import axios from "axios/index";
+import { push } from 'connected-react-router'
 
 
 const isTokenExpired = (token) => {
@@ -19,9 +20,9 @@ const loggedIn = () => {
     return !!token && !isTokenExpired(token) // handwaiving here
 };
 
-const getToken = () => {
+export const getToken = () => {
     // Retrieves the user token from localStorage
-    return localStorage.getItem('id_token')
+    return localStorage.getItem('id_token');
 };
 
 const getExpireDate = () => {
@@ -29,15 +30,26 @@ const getExpireDate = () => {
     return JSON.parse(localStorage.getItem('id_token')).expires_in;
 };
 
+/*
 const getRefreshToken = () => {
     // Retrieves the user token from localStorage
     return JSON.parse(localStorage.getItem('id_token')).refresh_token;
 };
 
+*/
 
 
+
+
+
+
+//action creators
 const userLogout = () => ({
     type: types.AUTH_LOGOUT,
+});
+
+const authenticateUser = () => ({
+    type: types.AUTH_AUTHENTICATED,
 });
 
 
@@ -52,13 +64,22 @@ export const doLogout = () => dispatch => {
     dispatch(userLogout());
 };
 
-export const doLogin = () => dispatch => {
+export const authenticate = () => dispatch => {
+    dispatch(authenticateUser());
+};
 
+
+export const getUser = () => dispatch => {
+console.log('get user fired');
     axios.post('/api/auth', {
-        access_token: JSON.parse(getToken()).access_token
+        access_token: getToken()
     })
         .then((response) => {
-            if (response.data && loggedIn()) dispatch(userLogin(response.data));
+
+            if (response.data && loggedIn()){
+                dispatch(userLogin(response.data));
+                dispatch(push('/'));
+            }
 
         })
         .catch(function (error) {

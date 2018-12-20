@@ -79,10 +79,7 @@ export default theme => ({
         marginTop: theme.spacing.unit * 2,
     },
 
-    headerRightGrid: {
-        width: theme.spacing.unit * 100
 
-    },
     success: {
         backgroundColor: green[600],
     },
