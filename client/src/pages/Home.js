@@ -26,10 +26,6 @@ const DashboardGrid = function(props) {
         {title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png"},
     ];
 
-    const handleCardClick = link => {
-        props.push(link);
-    };
-
 
     const {classes} = props;
     return (
