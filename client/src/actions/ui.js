@@ -5,13 +5,14 @@ import * as types from "./types";
 
 
 //action creators
-const setGanttFullScreen = () => ({
+const setGanttFullScreen = (stat) => ({
     type: types.GANTT_FULLSCREEN,
+    status: stat
 });
 
 
-export const setFullScreen = () => dispatch => {
-    dispatch(setGanttFullScreen());
+export const setFullScreen = (stat) => dispatch => {
+    dispatch(setGanttFullScreen(stat));
 };
 
 

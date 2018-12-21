@@ -10,7 +10,7 @@ const uiReducer = (state = initialState, action) => {
         case types.GANTT_FULLSCREEN:
             return {
                 ...state,
-                isGanttFullscreen: true
+                isGanttFullscreen: action.status
             };
 
         default:

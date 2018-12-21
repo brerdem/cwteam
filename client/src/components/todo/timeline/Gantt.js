@@ -7,10 +7,11 @@ import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_fullscreen'
 import Fab from "@material-ui/core/Fab";
 import theme from "../../../components/styles/Styles";
 import {withStyles} from '@material-ui/core/styles';
-
 import Fullscreen from '@material-ui/icons/Fullscreen';
 import FullscreenExit from '@material-ui/icons/FullscreenExit';
-
+import {connect} from "react-redux";
+import {compose} from 'recompose';
+import {setFullScreen} from "../../../actions/ui";
 
 function setTitleGridRow(task) {
     if (task.task_type) {
@@ -25,6 +26,8 @@ class Gantt extends Component {
     state= {
         fullscreen: false
     };
+
+
 
     componentDidMount() {
 
@@ -92,18 +95,15 @@ class Gantt extends Component {
         if (!gantt.getState().fullscreen) {
             // expanding the gantt to full screen
             gantt.expand();
-            this.setState({
-                fullscreen: true
-            })
+            this.props.setFullScreen(true);
+
 
 
         }
         else {
             // collapsing the gantt to the normal mode
             gantt.collapse();
-            this.setState({
-                fullscreen: false
-            })
+            this.props.setFullScreen(false);
         }
 
 
@@ -120,7 +120,7 @@ class Gantt extends Component {
                 }} style={{width: '100%', height: '100%'}}/>
 
                 <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
-                    {this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
+                    {this.props.ui.isGanttFullscreen ? <FullscreenExit/> : <Fullscreen/>}
 
                 </Fab>
 
@@ -134,4 +134,18 @@ class Gantt extends Component {
 
 }
 
-export default withStyles(theme)(Gantt);
+const mapStateToProps = (state) => {
+    return {
+
+        ui: state.ui
+
+    };
+};
+
+
+
+export default compose(
+    connect(mapStateToProps,
+        {setFullScreen}),
+    withStyles(theme)
+)(Gantt);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Callback from "./pages/Callback";
@@ -9,34 +9,17 @@ import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Header from "./components/Header";
 import {authenticate, doLogout, getUser} from "./actions/auth";
+import PrivateRoute from './components/PrivateRoute'
 
 
-const PrivateRoute = ({component: Component, auth, ...rest}) => (
 
-    <Route
-        {...rest}
-        render={props =>
-
-            auth.isLoggedIn ? (
-                <Component auth={auth} {...props} />
-            ) : (
-                <Redirect
-                    to={{
-                        pathname: "/login"
-                    }}
-
-                />
-            )
-        }
-    />
-);
-
-
-const App = ({auth, doLogout, getUser, authenticate}) => (
+const App = ({auth, doLogout, getUser, authenticate, ui}) => (
 
     <React.Fragment>
         <CssBaseline/>
+        {!ui.isGanttFullscreen &&
         <Header doLogout={doLogout} auth={auth}/>
+        }
         <div>
             <Switch>
                 <Route exact path='/login' component={Login}/>
@@ -55,7 +38,8 @@ const App = ({auth, doLogout, getUser, authenticate}) => (
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+        auth: state.auth,
+        ui: state.ui
 
     };
 };
@@ -66,7 +50,7 @@ export default connect(
     {doLogout, getUser, authenticate},
     null,
     {
-        pure: true,
+        pure: false,
         areStatesEqual: (next, prev) => {
             return next.auth === prev.auth
         }
