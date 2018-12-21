@@ -62,26 +62,18 @@ function makeDataForGantt(projects) {
 }
 
 
-class Timeline extends Component {
-
-
-    state = {};
-
-
-    render() {
-
-        const {projects} = this.props;
+const Timeline = function(props) {
 
         return (
             <Grid container direction="column">
                 <Grid item xs={12}>
-                    <Gantt tasks={makeDataForGantt(projects)}/>
+                    <Gantt tasks={makeDataForGantt(props.projects)}/>
                 </Grid>
             </Grid>
 
         );
-    }
-}
+
+};
 
 
 export default Timeline;
