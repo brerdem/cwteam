@@ -16,47 +16,7 @@ import { push } from 'connected-react-router';
 import {connect} from "react-redux";
 
 
-function ProjectGrid(props) {
 
-
-    const {classes} = props;
-    return (
-
-        <Grid container spacing={40}>
-            {props.projects.map(project => (
-                <Grid item xs={4}>
-                    <Card className={classes.card}>
-                        <CardContent className={classes.cardContent}>
-                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
-                                {project.name}
-                            </Typography>
-                            <Typography>
-                                {project.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                SEÇ
-                            </Button>
-                            <Button size="small" color="secondary">
-                                SİL
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-            ))
-            }
-        </Grid>
-    )
-
-}
-
-
-ProjectGrid.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-const ProjectGridWrapper = withStyles(theme)(ProjectGrid);
 
 
 class Projects extends Component {
@@ -90,28 +50,55 @@ class Projects extends Component {
 
         })
 
+        this.props.enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
+            variant: 'warning'
+        });
+
 
     }
 
 
     render() {
 
-        const {classes, enqueueSnackbar} = this.props;
+        const {classes} = this.props;
         let content;
         if (this.state.loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
 
-            enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
-                variant: 'warning'
-            });
 
-            content = <ProjectGridWrapper projects={this.state.projects} classes={this.props}/>
+
+            content =  <Grid container spacing={40}>
+                {this.state.projects.map(project => (
+                    <Grid item key={project.id} xs={4}>
+                        <Card className={classes.card}>
+                            <CardContent className={classes.cardContent}>
+                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                    {project.name}
+                                </Typography>
+                                <Typography>
+                                    {project.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" color="primary">
+                                    SEÇ
+                                </Button>
+                                <Button size="small" color="secondary">
+                                    SİL
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))
+                }
+            </Grid>
 
         }
 
 
         return (
+
 
                 <main className={classes.layout}>
                     {/* Hero unit */}
