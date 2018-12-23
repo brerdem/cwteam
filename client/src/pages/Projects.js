@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import Header from "../components/Header";
 import theme from "../components/styles/Styles";
 import axios from 'axios';
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -14,49 +12,11 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import {withSnackbar} from 'notistack';
 import {compose} from "recompose";
+import { push } from 'connected-react-router';
+import {connect} from "react-redux";
 
 
-function ProjectGrid(props) {
 
-
-    const {classes} = props;
-    return (
-
-        <Grid container spacing={40}>
-            {props.projects.map(project => (
-                <Grid item xs={4}>
-                    <Card className={classes.card}>
-                        <CardContent className={classes.cardContent}>
-                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
-                                {project.name}
-                            </Typography>
-                            <Typography>
-                                {project.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                SEÇ
-                            </Button>
-                            <Button size="small" color="secondary">
-                                SİL
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-            ))
-            }
-        </Grid>
-    )
-
-}
-
-
-ProjectGrid.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-const ProjectGridWrapper = withStyles(theme)(ProjectGrid);
 
 
 class Projects extends Component {
@@ -76,9 +36,11 @@ class Projects extends Component {
     componentDidMount() {
 
 
+
+
         axios.post('/api/projects', {
 
-            access_token: JSON.parse(localStorage.getItem('id_token')).access_token
+            access_token: localStorage.getItem('id_token')
 
         }).then((response) => {
             this.setState({
@@ -88,31 +50,56 @@ class Projects extends Component {
 
         })
 
+        this.props.enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
+            variant: 'warning'
+        });
+
 
     }
 
 
     render() {
 
-        const {classes, enqueueSnackbar} = this.props;
+        const {classes} = this.props;
         let content;
         if (this.state.loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
 
-            enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
-                variant: 'warning'
-            });
 
-            content = <ProjectGridWrapper projects={this.state.projects} classes={this.props}/>
+
+            content =  <Grid container spacing={40}>
+                {this.state.projects.map(project => (
+                    <Grid item key={project.id} xs={4}>
+                        <Card className={classes.card}>
+                            <CardContent className={classes.cardContent}>
+                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                    {project.name}
+                                </Typography>
+                                <Typography>
+                                    {project.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" color="primary">
+                                    SEÇ
+                                </Button>
+                                <Button size="small" color="secondary">
+                                    SİL
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))
+                }
+            </Grid>
 
         }
 
 
         return (
-            <React.Fragment>
-                <CssBaseline/>
-                <Header history={this.props.history}/>
+
+
                 <main className={classes.layout}>
                     {/* Hero unit */}
                     <div className={classes.heroContent}>
@@ -126,7 +113,6 @@ class Projects extends Component {
 
                 </main>
 
-            </React.Fragment>
         )
     }
 }
@@ -137,6 +123,7 @@ Projects.propTypes = {
 };
 
 export default compose(
+    connect(null, { push }),
     withStyles(theme),
     withSnackbar
 )(Projects);
