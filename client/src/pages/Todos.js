@@ -28,11 +28,11 @@ const extraTheme = createMuiTheme({
 
 
 class Todos extends Component {
+
     state = {
         loading: true,
         value: 0
     };
-
 
     componentDidMount() {
         axios.post('/api/projects', {
@@ -60,7 +60,6 @@ class Todos extends Component {
     };
 
 
-
     render() {
         const {classes} = this.props;
 
@@ -74,7 +73,6 @@ class Todos extends Component {
                         <MuiThemeProvider theme={extraTheme}>
                             <AppBar position="static" color="primary">
 
-
                                 <Tabs
                                     value={this.state.value}
                                     onChange={this.handleChange}
@@ -87,13 +85,12 @@ class Todos extends Component {
 
                                 </Tabs>
 
-
                             </AppBar>
                         </MuiThemeProvider>
                         <Switch>
                             <Route path="/todos/kanban" render={() => <Kanban projects={this.state.projects}/>}/>
                             <Route path="/todos/timeline"
-                                   render={() => <Timeline projects={this.state.projects} />}/>
+                                   render={() => <Timeline projects={this.state.projects}/>}/>
                         </Switch>
 
                     </div>
@@ -103,7 +100,6 @@ class Todos extends Component {
 
         return (
             <div>
-
 
                 <main className={classes.layout}>
                     {/* Hero unit */}
@@ -118,11 +114,7 @@ class Todos extends Component {
 
                 </main>
 
-
-
-
             </div>
-
 
 
         )

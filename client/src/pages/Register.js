@@ -46,7 +46,7 @@ const styles = theme => ({
     },
 });
 
-function Login(props) {
+function Register(props) {
     const {classes} = props;
 
     return (
@@ -57,9 +57,17 @@ function Login(props) {
 
 
                 <Typography component="h1" variant="h5">
-                    Giriş Yap
+                    Üye Ol
                 </Typography>
                 <form className={classes.form}>
+                    <FormControl margin="normal" required fullWidth>
+                        <InputLabel htmlFor="first_name">İsim</InputLabel>
+                        <Input id="first_name" name="first_name" autoComplete="first_name" autoFocus/>
+                    </FormControl>
+                    <FormControl margin="normal" required fullWidth>
+                        <InputLabel htmlFor="last_name">Soyisim</InputLabel>
+                        <Input id="last_name" name="last_name" autoComplete="last_name" autoFocus/>
+                    </FormControl>
                     <FormControl margin="normal" required fullWidth>
                         <InputLabel htmlFor="email">Email Adresi</InputLabel>
                         <Input id="email" name="email" autoComplete="email" autoFocus/>
@@ -68,10 +76,7 @@ function Login(props) {
                         <InputLabel htmlFor="password">Şifre</InputLabel>
                         <Input name="password" type="password" id="password" autoComplete="current-password"/>
                     </FormControl>
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Beni hatırla"
-                    />
+
                     <Button
                         type="submit"
                         fullWidth
@@ -79,7 +84,7 @@ function Login(props) {
                         color="primary"
                         className={classes.submit}
                     >
-                        GİRİŞ
+                        KAYDET
                     </Button>
                 </form>
             </Paper>
@@ -87,8 +92,8 @@ function Login(props) {
     );
 }
 
-Login.propTypes = {
+Register.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(Register);
