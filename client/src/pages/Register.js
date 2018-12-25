@@ -7,11 +7,10 @@ import CssBaseline from "@material-ui/core/es/CssBaseline/CssBaseline";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 import Input from "@material-ui/core/es/Input/Input";
-import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlLabel";
 import Paper from "@material-ui/core/es/Paper/Paper";
 import team from './../static/media/team.png'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
+import axios from 'axios';
 
 const styles = theme => ({
     main: {
@@ -46,6 +45,28 @@ const styles = theme => ({
     },
 });
 
+
+function handleSubmit(e) {
+    e.preventDefault();
+    console.log(e.target.first_name.value);
+
+    axios.post('/register', {
+        first_name: e.target.first_name.value,
+        last_name: e.target.last_name.value,
+        email: e.target.email.value,
+        password: e.target.password.value
+
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+}
+
+
 function Register(props) {
     const {classes} = props;
 
@@ -59,7 +80,7 @@ function Register(props) {
                 <Typography component="h1" variant="h5">
                     Üye Ol
                 </Typography>
-                <form className={classes.form}>
+                <form className={classes.form} onSubmit={handleSubmit}>
                     <FormControl margin="normal" required fullWidth>
                         <InputLabel htmlFor="first_name">İsim</InputLabel>
                         <Input id="first_name" name="first_name" autoComplete="first_name" autoFocus/>
