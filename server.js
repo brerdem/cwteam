@@ -5,10 +5,12 @@ const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+require('./passport');
 
 const app = express();
 
-
+//PORT
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 
@@ -22,7 +24,7 @@ mongoose.connect("mongodb://localhost:27017/cwteam", { useNewUrlParser: true }).
     console.log("Not Connected to Database ERROR! ", err);
 });
 
-const port = process.env.PORT || 8080;
+
 
 //routes
 app.use('/', routes);

@@ -1,13 +1,28 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+
 let userSchema = new Schema({
-    first_name: String,
-    last_name: String,
+    first_name: {type: String, required: [true, "boş kalamaz"]},
+    last_name: {type: String, required: [true, "boş kalamaz"]},
     createdAt: Date,
     avatar_url: String,
-    email: String,
+    password: String,
+    email: {
+        type: String,
+        lowercase: true,
+        unique: true,
+        required: [true, "boş kalamaz"],
+        match: [/\S+@\S+\.\S+/, 'geçersiz'],
+        index: true
+    },
     title: String,
-    active: Boolean
+    active: Boolean,
+    todos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Todo'
+    }]
+
 
 });
+
 module.exports = mongoose.model('User', userSchema);
