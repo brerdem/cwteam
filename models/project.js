@@ -5,17 +5,10 @@ let projectSchema = new Schema({
     title: {type: String, required: true},
     description: String,
     createdAt: Date,
-    startDate: Date,
-    endDate: Date,
     active: Boolean,
-    assignees: [{
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        effort: {
-            type: Number
-        }
+    team: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }],
     comments: [{
         type: String

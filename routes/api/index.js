@@ -1,3 +1,7 @@
+const passport = require("passport");
+require('../../passport');
+const Project = require('./../../models/project');
+
 const router = require('express').Router();
 const test = require('./test');
 const auth = require('./auth');
@@ -9,31 +13,19 @@ router.use('/auth', auth);
 router.use('/user', user);
 
 
-router.post('/projects', (req, res) => {
-    axios.get('https://3.basecampapi.com/3587783/projects.json', {
 
-        headers: {
-            'Authorization': "Bearer " + req.body.access_token,
-            'Content-Type': 'application/json',
-            'User-Agent': 'Clockwork Team Management Test (clock@clockwork.com)',
 
-        },
-        data: {
-            name: 'Clockwork Team Management Test'
+router.get('/projects', (req, res) => {
+
+
+    Project.find({}, function(err, projects) {
+        if (!err) {
+            res.status(200).json(projects);
+        } else {
+            console.log(err);
+            res.status(400).send(err);
         }
-
-
     })
-        .then(function (response) {
-
-            res.status(200).json(response.data);
-
-        })
-        .catch(function (error) {
-            res.status(500);
-            console.log('error from api/auth:' + error);
-
-        });
 });
 
 router.post('/users', (req, res) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,11 @@ import Paper from "@material-ui/core/es/Paper/Paper";
 import team from './../static/media/team.png'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
+import {Link} from "react-router-dom";
+import axios from "axios/index";
+import {withSnackbar} from 'notistack';
+import {compose} from 'recompose';
+
 
 const styles = theme => ({
     main: {
@@ -46,49 +51,111 @@ const styles = theme => ({
     },
 });
 
-function Login(props) {
-    const {classes} = props;
 
-    return (
-        <main className={classes.main}>
-            <CssBaseline/>
-            <Paper className={classes.paper}>
-                <Avatar className={classes.avatar} src={team}/>
+class Login extends Component {
+
+    showMessage = (message, variant) => {
+        this.props.enqueueSnackbar(message, {
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+            variant: variant
+        })
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+
+        axios.post('/api/auth/login', {
+            email: e.target.email.value,
+            password: e.target.password.value
+
+        })
+            .then((response) => {
+                if (response.statusText === "OK") {
+                    //console.log(response.data.token);
+                    this.handleLogin(response.data.user, response.data.token.toString())
+
+                }
 
 
-                <Typography component="h1" variant="h5">
-                    Giriş Yap
-                </Typography>
-                <form className={classes.form}>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="email">Email Adresi</InputLabel>
-                        <Input id="email" name="email" autoComplete="email" autoFocus/>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="password">Şifre</InputLabel>
-                        <Input name="password" type="password" id="password" autoComplete="current-password"/>
-                    </FormControl>
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Beni hatırla"
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        GİRİŞ
-                    </Button>
-                </form>
-            </Paper>
-        </main>
-    );
+            })
+            .catch((error) => {
+                let errStr;
+                console.log(error);
+                // errStr = error.response.data.code === 11000 ? 'Bu kullanıcı mevcut' : 'Bilinmeyen hata';
+                this.showMessage(errStr, 'error');
+            });
+
+    };
+
+    handleLogin = (user, token) => {
+        console.log(this.props);
+        this.props.doLogin(user, token);
+        this.props.history.push('/');
+    }
+
+
+    render() {
+
+        const {classes} = this.props;
+
+        return (
+            <main className={classes.main}>
+                <CssBaseline/>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar} src={team}/>
+
+
+                    <Typography component="h1" variant="h5">
+                        Giriş Yap
+                    </Typography>
+                    <Typography component="p" variant="body2">
+                        veya
+                    </Typography>
+                    <Link to={'/register'}>
+                        <Typography component="p" variant="body2" color="primary">
+                            Kaydol
+                        </Typography>
+                    </Link>
+                    <form className={classes.form} onSubmit={this.handleSubmit}>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="email">Email Adresi</InputLabel>
+                            <Input id="email" name="email" autoComplete="email" autoFocus/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="password">Şifre</InputLabel>
+                            <Input name="password" type="password" id="password" autoComplete="current-password"/>
+                        </FormControl>
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary"/>}
+                            label="Beni hatırla"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            GİRİŞ
+                        </Button>
+                    </form>
+                </Paper>
+            </main>
+        );
+    }
 }
 
 Login.propTypes = {
     classes: PropTypes.object.isRequired,
+
 };
 
-export default withStyles(styles)(Login);
+
+export default compose(
+    withStyles(styles),
+    withSnackbar,
+)(Login);
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -11,6 +11,8 @@ import Paper from "@material-ui/core/es/Paper/Paper";
 import team from './../static/media/team.png'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import axios from 'axios';
+import {withSnackbar} from 'notistack';
+import {compose} from 'recompose';
 
 const styles = theme => ({
     main: {
@@ -46,75 +48,103 @@ const styles = theme => ({
 });
 
 
-function handleSubmit(e) {
-    e.preventDefault();
-    console.log(e.target.first_name.value);
-
-    axios.post('/register', {
-        first_name: e.target.first_name.value,
-        last_name: e.target.last_name.value,
-        email: e.target.email.value,
-        password: e.target.password.value
-
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-}
+class Register extends Component {
 
 
-function Register(props) {
-    const {classes} = props;
+    showMessage = (message, variant) => {
+        this.props.enqueueSnackbar(message, {
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+            variant: variant
+        })
+    };
 
-    return (
-        <main className={classes.main}>
-            <CssBaseline/>
-            <Paper className={classes.paper}>
-                <Avatar className={classes.avatar} src={team}/>
+
+    handleSubmit = e => {
+        e.preventDefault();
+        console.log(e.target.first_name.value);
+
+        axios.post('/api/auth/register', {
+            first_name: e.target.first_name.value,
+            last_name: e.target.last_name.value,
+            email: e.target.email.value,
+            password: e.target.password.value
+
+        })
+            .then((response) => {
+                if (response.data) {
+                    this.showMessage("Başarıyla Üye Oldunuz!", 'success');
+                    this.props.history.push('/login');
+                }
+
+            })
+            .catch((error) => {
+                let errStr;
+
+                errStr =  error.response.data.code === 11000 ? 'Bu kullanıcı mevcut': 'Bilinmeyen hata';
 
 
-                <Typography component="h1" variant="h5">
-                    Üye Ol
-                </Typography>
-                <form className={classes.form} onSubmit={handleSubmit}>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="first_name">İsim</InputLabel>
-                        <Input id="first_name" name="first_name" autoComplete="first_name" autoFocus/>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="last_name">Soyisim</InputLabel>
-                        <Input id="last_name" name="last_name" autoComplete="last_name" autoFocus/>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="email">Email Adresi</InputLabel>
-                        <Input id="email" name="email" autoComplete="email" autoFocus/>
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="password">Şifre</InputLabel>
-                        <Input name="password" type="password" id="password" autoComplete="current-password"/>
-                    </FormControl>
+                this.showMessage(errStr, 'error');
+            });
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        KAYDET
-                    </Button>
-                </form>
-            </Paper>
-        </main>
-    );
+    };
+
+
+    render() {
+        const {classes} = this.props;
+
+        return (
+            <main className={classes.main}>
+                <CssBaseline/>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar} src={team}/>
+
+
+                    <Typography component="h1" variant="h5">
+                        Üye Ol
+                    </Typography>
+                    <form className={classes.form} onSubmit={this.handleSubmit}>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="first_name">İsim</InputLabel>
+                            <Input id="first_name" name="first_name" autoComplete="first_name" autoFocus/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="last_name">Soyisim</InputLabel>
+                            <Input id="last_name" name="last_name" autoComplete="last_name" autoFocus/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="email">Email Adresi</InputLabel>
+                            <Input id="email" name="email" autoComplete="email" autoFocus/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="password">Şifre</InputLabel>
+                            <Input name="password" type="password" id="password" autoComplete="current-password"/>
+                        </FormControl>
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            KAYDET
+                        </Button>
+                    </form>
+                </Paper>
+            </main>
+        );
+    }
 }
 
 Register.propTypes = {
     classes: PropTypes.object.isRequired,
+
 };
 
-export default withStyles(styles)(Register);
+export default compose(
+    withStyles(styles),
+    withSnackbar
+)(Register);

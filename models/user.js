@@ -10,10 +10,10 @@ let userSchema = new Schema({
     email: {
         type: String,
         lowercase: true,
-        unique: true,
+        unique: [true, "is already registered"],
         required: [true, "boş kalamaz"],
-        match: [/\S+@\S+\.\S+/, 'geçersiz'],
-        index: true
+        match: [/\S+@\S+\.\S+/, 'geçersiz']
+
     },
     title: String,
     active: Boolean,
