@@ -12,9 +12,7 @@ class Callback extends Component {
     state = {
         isTokenSet: false,
 
-
     };
-
 
     componentDidMount() {
 
@@ -32,14 +30,12 @@ class Callback extends Component {
                 .then(function (response) {
                     return null;
 
-
                 })
                 .catch(function (error) {
                     console.log('error from axios:' + error);
 
                 });
         }
-
 
         if (window.location.hash) {
             //todo convert to explicit grant
@@ -53,14 +49,12 @@ class Callback extends Component {
                 this.getUserInfo();
             });
 
-
         }
 
     }
 
     getUserInfo() {
         // Saves user token to localStorage
-
 
         if (this.state.isTokenSet) {
             this.props.authenticate();
@@ -78,15 +72,12 @@ class Callback extends Component {
             });
         }
 
-
     };
 
     logIn = () => {
 
-
         this.props.getUser();
     };
-
 
     render() {
         return (
@@ -94,7 +85,6 @@ class Callback extends Component {
             <h3 style={{textAlign: 'center'}}>Başarıyla giriş yaptınız, anasayfaya yönlendiriliyorsunuz...</h3>
         )
     }
-
 
 }
 

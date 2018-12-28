@@ -16,14 +16,10 @@ import {AUTH_AUTHENTICATED} from "./actions/types";
 
 moment.locale('tr');
 
-
 const token = getToken();
 if (token) {
-    store.dispatch({ type: AUTH_AUTHENTICATED });
+    store.dispatch({type: AUTH_AUTHENTICATED});
 }
-
-
-
 
 render((
     <Provider store={store}>
