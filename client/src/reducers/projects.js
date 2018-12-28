@@ -7,7 +7,7 @@ const projectReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_ALL_PROJECTS_DONE':
 
-            const arr = state.names.concat(action.payload.data);
+            const arr = state.projects.concat(action.payload.data);
 
             return {
                 ...state,
@@ -15,7 +15,7 @@ const projectReducer = (state = initialState, action) => {
 
             };
         case 'ADD_PROJECT_DONE':
-            console.log('test');
+            console.log('payload ',action.payload);
             return {
                 ...state,
                 projects: [...state.projects, action.payload.data]

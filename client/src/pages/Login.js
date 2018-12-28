@@ -94,7 +94,7 @@ class Login extends Component {
         console.log(this.props);
         this.props.doLogin(user, token);
         this.props.history.push('/');
-    }
+    };
 
 
     render() {

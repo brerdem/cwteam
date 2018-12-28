@@ -6,7 +6,7 @@ const Project = require('./../../../models/project');
 
 
 router.post('/add', (req, res) => {
-    console.log(req.body);
+    console.log('body is', req.body);
 
     let project = new Project({
         title: req.body.title,
@@ -16,9 +16,9 @@ router.post('/add', (req, res) => {
 
 
     });
-    project.save((err) => {
+    project.save((err, project) => {
         if (!err) {
-            res.status(200).send('OK');
+            res.status(200).json(project);
         } else {
             res.status(400).send(err);
         }
