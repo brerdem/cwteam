@@ -99,7 +99,7 @@ class Projects extends Component {
             <div>
 
 
-                <ProjectDialog open={this.state.open} onClose={this.closeDialog} addProject={addProject} />
+                <ProjectDialog open={this.state.open} onClose={this.closeDialog} addProject={this.props.addProject} />
 
                 <main className={classes.layout}>
                     {/* Hero unit */}
