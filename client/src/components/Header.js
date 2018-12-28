@@ -160,7 +160,7 @@ class Header extends Component {
                                         onClick={this.handleMenu}
                                         color="inherit"
                                     >
-                                        <Avatar className={classes.avatar}>BE</Avatar>
+                                        <Avatar className={classes.avatar}>{auth.user.first_name.charAt(0).toLocaleUpperCase()+auth.user.last_name.charAt(0).toLocaleUpperCase()}</Avatar>
                                     </IconButton>
 
                                     <Menu
