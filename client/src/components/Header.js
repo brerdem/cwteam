@@ -79,10 +79,21 @@ const styles = theme => ({
 
 class Header extends Component {
 
+
     state = {
         anchorEl: null,
     };
-
+    handleLogout = () => {
+        this.setState({anchorEl: null});
+        this.props.push('/login');
+        this.props.doLogout();
+    };
+    handleMenu = event => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+    handleClose = () => {
+        this.setState({anchorEl: null});
+    };
 
     render() {
         const {classes, auth} = this.props;
@@ -126,97 +137,85 @@ class Header extends Component {
 
                             <Grid container justify="flex-end" alignItems="center">
 
-                            <Button color="inherit" variant="outlined" href="https://www.basecamp.com" target="_blank"
-                                    className={classes.leftIcon}>
-                                <Icon className={classes.leftIcon}>launch</Icon>
-                                BASECAMP'E GİT
-                            </Button>
+                                <Button color="inherit" variant="outlined" href="https://www.basecamp.com"
+                                        target="_blank"
+                                        className={classes.leftIcon}>
+                                    <Icon className={classes.leftIcon}>launch</Icon>
+                                    BASECAMP'E GİT
+                                </Button>
 
 
-                            {auth.isLoggedIn &&
+                                {auth.isLoggedIn &&
 
-                            <div><IconButton color="inherit">
-                                <Badge className={classes.margin} badgeContent={4} color="secondary">
-                                    <MailIcon/>
-                                </Badge>
-                            </IconButton>
-
-
-                                <IconButton
-                                    aria-owns={open ? 'menu-appbar' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleMenu}
-                                    color="inherit"
-                                >
-                                    <Avatar className={classes.avatar}>BE</Avatar>
+                                <div><IconButton color="inherit">
+                                    <Badge className={classes.margin} badgeContent={4} color="secondary">
+                                        <MailIcon/>
+                                    </Badge>
                                 </IconButton>
 
-                                <Menu
-                                    id="menu-appbar"
-                                    anchorEl={anchorEl}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    open={open}
-                                    onClose={this.handleClose}
-                                >
-                                    <MenuItem onClick={this.handleClose}>
 
-                                        <ListItemIcon className={classes.icon}>
-                                            <Icon>account_circle</Icon>
-                                        </ListItemIcon>
-                                        <ListItemText classes={{primary: classes.primary}} inset primary="Profilim"/>
-                                    </MenuItem>
-                                    <MenuItem onClick={this.handleClose}>
-                                        <ListItemIcon className={classes.icon}>
-                                            <Icon>settings</Icon>
-                                        </ListItemIcon>
-                                        <ListItemText classes={{primary: classes.primary}} inset primary="Ayarlar"/>
+                                    <IconButton
+                                        aria-owns={open ? 'menu-appbar' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={this.handleMenu}
+                                        color="inherit"
+                                    >
+                                        <Avatar className={classes.avatar}>{auth.user.first_name.charAt(0).toLocaleUpperCase()+auth.user.last_name.charAt(0).toLocaleUpperCase()}</Avatar>
+                                    </IconButton>
 
-                                    </MenuItem>
+                                    <Menu
+                                        id="menu-appbar"
+                                        anchorEl={anchorEl}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={open}
+                                        onClose={this.handleClose}
+                                    >
+                                        <MenuItem onClick={this.handleClose}>
 
-                                    <MenuItem onClick={this.handleLogout}>
-                                        <ListItemIcon className={classes.icon}>
-                                            <Icon>exit_to_app</Icon>
-                                        </ListItemIcon>
+                                            <ListItemIcon className={classes.icon}>
+                                                <Icon>account_circle</Icon>
+                                            </ListItemIcon>
+                                            <ListItemText classes={{primary: classes.primary}} inset
+                                                          primary="Profilim"/>
+                                        </MenuItem>
+                                        <MenuItem onClick={this.handleClose}>
+                                            <ListItemIcon className={classes.icon}>
+                                                <Icon>settings</Icon>
+                                            </ListItemIcon>
+                                            <ListItemText classes={{primary: classes.primary}} inset primary="Ayarlar"/>
+
+                                        </MenuItem>
+
+                                        <MenuItem onClick={this.handleLogout}>
+                                            <ListItemIcon className={classes.icon}>
+                                                <Icon>exit_to_app</Icon>
+                                            </ListItemIcon>
 
 
-                                        <ListItemText classes={{primary: classes.primary}} inset primary="Çıkış"/>
+                                            <ListItemText classes={{primary: classes.primary}} inset primary="Çıkış"/>
 
-                                    </MenuItem>
+                                        </MenuItem>
 
-                                </Menu>
-                            </div>
+                                    </Menu>
+                                </div>
 
-                            }
+                                }
 
 
+                            </Grid>
                         </Grid>
-                    </Grid>
                     </Grid>
                 </Toolbar>
             </AppBar>
         );
     }
-
-    handleLogout = () => {
-        this.setState({anchorEl: null});
-        this.props.push('/login');
-        this.props.doLogout();
-    };
-
-    handleMenu = event => {
-        this.setState({anchorEl: event.currentTarget});
-    };
-
-    handleClose = () => {
-        this.setState({anchorEl: null});
-    };
 
 }
 
@@ -225,7 +224,7 @@ export default compose(
         {name: 'Header'}
     ),
     connect(null, {push})
-) (Header)
+)(Header)
 
 
 

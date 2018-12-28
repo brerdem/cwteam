@@ -12,14 +12,19 @@ import {store} from "./helpers/store";
 import {ConnectedRouter} from "connected-react-router";
 import history from './helpers/history';
 import {getToken} from "./actions/auth";
-import {AUTH_AUTHENTICATED} from "./actions/types";
+import {AUTH_LOGIN} from "./actions/types";
+import jwt from 'jsonwebtoken';
+
 
 moment.locale('tr');
 
+//todo move check token to actions
 const token = getToken();
 if (token) {
-    store.dispatch({type: AUTH_AUTHENTICATED});
+    const decoded = jwt.decode(token, {complete: true});
+    store.dispatch({type: AUTH_LOGIN, user: jwt.decode(token, decoded.payload)});
 }
+
 
 render((
     <Provider store={store}>

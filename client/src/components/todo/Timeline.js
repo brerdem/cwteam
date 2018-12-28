@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Gantt from "./timeline/Gantt";
 import initialData from './InitialData';
 import Grid from "@material-ui/core/es/Grid/Grid";
