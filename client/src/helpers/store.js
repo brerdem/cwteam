@@ -12,10 +12,11 @@ import {getToken} from "../actions/auth";
 const loggerMiddleware = createLogger();
 
 //todo remove localhost on production
+//todo when user first logged in, get token from state or elsewhere not from local storage
 const client = axios.create({ //all axios can be used, shown in axios documentation
     baseURL:'http://localhost:3000/api',
     responseType: 'json',
-    headers: { 'Authorization': 'bearer '+ getToken() }
+
 });
 
 

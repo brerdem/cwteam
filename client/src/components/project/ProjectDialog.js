@@ -3,10 +3,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import {DateTimePicker} from "material-ui-pickers";
+import {DatePicker} from "material-ui-pickers";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import UserSuggestionInput from '../user/UserSuggestionInput';
 
 const style = {
 
@@ -37,7 +39,6 @@ const style = {
 
     },
 
-
     titleTextInput: {
         style: {
             fontSize: 24,
@@ -46,17 +47,20 @@ const style = {
     }
 };
 
-
 class ProjectDialog extends Component {
 
     state = {
         selectedDate: new Date(),
+        isSetStartEndDate: false,
+        users: []
     };
 
     handleDateChange = date => {
-        this.setState({ selectedDate: date });
+        this.setState({selectedDate: date});
     };
-
+    handleChange = () => {
+        this.setState({isSetStartEndDate: !this.state.isSetStartEndDate});
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -65,14 +69,16 @@ class ProjectDialog extends Component {
             description: e.target.description.value
         })
 
-
     };
 
+    componentDidMount() {
+        this.props.getAllUsers().then((response) => this.setState({users: response.payload.data}));
+    }
 
     render() {
 
         const {open, onClose} = this.props;
-        const { selectedDate } = this.state;
+        const {selectedDate, users} = this.state;
         return (
             <Dialog
                 onClose={onClose}
@@ -106,9 +112,22 @@ class ProjectDialog extends Component {
                                 placeholder="Proje Açıklaması"
                                 margin="dense"
                                 fullWidth
+
                             />
                         </Grid>
 
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={this.state.isSetStartEndDate}
+                                    onChange={this.handleChange}
+                                    value="checkedB"
+                                    color="primary"
+                                />
+                            }
+                            label="Başlangıç ve bitiş tarihleri belli"
+                        />
+                        {this.state.isSetStartEndDate &&
 
                         <Grid container direction="row" alignItems="center" spacing={24}>
                             <Grid item>
@@ -116,42 +135,20 @@ class ProjectDialog extends Component {
                             </Grid>
 
                             <Grid item>
-                                <DateTimePicker value={selectedDate} onChange={this.handleDateChange}/>
+                                <DatePicker value={selectedDate} onChange={this.handleDateChange}/>
                             </Grid>
-
-                        </Grid>
-
-                        <Grid container direction="row" alignItems="center" spacing={24}>
                             <Grid item>
                                 <b>Bitiş:</b>
                             </Grid>
 
                             <Grid item>
-                                <DateTimePicker value={selectedDate} onChange={this.handleDateChange}/>
+                                <DatePicker value={selectedDate} onChange={this.handleDateChange}/>
                             </Grid>
 
                         </Grid>
+                        }
 
-                        <Grid container direction="row" alignItems="center" spacing={16}>
-                            <Grid item>
-                                <b>Efor (saat):</b>
-                            </Grid>
-
-                            <Grid item>
-                                <TextField
-                                    id="Number"
-                                    type="number"
-                                    defaultValue="1"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    inputProps={{
-                                        step: 1,
-                                    }}
-                                />
-                            </Grid>
-
-                        </Grid>
+                       <UserSuggestionInput suggestions={users} />
 
 
                     </DialogContent>
@@ -168,6 +165,5 @@ class ProjectDialog extends Component {
         );
     }
 }
-
 
 export default ProjectDialog;

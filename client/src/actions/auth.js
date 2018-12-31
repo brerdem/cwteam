@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export const getToken = () => {
     // Retrieves the user token from localStorage
-    return localStorage.getItem('id_token');
+    return localStorage.getItem('id_token') || {}
 };
 
 

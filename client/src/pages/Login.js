@@ -84,7 +84,7 @@ class Login extends Component {
             .catch((error) => {
                 let errStr;
                 console.log(error);
-                // errStr = error.response.data.code === 11000 ? 'Bu kullanıcı mevcut' : 'Bilinmeyen hata';
+                errStr = error.response.data.code === 11000 ? 'Bu kullanıcı mevcut' : 'Bilinmeyen hata';
                 this.showMessage(errStr, 'error');
             });
 

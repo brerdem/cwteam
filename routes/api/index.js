@@ -12,7 +12,7 @@ const axios = require('axios');
 router.use('/test', test);
 router.use('/auth', auth);
 router.use('/user', user);
-router.use('/project', passport.authenticate('jwt', {session: false}), project);
+router.use('/project', passport.authenticate('jwt', {session: false}, function(){}), project);
 
 
 

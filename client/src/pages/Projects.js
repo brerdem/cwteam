@@ -17,7 +17,8 @@ import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import ProjectDialog from "../components/project/ProjectDialog";
 import {store} from "../helpers/store";
-import {addProject} from "../actions/projects";
+import {addProject} from "../actions/project";
+import {getAllUsers} from "../actions/user";
 
 class Projects extends Component {
     state = {
@@ -53,7 +54,7 @@ class Projects extends Component {
 
     render() {
 
-        const {classes} = this.props;
+        const {classes, addProject, getAllUsers} = this.props;
         const {projects} = this.state;
 
         let content;
@@ -99,7 +100,7 @@ class Projects extends Component {
             <div>
 
 
-                <ProjectDialog open={this.state.open} onClose={this.closeDialog} addProject={this.props.addProject} />
+                <ProjectDialog open={this.state.open} onClose={this.closeDialog} addProject={addProject} getAllUsers={getAllUsers} />
 
                 <main className={classes.layout}>
                     {/* Hero unit */}
@@ -137,7 +138,7 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {push, addProject}),
+    connect(mapStateToProps, {push, addProject, getAllUsers}),
     withStyles(theme),
     withSnackbar
 )(Projects);

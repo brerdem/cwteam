@@ -1,6 +1,4 @@
-const initialState = {
-    projects: [],
-};
+const initialState = [];
 
 
 const projectReducer = (state = initialState, action) => {
@@ -16,11 +14,11 @@ const projectReducer = (state = initialState, action) => {
             };
         case 'ADD_PROJECT_DONE':
             console.log('payload ',action.payload);
-            return {
+            return [
                 ...state,
-                projects: [...state.projects, action.payload.data]
+               action.payload.data
 
-            };
+            ];
         default:
             return state;
     }
