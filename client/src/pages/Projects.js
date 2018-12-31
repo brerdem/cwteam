@@ -43,12 +43,9 @@ class Projects extends Component {
 
     componentDidMount() {
 
-
-
         this.props.enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
             variant: 'warning'
         });
-
 
     }
 

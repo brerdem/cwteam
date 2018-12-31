@@ -6,6 +6,7 @@ let userSchema = new Schema({
     last_name: {type: String, required: [true, "boş kalamaz"]},
     createdAt: Date,
     avatar_url: String,
+    avatar_bg: String,
     password: String,
     email: {
         type: String,

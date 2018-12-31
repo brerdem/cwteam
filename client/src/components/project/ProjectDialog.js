@@ -52,7 +52,12 @@ class ProjectDialog extends Component {
     state = {
         selectedDate: new Date(),
         isSetStartEndDate: false,
-        users: []
+        users: [],
+        selectedUsers: []
+    };
+
+    handleTeamUsers = data => {
+        this.setState({selectedUsers: data});
     };
 
     handleDateChange = date => {
@@ -64,6 +69,7 @@ class ProjectDialog extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log(this.state.selectedUsers);
         this.props.addProject({
             title: e.target.title.value,
             description: e.target.description.value
@@ -148,7 +154,7 @@ class ProjectDialog extends Component {
                         </Grid>
                         }
 
-                       <UserSuggestionInput suggestions={users} />
+                       <UserSuggestionInput suggestions={users} onUserAdd={this.handleTeamUsers} />
 
 
                     </DialogContent>
