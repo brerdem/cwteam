@@ -141,14 +141,14 @@ class ProjectDialog extends Component {
                             </Grid>
 
                             <Grid item>
-                                <DatePicker value={selectedDate} onChange={this.handleDateChange}/>
+                                <DatePicker value={selectedDate} format="DD/MM/YYYY" onChange={this.handleDateChange}/>
                             </Grid>
                             <Grid item>
                                 <b>Bitiş:</b>
                             </Grid>
 
                             <Grid item>
-                                <DatePicker value={selectedDate} onChange={this.handleDateChange}/>
+                                <DatePicker value={selectedDate} format="DD/MM/YYYY" onChange={this.handleDateChange}/>
                             </Grid>
 
                         </Grid>

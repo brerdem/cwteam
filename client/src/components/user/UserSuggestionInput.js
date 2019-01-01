@@ -181,7 +181,7 @@ class UserSuggestionInput extends React.Component {
     }
 
     render() {
-        const {classes, ...rest} = this.props;
+        const {classes, onUserAdd, ...rest} = this.props;
 
         return (
             <Autosuggest
@@ -211,6 +211,7 @@ class UserSuggestionInput extends React.Component {
                     value: this.state.textFieldInput,
                     onAdd: (chip) => this.handleAddChip(chip),
                     onDelete: (chip, index) => this.handleDeleteChip(chip, index),
+
                     ...rest
                 }}
             />
@@ -219,7 +220,7 @@ class UserSuggestionInput extends React.Component {
 }
 
 UserSuggestionInput.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
 }
 
 export default UserSuggestionInput = withStyles(styles)(UserSuggestionInput)
