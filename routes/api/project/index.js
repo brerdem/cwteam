@@ -11,6 +11,7 @@ router.post('/add', (req, res) => {
         description: req.body.description,
         createdAt: new Date(),
         active: true,
+        team: req.body.team
 
 
     });

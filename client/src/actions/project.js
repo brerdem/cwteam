@@ -2,7 +2,8 @@ import {getToken} from "./auth";
 
 //action creators
 export const addProject = (project) => {
-    console.log(project);
+    console.log('project', project);
+
 
     return {
         types: ['ADD_PROJECT_LOAD', 'ADD_PROJECT_DONE', 'ADD_PROJECT_ERROR'],
