@@ -19,9 +19,29 @@ export const addProject = (project) => {
     }
 };
 
-export const doGetAllProjects = ()  => {
+export const deleteProject = (id) => {
+    console.log('project id', id);
+
+
     return {
-        types: ['SET_ALL_PROJECTS_LOAD', 'SET_ALL_PROJECTS_DONE', 'SET_ALL_PROJECTS_ERROR'],
+        types: ['DELETE_PROJECT_LOAD', 'DELETE_PROJECT_DONE', 'DELETE_PROJECT_ERROR'],
+        payload: {
+            request: {
+                method: 'post',
+                url: '/project/delete',
+                headers: { 'Authorization': 'bearer '+ getToken() },
+                data: {id: id}
+
+            }
+        }
+    }
+};
+
+
+
+export const getAllProjects = ()  => {
+    return {
+        types: ['GET_ALL_PROJECTS_LOAD', 'GET_ALL_PROJECTS_DONE', 'GET_ALL_PROJECTS_ERROR'],
         payload: {
             request: {
                 url: '/projects'
@@ -30,6 +50,8 @@ export const doGetAllProjects = ()  => {
     }
 
 };
+
+
 
 
 

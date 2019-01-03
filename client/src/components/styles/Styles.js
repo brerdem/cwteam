@@ -36,12 +36,7 @@ export default theme => ({
         justifyContent: 'start'
     },
 
-    img_bc: {
-        width: 150,
-        margin: '0 auto',
-        padding: `${theme.spacing.unit * 4}px 0`,
 
-    },
     marginTopBottom: {
         margin: `${theme.spacing.unit * 4}px 0`,
     },

@@ -7,13 +7,17 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
-import axios from "axios/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Kanban from "../components/todo/Kanban";
-import Timeline from "../components/todo/Timeline";
+import Kanban from "../components/task/Kanban";
+import Timeline from "../components/task/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
+import {connect} from "react-redux";
+import {push} from "connected-react-router";
+import {getAllProjects} from "../actions/project";
+import {compose} from 'recompose';
+
 
 
 const extraTheme = createMuiTheme({
@@ -27,29 +31,23 @@ const extraTheme = createMuiTheme({
 });
 
 
-class Todos extends Component {
+class Tasks extends Component {
 
     state = {
         loading: true,
-        value: 0
+        value: 0,
+
     };
 
     componentDidMount() {
-        axios.post('/api/projects', {
 
-            access_token: localStorage.getItem('id_token')
 
-        }).then((response) => {
-            this.setState({
-                projects: response.data,
-                loading: false,
 
-            })
-
-        });
         this.setState({
             value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
-        })
+        });
+
+        this.props.getAllProjects().then((response) => this.setState({projects: response.payload.data, loading: false}))
 
 
     };
@@ -61,7 +59,7 @@ class Todos extends Component {
 
 
     render() {
-        const {classes} = this.props;
+        const {classes, projects} = this.props;
 
         let content;
         if (this.state.loading) {
@@ -80,17 +78,17 @@ class Todos extends Component {
                                     indicatorColor="secondary"
                                     textColor="inherit"
                                 >
-                                    <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/todos/kanban"/>
-                                    <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/todos/timeline"/>
+                                    <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/tasks/kanban"/>
+                                    <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/tasks/timeline"/>
 
                                 </Tabs>
 
                             </AppBar>
                         </MuiThemeProvider>
                         <Switch>
-                            <Route path="/todos/kanban" render={() => <Kanban projects={this.state.projects}/>}/>
-                            <Route path="/todos/timeline"
-                                   render={() => <Timeline projects={this.state.projects}/>}/>
+                            <Route path="/tasks/kanban" render={() => <Kanban projects={projects}/>}/>
+                            <Route path="/tasks/timeline"
+                                   render={() => <Timeline projects={projects}/>}/>
                         </Switch>
 
                     </div>
@@ -122,8 +120,17 @@ class Todos extends Component {
 }
 
 
-Todos.propTypes = {
+Tasks.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(theme)(Todos);
+const mapStateToProps = (state) => {
+    return {
+        projects: state.projects
+    };
+};
+
+export default compose(
+    connect(mapStateToProps, {push, getAllProjects }),
+    withStyles(theme)
+)(Tasks);

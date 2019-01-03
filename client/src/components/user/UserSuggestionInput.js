@@ -78,7 +78,6 @@ function renderSuggestionsContainer(options) {
 }
 
 function getSuggestionValue(suggestion) {
-    for (let i = 0 ; i < 10; i++) console.log(randomcol({luminosity:'dark'}) );
     return suggestion;
 }
 
@@ -106,7 +105,8 @@ const styles = theme => ({
         marginTop: 10,
         flexGrow: 1,
         position: 'relative',
-        height: 200
+        minHeight: 200
+
     },
     suggestionsContainerOpen: {
         position: 'absolute',

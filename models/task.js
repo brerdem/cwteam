@@ -1,13 +1,24 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-let todoSchema = new Schema({
+let taskSchema = new Schema({
     title: {type: String, required: true},
     note: String,
     createdAt: Date,
     startDate: Date,
     endDate: Date,
     active: Boolean,
+    status: {
+        type: String,
+        enum: ['backlog', 'progress', 'done'],
+        default: 'backlog'
+    },
+    department: {
+        type: String,
+        enum: ['Yazılım', 'Sosyal Medya', 'Tasarım', 'Müşteri'],
+        default: 'Yazılım'
+    },
+
     assignees: [{
         user: {
             type: Schema.Types.ObjectId,
@@ -23,4 +34,4 @@ let todoSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Todo', todoSchema);
+module.exports = mongoose.model('Task', taskSchema);

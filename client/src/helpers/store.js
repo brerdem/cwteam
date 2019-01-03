@@ -6,7 +6,6 @@ import history from '../helpers/history'
 import {routerMiddleware} from "connected-react-router";
 import axios from 'axios';
 import axiosMiddleware from 'redux-axios-middleware';
-import {getToken} from "../actions/auth";
 
 
 const loggerMiddleware = createLogger();

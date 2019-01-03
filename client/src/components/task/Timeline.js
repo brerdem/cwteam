@@ -13,7 +13,7 @@ function makeDataForGantt(projects) {
     projects.forEach((project, index) => {
 
         data.data.push(
-            {id: `${index}_0`, text: project.name, open: true, color:'#2b8496', holder:'', progress: 1.9/4, editable: false, task_type: 'project'},
+            {id: `${index}_0`, text: project.title, open: true, color:'#2b8496', holder:'', progress: 1.9/4, editable: false, task_type: 'project'},
             {
                 id: `${index}_1`,
                 text: initialData.tasks["task-1"].content,

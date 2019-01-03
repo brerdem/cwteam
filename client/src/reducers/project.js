@@ -3,22 +3,21 @@ const initialState = [];
 
 const projectReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_ALL_PROJECTS_DONE':
+        case 'GET_ALL_PROJECTS_DONE':
 
-            const arr = state.projects.concat(action.payload.data);
-
-            return {
-                ...state,
-                projects: arr,
-
-            };
+            return action.payload.data;
         case 'ADD_PROJECT_DONE':
-            console.log('payload ',action.payload);
             return [
                 ...state,
-               action.payload.data
+                action.payload.data
 
             ];
+
+
+        case 'DELETE_PROJECT_DONE':
+            console.log('payload delete', action.payload);
+            return state.filter(element => element._id !== action.payload.data);
+
         default:
             return state;
     }

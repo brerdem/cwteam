@@ -40,21 +40,5 @@ router.post('/delete', (req, res) => {
 
 });
 
-router.get('/:id/team', (req, res) => {
-    console.log('team id is', req.params.id);
-
-
-    Project.findOne({_id: req.params.id}, 'team').populate('team').exec((err, team) => {
-        if (!err) {
-            res.status(200).json(team);
-        } else {
-            res.status(400).send(err);
-        }
-    })
-
-
-});
-
-
 
 module.exports = router;

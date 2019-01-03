@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router-dom';
 import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Dashboard from "./pages/Home";
-import Todos from "./pages/Todos";
+import Tasks from "./pages/Tasks";
 import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Header from "./components/Header";
@@ -26,7 +26,7 @@ const App = ({auth, doLogout, doLogin, ui}) => (
                 <Route exact path='/register' component={Register}/>
                 <PrivateRoute exact path='/projects' component={Projects} auth={auth}/>
                 <PrivateRoute exact path='/' component={Dashboard} auth={auth}/>
-                <PrivateRoute path='/todos' component={Todos} auth={auth}/>
+                <PrivateRoute path='/tasks' component={Tasks} auth={auth}/>
                 <PrivateRoute path='/users' component={Users} auth={auth}/>
 
             </Switch>

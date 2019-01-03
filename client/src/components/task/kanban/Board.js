@@ -83,6 +83,7 @@ class Board extends Component {
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
     render() {
+        const {project_id} = this.props;
         return (
 
             <Grid container spacing={8}>
@@ -91,12 +92,13 @@ class Board extends Component {
 
                         const column = this.state.columns[columnId];
                         const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-                        return <Column key={column.id} column={column} tasks={tasks}/>;
+                        return <Column key={column.id} column={column} tasks={tasks} project_id={project_id} />;
                     })}
                 </DragDropContext>
             </Grid>
         );
     }
 }
+
 
 export default Board;

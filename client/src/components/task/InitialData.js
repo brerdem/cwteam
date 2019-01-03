@@ -6,26 +6,26 @@ const initialData = {
         'task-4': {id: 'task-4', content: 'Müşteri onayının alınması ve ilgili birimlere brief verilmesi', categoryColor: '#2196f3'},
     },
     columns: {
-        'column-1': {
-            id: 'column-1',
+        'backlog': {
+            id: 'backlog',
             title: 'Backlog',
             taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
             columnTitleColor: 'columnTitleRed'
         },
-        'column-2': {
-            id: 'column-2',
+        'progress': {
+            id: 'progress',
             title: 'In Progress',
             taskIds: [],
             columnTitleColor: 'columnTitleOrange'
         },
-        'column-3': {
-            id: 'column-3',
+        'done': {
+            id: 'done',
             title: 'Done',
             taskIds: [],
             columnTitleColor: 'columnTitleGreen'
         },
     },
-    columnOrder: ['column-1', 'column-2', 'column-3'],
+    columnOrder: ['backlog', 'progress', 'done'],
 };
 
 export default initialData;

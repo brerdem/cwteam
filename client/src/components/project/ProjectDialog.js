@@ -74,7 +74,7 @@ class ProjectDialog extends Component {
             title: e.target.title.value,
             description: e.target.description.value,
             team: this.state.selectedUsers.map((member) => member._id)
-        }).then(response => this.props.onClose())
+        }).then(() => this.props.onClose())
 
     };
 
