@@ -16,6 +16,7 @@ import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import Brightness from "@material-ui/icons/Brightness1";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
+import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 
 
 const styles = theme => ({
@@ -25,7 +26,7 @@ const styles = theme => ({
     },
 
     formControl: {
-        margin: '3px 0',
+        margin: '10px 0',
         minWidth: 120,
     },
     menuItem: {
@@ -158,17 +159,20 @@ class AddTask extends Component {
 
                         </Grid>
                         <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor={'department-select'}>Departman</InputLabel>
                             <Select
                                 value={department}
                                 onChange={this.handleDepartmentChange}
                                 name="department"
-                                displayEmpty
+
                                 className={classes.selectEmpty}
                                 renderValue={value => value}
+                                inputProps={{
+                                    name: 'department',
+                                    id: 'department-select',
+                                }}
                             >
-                                <MenuItem value="" disabled>
-Departman
-                                </MenuItem>
+
                                 {
                                     departments.map((department, key) =>
                                     <MenuItem key={key} value={department.name} className={classes.menuItem}>
