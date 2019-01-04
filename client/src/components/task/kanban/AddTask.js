@@ -13,17 +13,30 @@ import UserSuggestionInput from "../../user/UserSuggestionInput";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import Select from "@material-ui/core/es/Select/Select";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
+import Brightness from "@material-ui/icons/Brightness1";
+import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 
 
 const styles = theme => ({
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
+        width: 200
     },
 
     formControl: {
         margin: '3px 0',
         minWidth: 120,
     },
+    menuItem: {
+        padding: 10,
+
+    },
+ listItemText: {
+        padding: 0,
+
+    },
+
 
 
 });
@@ -35,7 +48,15 @@ const style = {
         }
 
     }
-}
+};
+
+const departments = [
+    {name: 'Yazılım', color:'#9c27b0'},
+    {name: 'Tasarım', color:'#006db0'},
+    {name: 'Sosyal Medya', color:'#00a702'},
+    {name: 'Müşteri', color:'#db6700'},
+
+];
 
 
 class AddTask extends Component {
@@ -53,6 +74,7 @@ class AddTask extends Component {
     };
 
     handleDepartmentChange = (e) => {
+        console.log(e.target.value);
         this.setState({department: e.target.value});
 
     };
@@ -81,8 +103,8 @@ class AddTask extends Component {
 
     render() {
 
-        const {users, selectedDate} = this.state;
-        const {open, onClose, classes} = this.props;
+        const {selectedDate, department} = this.state;
+        const {open, onClose, classes, team} = this.props;
 
         return (
             <div>
@@ -137,24 +159,33 @@ class AddTask extends Component {
                         </Grid>
                         <FormControl className={classes.formControl}>
                             <Select
-                                value={this.state.department}
+                                value={department}
                                 onChange={this.handleDepartmentChange}
                                 name="department"
                                 displayEmpty
                                 className={classes.selectEmpty}
+                                renderValue={value => value}
                             >
                                 <MenuItem value="" disabled>
-                                    Departman
+Departman
                                 </MenuItem>
-                                <MenuItem value={'Yazılım'}>Yazılım</MenuItem>
-                                <MenuItem value={'Tasarım'}>Tasarım</MenuItem>
-                                <MenuItem value={'Sosyal Medya'}>Sosyal Medya</MenuItem>
-                                <MenuItem value={'Müşteri'}>Müşteri</MenuItem>
+                                {
+                                    departments.map((department, key) =>
+                                    <MenuItem key={key} value={department.name} className={classes.menuItem}>
+                                        <ListItemIcon><Brightness style={{color: department.color}}/></ListItemIcon>
+                                        <ListItemText inset primary={department.name} className={classes.listItemText}/>
+                                        </MenuItem>
+                                    )
+
+                                }
+
+
+
                             </Select>
 
                         </FormControl>
 
-                        <UserSuggestionInput suggestions={this.props.team} onUserAdd={this.handleTeamUsers}/>
+                        <UserSuggestionInput suggestions={team} onUserAdd={this.handleTeamUsers} effort />
 
 
                     </DialogContent>

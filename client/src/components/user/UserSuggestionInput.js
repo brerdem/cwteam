@@ -9,7 +9,10 @@ import {withStyles} from '@material-ui/core/styles'
 import ChipInput from 'material-ui-chip-input'
 import Chip from "@material-ui/core/es/Chip/Chip";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import randomcol from 'randomcolor';
+import TextField from "@material-ui/core/es/TextField/TextField";
+import Grid from "@material-ui/core/es/Grid/Grid";
+
+let thisClass;
 
 
 function renderInput(inputProps) {
@@ -30,12 +33,35 @@ function renderInput(inputProps) {
                 key={key}
                 className={classes.chipWithAvatar}
                 avatar={<Avatar style={{backgroundColor:text.avatar_bg, color:'white'}}>{(text.first_name+' '+text.last_name).replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join('')}</Avatar>}
-                label={value.first_name+' '+value.last_name}
+                label={
+
+                    <Grid container direction={"row"} alignItems={"center"}>
+                    <div>{value.first_name+' '+value.last_name}</div>
+                        {thisClass.props.effort &&
+                            <TextField
+                                id="standard-number"
+                                value={thisClass.state.effort}
+                                onChange={thisClass.handleChipEffortChange}
+                                type="number"
+                                style={{width: 35, marginTop: 1, marginLeft: 5, height:25}}
+                                  InputProps={{
+                                      disableUnderline: true,
+                                        style: {
+                                          fontSize: 13,
+                                            fontWeight: 600
+                                        }
+                                  }}
+
+                            />
+                        }
+                    </Grid>
+                }
                 onDelete={onDelete}
 
             />}
             {...other}
         />
+
 
     )
 }
@@ -141,7 +167,9 @@ class UserSuggestionInput extends React.Component {
         // value: '',
         suggestions: [],
         value: [],
-        textFieldInput: ''
+        textFieldInput: '',
+        age: 0,
+        effort: 3
     };
 
     handleSuggestionsFetchRequested = ({value}) => {
@@ -179,6 +207,19 @@ class UserSuggestionInput extends React.Component {
         temp.splice(index, 1);
         this.setState({value: temp})
     }
+
+    handleChipEffortChange = (e) => {
+        //console.log(e.currentTarget.value);
+        this.setState({effort: e.currentTarget.value})
+
+    };
+
+
+    componentDidMount() {
+        thisClass = this;
+        this.handleChipEffortChange = this.handleChipEffortChange.bind(this);
+    }
+
 
     render() {
         const {classes, onUserAdd, ...rest} = this.props;
