@@ -10,7 +10,6 @@ import {withStyles} from '@material-ui/core/styles';
 import theme from '../../styles/Styles'
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import classNames from 'classnames';
-import Board from "./Board";
 import initialData from '../InitialData';
 
 class Project extends Component {
@@ -21,24 +20,17 @@ class Project extends Component {
         columns: initialData.columns
     };
 
-
     handleChange = panel => (event, expanded) => {
         this.setState({
             expanded: expanded ? panel : false,
         });
     };
 
-    handleBoardChange = columns => {
-        this.setState({
-            columns: columns
-        })
-    };
 
 
     render() {
         const {expanded} = this.state;
-        const {classes, project, index} = this.props;
-
+        const {classes, project, index, children} = this.props;
 
         return (
             <ExpansionPanel expanded={expanded === `panel${index}`}
@@ -55,15 +47,15 @@ class Project extends Component {
                             <Grid container spacing={8} direction="row" justify="flex-end">
                                 <Grid item>
                                     <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{this.state.columns['backlog'].taskIds.length}</Avatar>
+                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>0</Avatar>
                                 </Grid>
                                 <Grid item>
                                     <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{this.state.columns['progress'].taskIds.length}</Avatar>
+                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>0</Avatar>
                                 </Grid>
                                 <Grid item>
                                     <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{this.state.columns['done'].taskIds.length}</Avatar>
+                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>0</Avatar>
                                 </Grid>
                             </Grid>
 
@@ -72,7 +64,7 @@ class Project extends Component {
 
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Board data={this.state.data} onChange={this.handleBoardChange} project_id={project._id} />
+                    {children}
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         )
@@ -82,10 +74,6 @@ class Project extends Component {
 Project.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
-
-
-
 
 export default withStyles(theme)(Project);
 

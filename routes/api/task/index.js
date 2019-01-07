@@ -5,9 +5,10 @@ const Task = require('./../../../models/task');
 
 router.post('/add', (req, res) => {
 
-    const {title, note, assignees, department} = req.body;
+    const {title, note, assignees, department, project_id} = req.body;
 
     let task = new Task({
+        project_id,
         title,
         note,
         department,

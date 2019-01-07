@@ -75,7 +75,7 @@ class TaskItem extends Component {
         return (
             <div>
 
-               <Draggable draggableId={this.props.task.id} index={this.props.index}>
+               <Draggable draggableId={this.props.task._id} index={this.props.index}>
 
                     {(provided, snapshot) =>
                         <div
@@ -97,7 +97,7 @@ class TaskItem extends Component {
                                     <Grid item xs={12}>
                                         <Typography gutterBottom variant="subtitle1"
                                                     className={classes.taskText}>
-                                            {this.props.task.content}
+                                            {this.props.task.title}
                                         </Typography>
 
                                     </Grid>

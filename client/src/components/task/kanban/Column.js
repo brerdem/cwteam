@@ -11,8 +11,11 @@ import AddTask from "./AddTask";
 
 class Column extends Component {
 
+
+
     render() {
-        const {column, classes, project_id, onTaskAdd} = this.props;
+        const {column, classes, project_id, onTaskAdd, tasks} = this.props;
+        console.log('column-->',tasks);
 
         return (
 
@@ -35,8 +38,8 @@ class Column extends Component {
                                  {...provided.droppableProps}
                                  className={classNames(classes.columnInner, snapshot.isDraggingOver ? classes.columnItemDraggingOver : '')}
                             >
-                                {this.props.tasks.map((task, index) =>
-                                    <Task key={task.id} task={task} index={index}/>
+                                {tasks.map((task, index) =>
+                                    <Task key={index} task={task} index={index}/>
                                 )}
 
                                 {provided.placeholder}

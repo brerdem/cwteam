@@ -8,7 +8,6 @@ import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Kanban from "../components/task/Kanban";
 import Timeline from "../components/task/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -16,8 +15,10 @@ import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
 import {getAllProjects} from "../actions/project";
 import {compose} from 'recompose';
-import {getAllTasks} from "../actions/task";
-
+import {addTask, getAllTasks} from "../actions/task";
+import Grid from "@material-ui/core/es/Grid/Grid";
+import Project from "../components/task/kanban/Project";
+import Board from "../components/task/kanban/Board";
 
 const extraTheme = createMuiTheme({
     palette: {
@@ -74,7 +75,7 @@ class Tasks extends Component {
 
 
     render() {
-        const {classes, projects, tasks} = this.props;
+        const {classes, projects, tasks, addTask} = this.props;
 
         let content;
         if (this.state.loading) {
@@ -96,12 +97,24 @@ class Tasks extends Component {
                                     <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/tasks/kanban"/>
                                     <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/tasks/timeline"/>
 
-                                </Tabs>
+                            </Tabs>
 
                             </AppBar>
                         </MuiThemeProvider>
                         <Switch>
-                            <Route path="/tasks/kanban" render={() => <Kanban projects={projects} tasks={tasks}/>}/>
+                            <Route path="/tasks/kanban" render={() =>
+                                <Grid container spacing={24}>
+                                    <Grid item xs={12}>
+                                        {projects.map((project, index) => {
+                                            let project_tasks;
+                                            if (tasks.length > 0) { project_tasks = tasks.filter(task => task.project_id === project._id)}
+                                            return <Project key={index} project={project}><Board tasks={project_tasks} project_id={project._id} onTaskAdd={addTask}/></Project>;
+
+                                        })}
+                                    </Grid>
+                                </Grid>
+
+                            }/>
                             <Route path="/tasks/timeline"
                                    render={() => <Timeline projects={projects} tasks={tasks}/>}/>
                         </Switch>
@@ -148,6 +161,6 @@ const mapStateToProps = (state) => {
 
 
 export default compose(
-    connect(mapStateToProps, {getAllProjects, getAllTasks}),
+    connect(mapStateToProps, {getAllProjects, getAllTasks, addTask }),
     withStyles(theme)
 )(Tasks);

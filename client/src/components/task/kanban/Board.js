@@ -2,19 +2,36 @@ import React, {Component} from 'react';
 import {DragDropContext} from "react-beautiful-dnd";
 import Column from "./Column";
 import Grid from "@material-ui/core/Grid";
-import {connect} from "react-redux";
-import {addTask} from "../../../actions/task";
-
+import _ from 'underscore';
 
 class Board extends Component {
 
-    state = this.props.data;
+    state = {
+        columns: {
+            'backlog': {
+                id: 'backlog',
+                title: 'Backlog',
+                columnTitleColor: 'columnTitleRed'
+            },
+            'progress': {
+                id: 'progress',
+                title: 'In Progress',
+                columnTitleColor: 'columnTitleOrange'
+            },
+            'done': {
+                id: 'done',
+                title: 'Done',
+                columnTitleColor: 'columnTitleGreen'
+            },
+        },
+        columnOrder: ['backlog', 'progress', 'done'],
 
+
+    };
 
     onDragEnd = result => {
 
         const {destination, source, draggableId} = result;
-
 
         if (!destination) {
             return;
@@ -26,7 +43,6 @@ class Board extends Component {
         ) {
             return;
         }
-
 
         const start = this.state.columns[source.droppableId];
         const finish = this.state.columns[destination.droppableId];
@@ -77,24 +93,24 @@ class Board extends Component {
         };
 
         this.setState(newState);
-        this.props.onChange(newState.columns)
 
     };
-
 
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
     render() {
-        const {project_id, addTask} = this.props;
+        const {project_id, onTaskAdd, tasks} = this.props;
+        const {columns, columnOrder} = this.state;
+        console.log('board -->', tasks);
         return (
 
             <Grid container spacing={8}>
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    {this.state.columnOrder.map(columnId => {
-
-                        const column = this.state.columns[columnId];
-                        const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-                        return <Column key={column.id} column={column} tasks={tasks} project_id={project_id} onTaskAdd={addTask} />;
+                    {columnOrder.map(columnId => {
+                        const column = columns[columnId];
+                        const column_tasks = _.where(tasks, {status: columnId}) || [];
+                        return <Column key={column.id} column={column} tasks={column_tasks} project_id={project_id}
+                                       onTaskAdd={onTaskAdd}/>;
                     })}
                 </DragDropContext>
             </Grid>
@@ -102,16 +118,6 @@ class Board extends Component {
     }
 }
 
-
-function mapStateToProps(state) {
-    return {
-        tasks: state.tasks
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    {addTask}
-)(Board);
+export default Board;
 
 

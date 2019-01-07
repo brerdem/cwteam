@@ -20,8 +20,6 @@ export const addProject = (project) => {
 };
 
 export const deleteProject = (id) => {
-    console.log('project id', id);
-
 
     return {
         types: ['DELETE_PROJECT_LOAD', 'DELETE_PROJECT_DONE', 'DELETE_PROJECT_ERROR'],
