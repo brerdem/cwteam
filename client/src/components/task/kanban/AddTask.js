@@ -93,6 +93,7 @@ class AddTask extends Component {
     };
 
     handleTeamUsers = data => {
+        console.log('team', data);
         this.setState({selectedUsers: data});
     };
 
@@ -189,7 +190,7 @@ class AddTask extends Component {
 
                         </FormControl>
 
-                        <UserSuggestionInput suggestions={team} onUserAdd={this.handleTeamUsers} effort />
+                        <UserSuggestionInput list={team} onUserAdd={this.handleTeamUsers} effort="true" />
 
 
                     </DialogContent>

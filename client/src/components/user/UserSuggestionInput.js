@@ -16,8 +16,7 @@ let thisClass;
 
 
 function renderInput(inputProps) {
-    const {classes, autoFocus, value, onChange, onAdd, onDelete, chips, ref, ...other} = inputProps;
-
+    const {classes, autoFocus, value, onChange, onAdd, onDelete, chips, ref, onUserAdd, ...other} = inputProps;
 
     return (
         <ChipInput
@@ -32,27 +31,30 @@ function renderInput(inputProps) {
             chipRenderer={({value, text, chip}, key) => <Chip
                 key={key}
                 className={classes.chipWithAvatar}
-                avatar={<Avatar style={{backgroundColor:text.avatar_bg, color:'white'}}>{(text.first_name+' '+text.last_name).replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join('')}</Avatar>}
+                avatar={<Avatar style={{
+                    backgroundColor: text.avatar_bg,
+                    color: 'white'
+                }}>{(text.first_name + ' ' + text.last_name).replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join('')}</Avatar>}
                 label={
 
                     <Grid container direction={"row"} alignItems={"center"}>
-                    <div>{value.first_name+' '+value.last_name}</div>
+                        <div>{value.first_name + ' ' + value.last_name}</div>
                         {thisClass.props.effort &&
-                            <TextField
-                                id="standard-number"
-                                value={thisClass.state.effort}
-                                onChange={thisClass.handleChipEffortChange}
-                                type="number"
-                                style={{width: 35, marginTop: 1, marginLeft: 5, height:25}}
-                                  InputProps={{
-                                      disableUnderline: true,
-                                        style: {
-                                          fontSize: 13,
-                                            fontWeight: 600
-                                        }
-                                  }}
+                        <TextField
+                            id="standard-number"
+                            value={thisClass.state.effort}
+                            onChange={thisClass.handleChipEffortChange}
+                            type="number"
+                            style={{width: 30, marginTop: 1, marginLeft: 5, height: 25}}
+                            InputProps={{
+                                disableUnderline: true,
+                                style: {
+                                    fontSize: 13,
+                                    fontWeight: 600
+                                }
+                            }}
 
-                            />
+                        />
                         }
                     </Grid>
                 }
@@ -61,7 +63,6 @@ function renderInput(inputProps) {
             />}
             {...other}
         />
-
 
     )
 }
@@ -153,18 +154,16 @@ const styles = theme => ({
         width: '100%'
     },
     chipWithAvatar: {
-        margin:'0 5px 18px 0'
+        margin: '0 5px 18px 0'
     }
-})
+});
 
 class UserSuggestionInput extends React.Component {
 
 
-    suggestions = this.props.suggestions;
-
 
     state = {
-        // value: '',
+        list: [],
         suggestions: [],
         value: [],
         textFieldInput: '',
@@ -174,7 +173,7 @@ class UserSuggestionInput extends React.Component {
 
     handleSuggestionsFetchRequested = ({value}) => {
         this.setState({
-            suggestions: getSuggestions(value, this.props.suggestions)
+            suggestions: getSuggestions(value, this.state.list)
         })
     };
 
@@ -192,37 +191,41 @@ class UserSuggestionInput extends React.Component {
 
     handleAddChip(chip) {
 
+
         this.setState({
+            list: this.state.list.filter(el => el._id !== chip._id),
             value: [...this.state.value, chip],
             textFieldInput: ''
-        }, ()=> {
+        }, () => {
             this.props.onUserAdd(this.state.value);
         });
-
 
     }
 
     handleDeleteChip(chip, index) {
         let temp = this.state.value;
+
         temp.splice(index, 1);
-        this.setState({value: temp})
+
+        this.setState({
+            value: temp,
+            list: this.state.list.push(chip)
+        })
     }
 
     handleChipEffortChange = (e) => {
-        //console.log(e.currentTarget.value);
         this.setState({effort: e.currentTarget.value})
 
     };
 
-
     componentDidMount() {
         thisClass = this;
+        this.setState({list: this.props.list})
         this.handleChipEffortChange = this.handleChipEffortChange.bind(this);
     }
 
-
     render() {
-        const {classes, onUserAdd, ...rest} = this.props;
+        const {classes, ...rest} = this.props;
 
         return (
             <Autosuggest
@@ -262,6 +265,7 @@ class UserSuggestionInput extends React.Component {
 
 UserSuggestionInput.propTypes = {
     classes: PropTypes.object.isRequired,
+    onUserAdd: PropTypes.func
 }
 
-export default UserSuggestionInput = withStyles(styles)(UserSuggestionInput)
+export default withStyles(styles)(UserSuggestionInput)

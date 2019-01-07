@@ -155,7 +155,7 @@ class ProjectDialog extends Component {
                         </Grid>
                         }
 
-                        <UserSuggestionInput suggestions={users} onUserAdd={this.handleTeamUsers} />
+                        <UserSuggestionInput list={users} onUserAdd={this.handleTeamUsers} />
 
 
                     </DialogContent>

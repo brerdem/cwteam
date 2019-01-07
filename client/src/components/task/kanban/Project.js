@@ -11,12 +11,7 @@ import theme from '../../styles/Styles'
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import classNames from 'classnames';
 import Board from "./Board";
-import initialData from '../InitialData'
-import {connect} from "react-redux";
-import {compose} from 'recompose';
-
-
-
+import initialData from '../InitialData';
 
 class Project extends Component {
 
