@@ -2,12 +2,22 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let taskSchema = new Schema({
+    project_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
+    },
     title: {type: String, required: true},
     note: String,
-    createdAt: Date,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     startDate: Date,
     endDate: Date,
-    active: Boolean,
+    active: {
+        type: Boolean,
+        default: true
+    },
     status: {
         type: String,
         enum: ['backlog', 'progress', 'done'],
@@ -25,12 +35,11 @@ let taskSchema = new Schema({
             ref: 'User'
         },
         effort: {
-            type: Number
+            type: Number,
+            default: 3
         }
-    }],
-    comments: [{
-        type: String
     }]
+
 
 });
 

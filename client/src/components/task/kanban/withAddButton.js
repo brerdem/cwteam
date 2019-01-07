@@ -10,7 +10,7 @@ const withAddButton = (Wrapped) => {
     class HOC extends Component {
         state = {
             open: false,
-            team : []
+            team: []
         };
 
         handleClose = () => {
@@ -47,7 +47,7 @@ const withAddButton = (Wrapped) => {
         render() {
 
             const {open, team} = this.state;
-
+            const {onTaskAdd, project_id} = this.props;
 
             return (
                 <div>
@@ -59,7 +59,7 @@ const withAddButton = (Wrapped) => {
                     </ListItem>
 
 
-                    <Wrapped open={open} onClose={this.handleClose} team={team} {...this.props} />
+                    <Wrapped open={open} onClose={this.handleClose} team={team} onTaskAdd={onTaskAdd} project_id={project_id} {...this.props} />
                 </div>
 
             );

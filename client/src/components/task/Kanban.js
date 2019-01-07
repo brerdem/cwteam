@@ -1,26 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import Project from "./kanban/Project";
 
-class Kanban extends Component {
-
-  state = {
-  };
-
-  render() {
-
+const Kanban = props => {
 
 
     return (
-        <Grid container spacing={24} >
+        <Grid container spacing={24}>
             <Grid item xs={12}>
-                {this.props.projects.map((project, index) => (
-                    <Project project={project} index={index}/>
-                ))}
+                {props.projects.map((project, index) => {
+                    const tasks = props.tasks.map(task => task.project_id === project._id);
+                    return <Project project={project} tasks={tasks} index={index}/>;
+
+                })}
             </Grid>
         </Grid>
     );
-  }
-}
+
+};
 
 export default Kanban;

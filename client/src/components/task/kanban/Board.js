@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {DragDropContext} from "react-beautiful-dnd";
 import Column from "./Column";
 import Grid from "@material-ui/core/Grid";
+import {connect} from "react-redux";
+import {addTask} from "../../../actions/task";
 
 
 class Board extends Component {
@@ -83,7 +85,7 @@ class Board extends Component {
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
     render() {
-        const {project_id} = this.props;
+        const {project_id, addTask} = this.props;
         return (
 
             <Grid container spacing={8}>
@@ -92,7 +94,7 @@ class Board extends Component {
 
                         const column = this.state.columns[columnId];
                         const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-                        return <Column key={column.id} column={column} tasks={tasks} project_id={project_id} />;
+                        return <Column key={column.id} column={column} tasks={tasks} project_id={project_id} onTaskAdd={addTask} />;
                     })}
                 </DragDropContext>
             </Grid>
@@ -101,4 +103,15 @@ class Board extends Component {
 }
 
 
-export default Board;
+function mapStateToProps(state) {
+    return {
+        tasks: state.tasks
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    {addTask}
+)(Board);
+
+

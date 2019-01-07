@@ -11,6 +11,7 @@ import Chip from "@material-ui/core/es/Chip/Chip";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Grid from "@material-ui/core/es/Grid/Grid";
+import _ from 'underscore';
 
 let thisClass;
 
@@ -32,9 +33,9 @@ function renderInput(inputProps) {
                 key={key}
                 className={classes.chipWithAvatar}
                 avatar={<Avatar style={{
-                    backgroundColor: text.avatar_bg,
+                    backgroundColor: chip.avatar_bg,
                     color: 'white'
-                }}>{(text.first_name + ' ' + text.last_name).replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join('')}</Avatar>}
+                }}>{(chip.first_name + ' ' + chip.last_name).replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join('')}</Avatar>}
                 label={
 
                     <Grid container direction={"row"} alignItems={"center"}>
@@ -42,8 +43,8 @@ function renderInput(inputProps) {
                         {thisClass.props.effort &&
                         <TextField
                             id="standard-number"
-                            value={thisClass.state.effort}
-                            onChange={thisClass.handleChipEffortChange}
+                            value={_.findWhere(thisClass.state.value, {_id: chip._id}).effort || thisClass.state.effort}
+                            onChange={thisClass.handleChipEffortChange(chip)}
                             type="number"
                             style={{width: 30, marginTop: 1, marginLeft: 5, height: 25}}
                             InputProps={{
@@ -161,7 +162,6 @@ const styles = theme => ({
 class UserSuggestionInput extends React.Component {
 
 
-
     state = {
         list: [],
         suggestions: [],
@@ -191,37 +191,44 @@ class UserSuggestionInput extends React.Component {
 
     handleAddChip(chip) {
 
-
         this.setState({
-            list: this.state.list.filter(el => el._id !== chip._id),
+            //list: this.state.list.filter(el => el._id !== chip._id),
             value: [...this.state.value, chip],
             textFieldInput: ''
         }, () => {
             this.props.onUserAdd(this.state.value);
+            console.log(this.state.list);
         });
 
     }
 
     handleDeleteChip(chip, index) {
+        console.log("index", index);
         let temp = this.state.value;
 
         temp.splice(index, 1);
 
         this.setState({
             value: temp,
-            list: this.state.list.push(chip)
+            //list: this.state.list.push()
         })
     }
 
-    handleChipEffortChange = (e) => {
-        this.setState({effort: e.currentTarget.value})
+    handleChipEffortChange = name => e => {
+        name.effort = e.currentTarget.value;
+        let temp = this.state.value;
+        let foundIndex = temp.findIndex(x => x._id === name._id);
+        temp[foundIndex] = name;
+        this.setState({value: temp}, () => {
+            this.props.onUserAdd(this.state.value)
+        });
 
     };
 
+
     componentDidMount() {
         thisClass = this;
-        this.setState({list: this.props.list})
-        this.handleChipEffortChange = this.handleChipEffortChange.bind(this);
+        this.setState({list: this.props.list});
     }
 
     render() {

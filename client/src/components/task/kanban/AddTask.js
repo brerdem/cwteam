@@ -17,6 +17,7 @@ import Brightness from "@material-ui/icons/Brightness1";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
+import PropTypes from 'prop-types';
 
 
 const styles = theme => ({
@@ -75,7 +76,6 @@ class AddTask extends Component {
     };
 
     handleDepartmentChange = (e) => {
-        console.log(e.target.value);
         this.setState({department: e.target.value});
 
     };
@@ -84,21 +84,24 @@ class AddTask extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state.selectedUsers);
-        this.props.addProject({
+        let assignees = [];
+
+        this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
+        this.props.onTaskAdd({
+            project_id: this.props.project_id,
             title: e.target.title.value,
-            description: e.target.description.value,
-            team: this.state.selectedUsers.map((member) => member._id)
+            note: e.target.note.value,
+            assignees: assignees,
+            department: this.state.department,
         }).then(() => this.props.onClose())
 
     };
 
     handleTeamUsers = data => {
-        console.log('team', data);
         this.setState({selectedUsers: data});
     };
 
     componentDidMount() {
-        console.log('team', this.props.team);
         this.setState({team: this.props.team})
     }
 
@@ -116,7 +119,7 @@ class AddTask extends Component {
                     open={open}
                     fullWidth={true}
                 >
-
+                    <form onSubmit={this.handleSubmit}>
                     <DialogContent>
                         <Grid container direction="column" alignItems="flex-start">
 
@@ -133,7 +136,7 @@ class AddTask extends Component {
                             />
                             <TextField
                                 id="task-description"
-                                name="description"
+                                name="note"
                                 placeholder="Açıklama"
                                 margin="dense"
                                 fullWidth
@@ -194,14 +197,16 @@ class AddTask extends Component {
 
 
                     </DialogContent>
+
                     <DialogActions>
                         <Button onClick={onClose} color="primary">
                             VAZGEÇ
                         </Button>
-                        <Button onClick={onClose} color="primary">
+                        <Button color="primary" type="submit">
                             KAYDET
                         </Button>
                     </DialogActions>
+                    </form>
                 </Dialog>
 
 
@@ -209,6 +214,13 @@ class AddTask extends Component {
         )
     }
 }
+
+
+AddTask.propTypes = {
+    onTaskAdd: PropTypes.func.isRequired,
+    project_id: PropTypes.string.isRequired,
+
+};
 
 
 export default compose(

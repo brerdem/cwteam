@@ -10,7 +10,7 @@ import userReducer from "./user";
 const rootReducer = (history) => combineReducers({
     router: connectRouter(history),
     auth: authReducer,
-    todos: taskReducer,
+    tasks: taskReducer,
     ui: uiReducer,
     projects: projectReducer,
     users: userReducer

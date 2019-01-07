@@ -1,19 +1,14 @@
 const taskReducer = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_TODO':
+        case 'ADD_TASK_DONE':
             return [
                 ...state,
-                {
-                    id: action.id,
-                    text: action.text,
-                    completed: false
-                }
+                action.payload.data
             ];
-        case 'TOGGLE_TODO':
-            return state.map(
-                todo =>
-                    todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-            );
+
+        case 'GET_ALL_TASKS_DONE':
+            return action.payload.data;
+
         default:
             return state
     }

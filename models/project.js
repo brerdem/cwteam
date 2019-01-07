@@ -4,7 +4,10 @@ let Schema = mongoose.Schema;
 let projectSchema = new Schema({
     title: {type: String, required: true},
     description: String,
-    createdAt: Date,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     active: Boolean,
     team: [{
         type: Schema.Types.ObjectId,

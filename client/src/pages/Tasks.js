@@ -14,10 +14,9 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {push} from "connected-react-router";
 import {getAllProjects} from "../actions/project";
 import {compose} from 'recompose';
-
+import {getAllTasks} from "../actions/task";
 
 
 const extraTheme = createMuiTheme({
@@ -41,13 +40,29 @@ class Tasks extends Component {
 
     componentDidMount() {
 
-
+        const {getAllProjects, getAllTasks} = this.props;
 
         this.setState({
             value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
         });
 
-        this.props.getAllProjects().then((response) => this.setState({projects: response.payload.data, loading: false}))
+        Promise.all([
+            getAllProjects(),
+            getAllTasks()
+
+        ]).then((response) => {
+            console.log('promise', response);
+
+            this.setState({
+                 loading:false
+             });
+
+        }).catch((err) => {
+            console.log(err);
+        });
+
+
+        //this.props.getAllProjects().then((response) => this.setState({projects: response.payload.data}));
 
 
     };
@@ -59,7 +74,7 @@ class Tasks extends Component {
 
 
     render() {
-        const {classes, projects} = this.props;
+        const {classes, projects, tasks} = this.props;
 
         let content;
         if (this.state.loading) {
@@ -86,9 +101,9 @@ class Tasks extends Component {
                             </AppBar>
                         </MuiThemeProvider>
                         <Switch>
-                            <Route path="/tasks/kanban" render={() => <Kanban projects={projects}/>}/>
+                            <Route path="/tasks/kanban" render={() => <Kanban projects={projects} tasks={tasks}/>}/>
                             <Route path="/tasks/timeline"
-                                   render={() => <Timeline projects={projects}/>}/>
+                                   render={() => <Timeline projects={projects} tasks={tasks}/>}/>
                         </Switch>
 
                     </div>
@@ -126,11 +141,13 @@ Tasks.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        projects: state.projects
+        projects: state.projects,
+        tasks: state.tasks
     };
 };
 
+
 export default compose(
-    connect(mapStateToProps, {push, getAllProjects }),
+    connect(mapStateToProps, {getAllProjects, getAllTasks}),
     withStyles(theme)
 )(Tasks);

@@ -12,7 +12,7 @@ import AddTask from "./AddTask";
 class Column extends Component {
 
     render() {
-        const {column, classes, project_id} = this.props;
+        const {column, classes, project_id, onTaskAdd} = this.props;
 
         return (
 
@@ -24,7 +24,7 @@ class Column extends Component {
                             {column.title}
                         </Typography>
                     </div>
-                    {column.id === 'backlog' &&  <AddTask project_id={project_id} /> }
+                    {column.id === 'backlog' &&  <AddTask project_id={project_id} onTaskAdd={onTaskAdd} /> }
 
                     <Droppable droppableId={column.id}>
 

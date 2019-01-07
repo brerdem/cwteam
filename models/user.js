@@ -4,7 +4,10 @@ let Schema = mongoose.Schema;
 let userSchema = new Schema({
     first_name: {type: String, required: [true, "boş kalamaz"]},
     last_name: {type: String, required: [true, "boş kalamaz"]},
-    createdAt: Date,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     avatar_url: String,
     avatar_bg: String,
     password: String,
