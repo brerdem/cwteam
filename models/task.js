@@ -28,6 +28,7 @@ let taskSchema = new Schema({
         enum: ['Yazılım', 'Sosyal Medya', 'Tasarım', 'Müşteri'],
         default: 'Yazılım'
     },
+    order: {type: Number, default: 0},
 
     assignees: [{
         user: {
@@ -39,7 +40,6 @@ let taskSchema = new Schema({
             default: 3
         }
     }]
-
 
 });
 

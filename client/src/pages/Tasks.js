@@ -15,7 +15,7 @@ import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
 import {getAllProjects} from "../actions/project";
 import {compose} from 'recompose';
-import {addTask, getAllTasks} from "../actions/task";
+import {addTask, getAllTasks, reorderTasks} from "../actions/task";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
 import Board from "../components/task/kanban/Board";
@@ -75,7 +75,7 @@ class Tasks extends Component {
 
 
     render() {
-        const {classes, projects, tasks, addTask} = this.props;
+        const {classes, projects, tasks, addTask, reorderTasks} = this.props;
 
         let content;
         if (this.state.loading) {
@@ -108,7 +108,7 @@ class Tasks extends Component {
                                         {projects.map((project, index) => {
                                             let project_tasks;
                                             if (tasks.length > 0) { project_tasks = tasks.filter(task => task.project_id === project._id)}
-                                            return <Project key={index} project={project}><Board tasks={project_tasks} project_id={project._id} onTaskAdd={addTask}/></Project>;
+                                            return <Project key={index} project={project}><Board tasks={project_tasks} project_id={project._id} onTaskAdd={addTask} onTaskReorder={reorderTasks} /></Project>;
 
                                         })}
                                     </Grid>
@@ -161,6 +161,6 @@ const mapStateToProps = (state) => {
 
 
 export default compose(
-    connect(mapStateToProps, {getAllProjects, getAllTasks, addTask }),
+    connect(mapStateToProps, {getAllProjects, getAllTasks, addTask, reorderTasks }),
     withStyles(theme)
 )(Tasks);

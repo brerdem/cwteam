@@ -18,6 +18,25 @@ export const addTask = (task) => {
         }
     }
 };
+export const reorderTasks = (newTasksId) => {
+    console.log('reorder', newTasksId);
+
+
+    return {
+        types: ['REORDER_TASK_LOAD', 'REORDER_TASK_DONE', 'REORDER_TASK_ERROR'],
+        payload: {
+            request: {
+                method: 'post',
+                url: '/task/reorder',
+                headers: {'Authorization': 'bearer ' + getToken()},
+                data: {
+                    newTasksId: newTasksId
+                }
+
+            }
+        }
+    }
+};
 
 export const getAllTasks = () => {
 

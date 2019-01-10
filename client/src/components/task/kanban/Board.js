@@ -31,6 +31,8 @@ class Board extends Component {
 
     onDragEnd = result => {
 
+        const {tasks, onTaskReorder} = this.props;
+
         const {destination, source, draggableId} = result;
 
         if (!destination) {
@@ -48,11 +50,22 @@ class Board extends Component {
         const finish = this.state.columns[destination.droppableId];
 
         if (start === finish) {
-            const newTasksId = Array.from(start.taskIds);
+            const newTasksId = tasks.map(task => task._id);
+
+            console.log(newTasksId);
             newTasksId.splice(source.index, 1);
             newTasksId.splice(destination.index, 0, draggableId);
 
-            //Generate new column
+            onTaskReorder(newTasksId).then(response => {
+
+            }).catch(err => {
+                console.log(err);
+            });
+
+
+
+
+          /*  //Generate new column
             const newColumn = {
                 ...start,
                 taskIds: newTasksId,
@@ -66,10 +79,10 @@ class Board extends Component {
                 },
             };
 
-            this.setState(newState);
+            this.setState(newState);*/
             return;
         }
-        const startTaskIds = Array.from(start.taskIds);
+       /* const startTaskIds = Array.from(start.taskIds);
         startTaskIds.splice(source.index, 1);
         const newStart = {
             ...start,
@@ -92,7 +105,7 @@ class Board extends Component {
             },
         };
 
-        this.setState(newState);
+        this.setState(newState);*/
 
     };
 
