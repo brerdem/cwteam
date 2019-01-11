@@ -14,7 +14,7 @@ class Column extends Component {
 
 
     render() {
-        const {column, classes, project_id, onTaskAdd, tasks} = this.props;
+        const {column, classes, project_id, addTask, tasks} = this.props;
         console.log('column-->',tasks);
 
         return (
@@ -27,7 +27,7 @@ class Column extends Component {
                             {column.title}
                         </Typography>
                     </div>
-                    {column.id === 'backlog' &&  <AddTask project_id={project_id} onTaskAdd={onTaskAdd} /> }
+                    {column.id === 'backlog' &&  <AddTask project_id={project_id} addTask={addTask} /> }
 
                     <Droppable droppableId={column.id}>
 

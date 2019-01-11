@@ -1,63 +1,56 @@
 const router = require('express').Router();
 require('../../../passport');
-const Task = require('./../../../models/task');
-const async = require('async');
+const Project = require('./../../../models/project');
 
 router.post('/add', (req, res) => {
 
     const {title, note, assignees, department, project_id} = req.body;
 
-    let task = new Task({
-        project_id,
-        title,
-        note,
-        department,
-        assignees
-    });
-    task.save((err, task) => {
-        if (!err) {
-            res.status(200).json(task);
-        } else {
-            res.status(400).send(err);
+    Project.findOneAndUpdate({_id: project_id}, {
+        $addToSet: {
+            'tasks.backlog': {
+                title,
+                note,
+                assignees,
+                department
+            }
         }
-    })
+    }, {new: true}, function (err, project) {
+        if (!err) {
+
+            res.status(200).json({item: project.tasks.backlog.pop(), project_id: project_id});
+        } else {
+            console.log(err);
+            res.status(400).send(err.message);
+        }
+    });
 
 });
 
 router.post('/reorder', (req, res) => {
 
-    const {newTasksId} = req.body;
+    const {project_id, task_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn} = req.body;
 
-    Task.find().cursor().eachAsync(task => {
-        let index = newTasksId.findIndex(id => id == task._id);
-        task.order = index;
-        return task.save().then(task => console.log(task));        // Need promise
-    }).then((err) => {
+    Project.findOne({_id: project_id}, 'tasks', function (err, tasks) {
         if (!err) {
-            console.log('yoooooooo');
-            res.status(200).send(newTasksId);
-        } else {
-            console.log(err);
-            res.status(400).send(err);
+            let temp = tasks.tasks;
+            const task = temp[sourceColumn][sourceIndex];
+
+            temp[sourceColumn].splice(sourceIndex, 1);
+            temp[destinationColumn].splice(destinationIndex, 0, task);
+
+            tasks.tasks = temp;
+            tasks.save().then((err) => {
+                if (!err) {
+                    res.status(200).send("ok");
+                } else {
+                    console.log(err);
+                    res.status(400).send(err.message);
+                }
+            });
+
         }
     });
-
-    /* async.eachOfSeries(newTasksId, function (obj, key, done) {
-
-         Task.findOneAndUpdate({_id: obj._id}, {$set: {title: 'yooooo'}}).exec(done);
-
-
-     }, function (err) {
-
-
-         if (!err) {
-             console.log('yoooooooo');
-             res.status(200).send(newTasksId);
-         } else {
-             console.log(err);
-             res.status(400).send(err);
-         }
-     });*/
 
 });
 

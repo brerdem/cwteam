@@ -4,13 +4,11 @@ const Project = require('./../../models/project');
 const Task = require('./../../models/task');
 
 const router = require('express').Router();
-const test = require('./test');
 const auth = require('./auth');
 const user = require('./user');
 const task = require('./task');
 const project = require('./project');
 
-router.use('/test', test);
 router.use('/auth', auth);
 router.use('/user', user);
 router.use('/task', task);
@@ -35,7 +33,7 @@ router.get('/projects', (req, res) => {
 router.get('/tasks', (req, res) => {
 
 
-    Task.find({}, function(err, projects) {
+    Task.find({}).sort({order: 1}).exec(function(err, projects) {
         if (!err) {
             res.status(200).json(projects);
         } else {

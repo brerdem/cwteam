@@ -15,7 +15,7 @@ import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
 import {getAllProjects} from "../actions/project";
 import {compose} from 'recompose';
-import {addTask, getAllTasks, reorderTasks} from "../actions/task";
+import {addTask, reorderTask} from "../actions/task";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
 import Board from "../components/task/kanban/Board";
@@ -27,9 +27,7 @@ const extraTheme = createMuiTheme({
         }
     },
 
-
 });
-
 
 class Tasks extends Component {
 
@@ -41,30 +39,24 @@ class Tasks extends Component {
 
     componentDidMount() {
 
-        const {getAllProjects, getAllTasks} = this.props;
+        const {getAllProjects} = this.props;
 
         this.setState({
             value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
         });
 
-        Promise.all([
-            getAllProjects(),
-            getAllTasks()
-
-        ]).then((response) => {
+        getAllProjects().then((response) => {
             console.log('promise', response);
 
             this.setState({
-                 loading:false
-             });
+                loading: false
+            });
 
         }).catch((err) => {
             console.log(err);
         });
 
-
         //this.props.getAllProjects().then((response) => this.setState({projects: response.payload.data}));
-
 
     };
 
@@ -73,9 +65,8 @@ class Tasks extends Component {
         this.setState({value})
     };
 
-
     render() {
-        const {classes, projects, tasks, addTask, reorderTasks} = this.props;
+        const {classes, projects, tasks, addTask, reorderTask} = this.props;
 
         let content;
         if (this.state.loading) {
@@ -97,7 +88,7 @@ class Tasks extends Component {
                                     <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/tasks/kanban"/>
                                     <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/tasks/timeline"/>
 
-                            </Tabs>
+                                </Tabs>
 
                             </AppBar>
                         </MuiThemeProvider>
@@ -106,9 +97,11 @@ class Tasks extends Component {
                                 <Grid container spacing={24}>
                                     <Grid item xs={12}>
                                         {projects.map((project, index) => {
-                                            let project_tasks;
-                                            if (tasks.length > 0) { project_tasks = tasks.filter(task => task.project_id === project._id)}
-                                            return <Project key={index} project={project}><Board tasks={project_tasks} project_id={project._id} onTaskAdd={addTask} onTaskReorder={reorderTasks} /></Project>;
+
+                                            return <Project key={index} project={project}><Board tasks={project.tasks}
+                                                                                                 project_id={project._id}
+                                                                                                 addTask={addTask}
+                                                                                                 reorderTask={reorderTask}/></Project>;
 
                                         })}
                                     </Grid>
@@ -142,11 +135,9 @@ class Tasks extends Component {
 
             </div>
 
-
         )
     }
 }
-
 
 Tasks.propTypes = {
     classes: PropTypes.object.isRequired,
@@ -159,8 +150,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-
 export default compose(
-    connect(mapStateToProps, {getAllProjects, getAllTasks, addTask, reorderTasks }),
+    connect(mapStateToProps, {getAllProjects, addTask, reorderTask}),
     withStyles(theme)
 )(Tasks);

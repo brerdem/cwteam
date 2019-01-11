@@ -87,7 +87,7 @@ class AddTask extends Component {
         let assignees = [];
 
         this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
-        this.props.onTaskAdd({
+        this.props.addTask({
             project_id: this.props.project_id,
             title: e.target.title.value,
             note: e.target.note.value,

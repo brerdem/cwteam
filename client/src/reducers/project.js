@@ -1,7 +1,7 @@
-const initialState = [];
+import produce from 'immer';
 
 
-const projectReducer = (state = initialState, action) => {
+const projectReducer = (state = [], action) => {
     switch (action.type) {
         case 'GET_ALL_PROJECTS_DONE':
 
@@ -12,6 +12,13 @@ const projectReducer = (state = initialState, action) => {
                 action.payload.data
 
             ];
+
+        case 'ADD_TASK_DONE':
+            return produce(state, draft => {
+                const index = state.findIndex(t => t._id === action.payload.data.project_id);
+                draft[index].tasks.backlog.push(action.payload.data.item);
+            });
+
 
 
         case 'DELETE_PROJECT_DONE':
