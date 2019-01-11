@@ -1,7 +1,6 @@
 import produce from 'immer';
 import _ from "underscore";
 
-
 const projectReducer = (state = [], action) => {
     switch (action.type) {
         case 'GET_ALL_PROJECTS_DONE':
@@ -22,12 +21,11 @@ const projectReducer = (state = [], action) => {
 
         case 'REORDER_TASK_DONE':
 
-
             return produce(state, draft => {
 
                 const {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn} = action.payload.data;
 
-                const index = _.findIndex(state, t => t._id ==  project_id);
+                const index = _.findIndex(state, t => t._id == project_id);
 
                 const project = draft[index];
                 const task = project.tasks[sourceColumn][sourceIndex];
@@ -36,11 +34,7 @@ const projectReducer = (state = [], action) => {
                 project.tasks[destinationColumn].splice(destinationIndex, 0, task);
                 draft[index] = project;
 
-
-
             });
-
-
 
         case 'DELETE_PROJECT_DONE':
             console.log('payload delete', action.payload);

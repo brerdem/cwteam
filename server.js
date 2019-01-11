@@ -5,6 +5,17 @@ const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+const Pusher = require('pusher');
+
+
+const pusher = new Pusher({
+    appId      : '689385',
+    key        : '8042ee8184c51b5ff049',
+    secret     : '9ee8d1d20c3ceb337d83',
+    cluster    : 'eu',
+    useTLS  : true,
+});
+const channel = 'projects';
 
 
 const app = express();
@@ -23,6 +34,41 @@ mongoose.connect("mongodb://localhost:27017/cwteam", { useNewUrlParser: true }).
 }).catch((err) => {
     console.log("Not Connected to Database ERROR! ", err);
 });
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Connection Error:'));
+
+db.once('open', () => {
+
+    const projectCollection = db.collection('projects');
+    const changeStream = projectCollection.watch();
+
+    changeStream.on('change', (change) => {
+        console.log(change);
+
+        if(change.operationType === 'insert') {
+
+            pusher.trigger(
+                channel,
+                'inserted',
+                change.fullDocument
+            );
+        } else if(change.operationType === 'delete') {
+            pusher.trigger(
+                channel,
+                'deleted',
+                change.documentKey._id
+            );
+        } else if(change.operationType === 'update') {
+            pusher.trigger(
+                channel,
+                'updated',
+                change.updateDescription.updatedFields
+            );
+        }
+    });
+});
+
 
 
 

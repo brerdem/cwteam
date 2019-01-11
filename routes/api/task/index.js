@@ -42,9 +42,10 @@ router.post('/reorder', (req, res) => {
             tasks.tasks = temp;
             tasks.save().then(task => {
 
-                    res.status(200).send(req.body);
+                res.status(200).send(req.body);
 
-            }).catch(err => console.log("err while saving", err));;
+            }).catch(err => console.log("err while saving", err));
+
 
         } else {
             console.log(err);
