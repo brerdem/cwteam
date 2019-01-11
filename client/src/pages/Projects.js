@@ -7,7 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Delete from "@material-ui/icons/Delete"
 import Button from "@material-ui/core/Button";
-import {push} from 'connected-react-router';
 import Fab from "@material-ui/core/Fab";
 import Add from "@material-ui/icons/Add";
 import {connect} from "react-redux";
@@ -23,10 +22,15 @@ import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import Dialog from "@material-ui/core/es/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
+import Pusher from 'pusher-js';
+
+const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
+const PUSHER_APP_CLUSTER = 'eu';
 
 class Projects extends Component {
+
     state = {
-        projects: this.props.projects,
+
         labelWidth: 0,
         loading: true,
         open: false,
@@ -45,7 +49,6 @@ class Projects extends Component {
         this.setState({open: false});
     };
 
-
     closeDeleteDialog = () => {
         this.setState({alertOpen: false});
     };
@@ -57,15 +60,31 @@ class Projects extends Component {
         });
     };
     handleProjectDelete = () => {
-      this.props.deleteProject(this.state.deleteProjectId).then(response => {
-          this.closeDeleteDialog();
-      }).catch(err => {
-          console.log(err);
-      });
+        this.props.deleteProject(this.state.deleteProjectId).then(() => {
+            this.closeDeleteDialog();
+        }).catch(err => {
+            console.log(err);
+        });
+    };
+
+    handleProjectAdd = (data) => {
+
+        console.log(this.state.selectedUsers);
+        this.props.addProject(data).then(() => this.closeDialog())
+
     };
 
 
+
     componentDidMount() {
+
+        this.pusher = new Pusher(PUSHER_APP_KEY, {
+            cluster: PUSHER_APP_CLUSTER,
+            useTLS: true,
+        });
+
+        this.channel = this.pusher.subscribe('projects');
+        this.channel.bind('inserted', this.notifyProjectAdd);
 
         this.props.enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
             variant: 'warning'
@@ -73,13 +92,12 @@ class Projects extends Component {
 
         this.props.getAllProjects().then((response) => this.setState({projects: response.payload.data, loading: false}))
 
-
     }
 
     render() {
 
-        const {classes, addProject, getAllUsers, projects} = this.props;
-
+        const {classes, getAllUsers} = this.props;
+        const {projects} = this.state;
 
         let content;
         if (this.state.loading) {
@@ -104,10 +122,12 @@ class Projects extends Component {
                                 </CardContent>
                                 <CardActions>
 
-                                  <Grid container justify={"flex-end"}> <IconButton size="small" color="primary" id={project._id} onClick={this.handleProjectDeleteDialog}>
-                                        <Delete />
+                                    <Grid container justify={"flex-end"}> <IconButton size="small" color="primary"
+                                                                                      id={project._id}
+                                                                                      onClick={this.handleProjectDeleteDialog}>
+                                        <Delete/>
                                     </IconButton>
-                                  </Grid>
+                                    </Grid>
 
 
                                 </CardActions>
@@ -125,7 +145,7 @@ class Projects extends Component {
                         <DialogTitle id="alert-dialog-title">{"Silmek istediğinize emin misiniz?"}</DialogTitle>
 
                         <DialogActions>
-                            <Button onClick={this.handleAlertClose} color="primary">
+                            <Button onClick={this.closeDialog} color="primary">
                                 VAZGEÇ
                             </Button>
                             <Button onClick={this.handleProjectDelete} color="primary" autoFocus>
@@ -135,19 +155,15 @@ class Projects extends Component {
                     </Dialog>
                 </Grid>
 
-
-
-
             }
 
         }
-
 
         return (
             <div>
 
 
-                <ProjectDialog open={this.state.open} onClose={this.closeDialog} addProject={addProject}
+                <ProjectDialog open={this.state.open} addProject={this.handleProjectAdd}
                                getAllUsers={getAllUsers}/>
 
                 <main className={classes.layout}>
@@ -174,7 +190,6 @@ class Projects extends Component {
     }
 }
 
-
 Projects.propTypes = {
     classes: PropTypes.object.isRequired,
 };
@@ -186,7 +201,7 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {push, getAllUsers, addProject, deleteProject, getAllProjects}),
+    connect(mapStateToProps, {getAllUsers, addProject, deleteProject, getAllProjects}),
     withStyles(theme),
     withSnackbar
 )(Projects);

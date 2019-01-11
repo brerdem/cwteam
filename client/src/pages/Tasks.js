@@ -15,7 +15,7 @@ import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
 import {getAllProjects} from "../actions/project";
 import {compose} from 'recompose';
-import {addTask, reorderTask} from "../actions/task";
+import {addTask, reorderTask} from "../actions/project";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
 import Board from "../components/task/kanban/Board";

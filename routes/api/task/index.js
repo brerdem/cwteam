@@ -17,10 +17,8 @@ router.post('/add', (req, res) => {
         }
     }, {new: true}, function (err, project) {
         if (!err) {
-
             res.status(200).json({item: project.tasks.backlog.pop(), project_id: project_id});
         } else {
-
             res.status(400).send(err.message);
         }
     });
