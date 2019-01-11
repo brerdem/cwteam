@@ -18,7 +18,7 @@ export const addTask = (task) => {
         }
     }
 };
-export const reorderTask = function(project_id, task_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) {
+export const reorderTask = function(project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) {
 
 
 
@@ -29,7 +29,7 @@ export const reorderTask = function(project_id, task_id, sourceIndex, destinatio
                 method: 'post',
                 url: '/task/reorder',
                 headers: {'Authorization': 'bearer ' + getToken()},
-                data: {project_id, task_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn}
+                data: {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn}
 
             }
         }

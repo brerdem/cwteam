@@ -217,7 +217,7 @@ class AddTask extends Component {
 
 
 AddTask.propTypes = {
-    onTaskAdd: PropTypes.func.isRequired,
+    addTask: PropTypes.func.isRequired,
     project_id: PropTypes.string.isRequired,
 
 };

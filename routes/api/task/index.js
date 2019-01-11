@@ -20,7 +20,7 @@ router.post('/add', (req, res) => {
 
             res.status(200).json({item: project.tasks.backlog.pop(), project_id: project_id});
         } else {
-            console.log(err);
+
             res.status(400).send(err.message);
         }
     });
@@ -29,7 +29,7 @@ router.post('/add', (req, res) => {
 
 router.post('/reorder', (req, res) => {
 
-    const {project_id, task_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn} = req.body;
+    const {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn} = req.body;
 
     Project.findOne({_id: project_id}, 'tasks', function (err, tasks) {
         if (!err) {
@@ -40,15 +40,15 @@ router.post('/reorder', (req, res) => {
             temp[destinationColumn].splice(destinationIndex, 0, task);
 
             tasks.tasks = temp;
-            tasks.save().then((err) => {
-                if (!err) {
-                    res.status(200).send("ok");
-                } else {
-                    console.log(err);
-                    res.status(400).send(err.message);
-                }
-            });
+            tasks.save().then(task => {
 
+                    res.status(200).send(req.body);
+
+            }).catch(err => console.log("err while saving", err));;
+
+        } else {
+            console.log(err);
+            res.status(400).send("Reorder task project not found");
         }
     });
 

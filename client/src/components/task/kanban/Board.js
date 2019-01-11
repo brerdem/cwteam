@@ -47,7 +47,9 @@ class Board extends Component {
         const start = this.state.columns[source.droppableId];
         const finish = this.state.columns[destination.droppableId];
 
-        reorderTask(project_id, draggableId, source.index, destination.index, start.id, finish.id).then(response => {
+
+
+        reorderTask(project_id, source.index, destination.index, start.id, finish.id).then(response => {
 
         }).catch(err => {
             console.log(err);
