@@ -23,9 +23,16 @@ import Dialog from "@material-ui/core/es/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import Pusher from 'pusher-js';
+import axios from "axios";
+import {getToken} from "../actions/auth";
+import Fade from "@material-ui/core/Fade/Fade";
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
+const API_URL = 'http://localhost:3000/api';
+
+
+//todo make alert dialogs as a new component
 
 class Projects extends Component {
 
@@ -60,21 +67,33 @@ class Projects extends Component {
         });
     };
     handleProjectDelete = () => {
-        this.props.deleteProject(this.state.deleteProjectId).then(() => {
-            this.closeDeleteDialog();
-        }).catch(err => {
-            console.log(err);
-        });
+        axios.post(API_URL + '/project/delete', {id: this.state.deleteProjectId}, {
+            headers: {'Authorization': 'bearer ' + getToken()},
+
+        })
+            .then(response => {
+                this.closeDeleteDialog()
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
     };
 
     handleProjectAdd = (data) => {
 
-        console.log(this.state.selectedUsers);
-        this.props.addProject(data).then(() => this.closeDialog())
+        axios.post(API_URL + '/project/add', data, {
+            headers: {'Authorization': 'bearer ' + getToken()},
+
+        })
+            .then(response => {
+                this.closeDialog()
+            })
+            .catch(error => {
+                console.log(error);
+            });
 
     };
-
-
 
     componentDidMount() {
 
@@ -84,7 +103,8 @@ class Projects extends Component {
         });
 
         this.channel = this.pusher.subscribe('projects');
-        this.channel.bind('inserted', this.notifyProjectAdd);
+        this.channel.bind('inserted', this.props.addProject);
+        this.channel.bind('deleted', this.props.deleteProject);
 
         this.props.enqueueSnackbar('12 işin bitiş tarihi gelmek üzere', {
             variant: 'warning'
@@ -94,10 +114,15 @@ class Projects extends Component {
 
     }
 
+    componentWillUnmount() {
+
+        this.pusher.unsubscribe('projects');
+
+    }
+
     render() {
 
-        const {classes, getAllUsers} = this.props;
-        const {projects} = this.state;
+        const {classes, getAllUsers, projects} = this.props;
 
         let content;
         if (this.state.loading) {
@@ -110,6 +135,8 @@ class Projects extends Component {
 
                 content = <Grid container spacing={40}>
                     {projects.map(project => (
+                        <Fade in={true} timeout={1000}>
+
                         <Grid item key={project._id} xs={4}>
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
@@ -133,6 +160,8 @@ class Projects extends Component {
                                 </CardActions>
                             </Card>
                         </Grid>
+
+                        </Fade>
                     ))
                     }
 

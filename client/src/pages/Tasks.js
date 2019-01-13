@@ -19,6 +19,12 @@ import {addTask, reorderTask} from "../actions/project";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
 import Board from "../components/task/kanban/Board";
+import Pusher from "pusher-js";
+import {store} from "../helpers/store";
+
+const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
+const PUSHER_APP_CLUSTER = 'eu';
+const API_URL = 'http://localhost:3000/api';
 
 const extraTheme = createMuiTheme({
     palette: {
@@ -37,6 +43,19 @@ class Tasks extends Component {
 
     };
 
+    dispatchUpdate = ({item, project_id}) => {
+
+        if (Object.keys(item)[0] === 'tasks.backlog') {
+            console.log('dispatch:'+item);
+
+            store.dispatch({type: 'ADD_TASK_DONE', item: item['tasks.backlog'], project_id});
+        } else {
+
+            store.dispatch({type: 'REORDER_TASK_DONE', tasks: item.tasks, project_id});
+        }
+
+    };
+
     componentDidMount() {
 
         const {getAllProjects} = this.props;
@@ -44,6 +63,15 @@ class Tasks extends Component {
         this.setState({
             value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
         });
+
+        this.pusher = new Pusher(PUSHER_APP_KEY, {
+            cluster: PUSHER_APP_CLUSTER,
+            useTLS: true,
+        });
+
+        this.channel = this.pusher.subscribe('projects');
+        this.channel.bind('updated', this.dispatchUpdate);
+
 
         getAllProjects().then((response) => {
             console.log('promise', response);

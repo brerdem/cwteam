@@ -1,76 +1,47 @@
 import {getToken} from "./auth";
-import axios from 'axios';
-import Pusher from "pusher-js";
+import axios from "axios";
 
+const API_URL = 'http://localhost:3000/api';
 
-const API_URL = 'http://localhost:3000/api/';
-const PUSHER_APP_KEY = 'INSERT_APP_KEY';
-const PUSHER_APP_CLUSTER = 'eu';
-
-
-
-
-
-//action creators
-export const addProject = project => dispatch =>{
-
-    axios.post('/project/add', {
-        headers: { 'Authorization': 'bearer '+ getToken() },
-        data: project
-
-      })
-      .then(function (response) {
-
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-
-    console.log('project', project);
-
-
-   /* return {
-        types: ['ADD_PROJECT_LOAD', 'ADD_PROJECT_DONE', 'ADD_PROJECT_ERROR'],
-        payload: {
-            request: {
-                method: 'post',
-                url: '/project/add',
-                headers: { 'Authorization': 'bearer '+ getToken() },
-                data: project
-
-            }
-        }
-    }*/
-};
-
-const pusher = new Pusher(PUSHER_APP_KEY, {
-    cluster: PUSHER_APP_CLUSTER,
-    useTLS: true,
-});
-
-const channel = pusher.subscribe('projects');
-channel.bind('inserted', notifyProjectAdd);
-
-export const deleteProject = (id) => {
-
+const addProjectAC = project => {
     return {
-        types: ['DELETE_PROJECT_LOAD', 'DELETE_PROJECT_DONE', 'DELETE_PROJECT_ERROR'],
-        payload: {
-            request: {
-                method: 'post',
-                url: '/project/delete',
-                headers: { 'Authorization': 'bearer '+ getToken() },
-                data: {id: id}
-
-            }
-        }
+        type: 'ADD_PROJECT_DONE',
+        project
+    }
+};
+const deleteProjectAC = id => {
+    return {
+        type: 'DELETE_PROJECT_DONE',
+        id
+    }
+};
+const reorderTaskImmediatelyAC = (project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) => {
+    return {
+        type: 'DELETE_PROJECT_DONE',
+        project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn
     }
 };
 
+//action creators
+export const addProject = project => dispatch => {
+
+    dispatch(addProjectAC(project));
+
+};
+
+export const deleteProject = id => dispatch => {
+
+    dispatch(deleteProjectAC(id));
+};
 
 
-export const getAllProjects = ()  => {
+
+export const reorderTaskImmediately = (project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) => dispatch => {
+
+    dispatch(reorderTaskImmediatelyAC(project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn));
+};
+
+export const getAllProjects = () => {
     return {
         types: ['GET_ALL_PROJECTS_LOAD', 'GET_ALL_PROJECTS_DONE', 'GET_ALL_PROJECTS_ERROR'],
         payload: {
@@ -84,37 +55,32 @@ export const getAllProjects = ()  => {
 
 export const addTask = (task) => {
     console.log('task', task);
+    axios.post(API_URL + '/task/add', task, {
+        headers: {'Authorization': 'bearer ' + getToken()},
+
+    })
+        .then(response => {
+            console.log('task added');
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
 
-    return {
-        types: ['ADD_TASK_LOAD', 'ADD_TASK_DONE', 'ADD_TASK_ERROR'],
-        payload: {
-            request: {
-                method: 'post',
-                url: '/task/add',
-                headers: {'Authorization': 'bearer ' + getToken()},
-                data: task
-
-            }
-        }
-    }
 };
-export const reorderTask = function(project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) {
+export const reorderTask = (project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) => dispatch => {
 
+    axios.post(API_URL + '/task/reorder', {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn}, {
+        headers: {'Authorization': 'bearer ' + getToken()},
 
+    })
+        .then(response => {
+            console.log('task reordered');
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
-    return {
-        types: ['REORDER_TASK_LOAD', 'REORDER_TASK_DONE', 'REORDER_TASK_ERROR'],
-        payload: {
-            request: {
-                method: 'post',
-                url: '/task/reorder',
-                headers: {'Authorization': 'bearer ' + getToken()},
-                data: {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn}
-
-            }
-        }
-    }
 };
 
 

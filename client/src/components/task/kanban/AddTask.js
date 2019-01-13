@@ -18,8 +18,10 @@ import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 import PropTypes from 'prop-types';
+import axios from "axios";
+import {getToken} from "../../../actions/auth";
 
-
+const API_URL = 'http://localhost:3000/api';
 const styles = theme => ({
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
@@ -87,13 +89,25 @@ class AddTask extends Component {
         let assignees = [];
 
         this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
-        this.props.addTask({
+        const task = {
             project_id: this.props.project_id,
             title: e.target.title.value,
             note: e.target.note.value,
             assignees: assignees,
             department: this.state.department,
-        }).then(() => this.props.onClose())
+        };
+
+        axios.post(API_URL + '/task/add', task, {
+            headers: {'Authorization': 'bearer ' + getToken()},
+
+        })
+            .then(response => {
+                console.log('task added');
+                this.props.onClose();
+            })
+            .catch(error => {
+                console.log(error);
+            });
 
     };
 

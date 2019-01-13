@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import {DragDropContext} from "react-beautiful-dnd";
 import Column from "./Column";
 import Grid from "@material-ui/core/Grid";
+import {store} from '../../../helpers/store';
+import axios from "axios";
+import {getToken} from "../../../actions/auth";
+
+const API_URL = 'http://localhost:3000/api';
 
 class Board extends Component {
 
@@ -24,12 +29,16 @@ class Board extends Component {
             },
         },
         columnOrder: ['backlog', 'progress', 'done'],
+        tasks: this.props.tasks
 
     };
 
     onDragEnd = result => {
 
+        console.log(result);
+
         const {reorderTask, project_id} = this.props;
+        const {tasks} = this.state;
 
         const {destination, source, draggableId} = result;
 
@@ -44,16 +53,34 @@ class Board extends Component {
             return;
         }
 
-        const start = this.state.columns[source.droppableId];
-        const finish = this.state.columns[destination.droppableId];
+        const start = source.droppableId;
+        const finish = destination.droppableId;
 
+        const task = tasks[start][source.index];
 
+        tasks[start].splice(source.index, 1);
+        tasks[finish].splice(destination.index, 0, task);
 
-        reorderTask(project_id, source.index, destination.index, start.id, finish.id).then(response => {
+        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id});
 
-        }).catch(err => {
-            console.log(err);
-        });
+        //todo make another reducer dispatch before async request
+
+        axios.post(API_URL + '/task/reorder', {
+            project_id,
+            sourceIndex: source.index,
+            destinationIndex: destination.index,
+            sourceColumn: start,
+            destinationColumn: finish
+        }, {
+            headers: {'Authorization': 'bearer ' + getToken()},
+
+        })
+            .then(response => {
+                console.log('task reorder action');
+            })
+            .catch(error => {
+                console.log(error);
+            });
 
     };
 

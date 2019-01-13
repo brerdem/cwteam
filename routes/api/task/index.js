@@ -17,7 +17,7 @@ router.post('/add', (req, res) => {
         }
     }, {new: true}, function (err, project) {
         if (!err) {
-            res.status(200).json({item: project.tasks.backlog.pop(), project_id: project_id});
+            res.status(200).send('ok');
         } else {
             res.status(400).send(err.message);
         }
@@ -40,7 +40,7 @@ router.post('/reorder', (req, res) => {
             tasks.tasks = temp;
             tasks.save().then(task => {
 
-                res.status(200).send(req.body);
+                res.status(200).send('ok');
 
             }).catch(err => console.log("err while saving", err));
 

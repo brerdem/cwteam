@@ -62,8 +62,7 @@ db.once('open', () => {
         } else if(change.operationType === 'update') {
             pusher.trigger(
                 channel,
-                'updated',
-                change.updateDescription.updatedFields
+                'updated',{item: change.updateDescription.updatedFields, project_id: change.documentKey._id}
             );
         }
     });

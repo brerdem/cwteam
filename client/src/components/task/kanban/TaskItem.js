@@ -10,7 +10,7 @@ import Rowing from "@material-ui/icons/Rowing";
 import HourglassFull from "@material-ui/icons/HourglassFull";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import barkin from '../../../static/media/barkin.png';
-
+import Fade from "@material-ui/core/Fade/Fade";
 
 const styles = theme => ({
 
@@ -48,9 +48,7 @@ const styles = theme => ({
         margin: theme.spacing.unit,
     },
 
-
 });
-
 
 class TaskItem extends Component {
 
@@ -59,86 +57,85 @@ class TaskItem extends Component {
         selectedDate: new Date(),
     };
 
-
     handleClickOpen = () => {
         this.setState({
             open: true,
         });
     };
 
-
-
     render() {
         const {classes} = this.props;
 
-
         return (
-            <div>
+            <Fade in={true} transition={500}>
 
-               <Draggable draggableId={this.props.task._id} index={this.props.index}>
+                <div>
 
-                    {(provided, snapshot) =>
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                        >
+                    <Draggable draggableId={this.props.task._id} index={this.props.index}>
 
-
-                            <Paper
-
-                                onClick={this.handleClickOpen}
-                                className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
-                                style={{borderLeft: `solid 5px ${this.props.task.categoryColor}`}}
-                                elevation={1}>
+                        {(provided, snapshot) =>
+                            <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                            >
 
 
-                                <Grid container justify="space-between" alignItems="center">
-                                    <Grid item xs={12}>
-                                        <Typography gutterBottom variant="subtitle1"
-                                                    className={classes.taskText}>
-                                            {this.props.task.title}
-                                        </Typography>
+                                <Paper
 
-                                    </Grid>
-                                    <Grid item xs={5} container alignItems="center">
-                                        <Grid item>
-                                            <HourglassFull className={classes.dueIcon}/>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="caption" color="textSecondary">
-                                                2 gün 13 saat
+                                    onClick={this.handleClickOpen}
+                                    className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
+                                    style={{borderLeft: `solid 5px ${this.props.task.categoryColor}`}}
+                                    elevation={1}>
+
+
+                                    <Grid container justify="space-between" alignItems="center">
+                                        <Grid item xs={12}>
+                                            <Typography gutterBottom variant="subtitle1"
+                                                        className={classes.taskText}>
+                                                {this.props.task.title}
                                             </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Rowing className={classes.dueIcon}/>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="caption" color="textSecondary">
-                                                15 saat
-                                            </Typography>
-                                        </Grid>
 
-                                    </Grid>
-                                    <Grid item>
-                                        <Grid container spacing={8} direction="row" alignItems="center">
+                                        </Grid>
+                                        <Grid item xs={5} container alignItems="center">
                                             <Grid item>
-                                                <Avatar className={classes.avatar}>BE</Avatar>
+                                                <HourglassFull className={classes.dueIcon}/>
                                             </Grid>
                                             <Grid item>
-                                                <Avatar className={classes.avatar} src={barkin}
-                                                        alt="Barkın Bulutbeyaz"/>
+                                                <Typography variant="caption" color="textSecondary">
+                                                    2 gün 13 saat
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Rowing className={classes.dueIcon}/>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="caption" color="textSecondary">
+                                                    15 saat
+                                                </Typography>
+                                            </Grid>
+
+                                        </Grid>
+                                        <Grid item>
+                                            <Grid container spacing={8} direction="row" alignItems="center">
+                                                <Grid item>
+                                                    <Avatar className={classes.avatar}>BE</Avatar>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Avatar className={classes.avatar} src={barkin}
+                                                            alt="Barkın Bulutbeyaz"/>
+                                                </Grid>
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                </Grid>
 
-                            </Paper>
+                                </Paper>
 
-                        </div>
-                    }
-                </Draggable>
-            </div>
+                            </div>
+                        }
+                    </Draggable>
+                </div>
+            </Fade>
         );
     }
 }
