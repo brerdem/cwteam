@@ -15,7 +15,7 @@ class Column extends Component {
 
     render() {
         const {column, classes, project_id, addTask, tasks} = this.props;
-        console.log('column-->',tasks);
+        console.log('column-->'+column.id,tasks);
 
         return (
 

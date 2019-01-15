@@ -64,14 +64,15 @@ class TaskItem extends Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, task, index} = this.props;
+        console.log('task_id', task._id);
 
         return (
             <Fade in={true} transition={500}>
 
                 <div>
 
-                    <Draggable draggableId={this.props.task._id} index={this.props.index}>
+                    <Draggable draggableId={task._id} index={index}>
 
                         {(provided, snapshot) =>
                             <div
@@ -85,7 +86,7 @@ class TaskItem extends Component {
 
                                     onClick={this.handleClickOpen}
                                     className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
-                                    style={{borderLeft: `solid 5px ${this.props.task.categoryColor}`}}
+                                    style={{borderLeft: `solid 5px ${task.categoryColor}`}}
                                     elevation={1}>
 
 
@@ -93,7 +94,7 @@ class TaskItem extends Component {
                                         <Grid item xs={12}>
                                             <Typography gutterBottom variant="subtitle1"
                                                         className={classes.taskText}>
-                                                {this.props.task.title}
+                                                {task.title}
                                             </Typography>
 
                                         </Grid>

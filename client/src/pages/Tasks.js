@@ -74,7 +74,7 @@ class Tasks extends Component {
 
 
         getAllProjects().then((response) => {
-            console.log('promise', response);
+
 
             this.setState({
                 loading: false
@@ -84,7 +84,7 @@ class Tasks extends Component {
             console.log(err);
         });
 
-        //this.props.getAllProjects().then((response) => this.setState({projects: response.payload.data}));
+
 
     };
 
@@ -174,7 +174,6 @@ Tasks.propTypes = {
 const mapStateToProps = (state) => {
     return {
         projects: state.projects,
-        tasks: state.tasks
     };
 };
 

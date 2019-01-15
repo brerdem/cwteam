@@ -47,15 +47,15 @@ class Project extends Component {
                             <Grid container spacing={8} direction="row" justify="flex-end">
                                 <Grid item>
                                     <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>0</Avatar>
+                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
                                 </Grid>
                                 <Grid item>
                                     <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>0</Avatar>
+                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
                                 </Grid>
                                 <Grid item>
                                     <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>0</Avatar>
+                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
                                 </Grid>
                             </Grid>
 

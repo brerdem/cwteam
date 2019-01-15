@@ -30,18 +30,7 @@ router.get('/projects', (req, res) => {
     })
 });
 
-router.get('/tasks', (req, res) => {
 
-
-    Task.find({}).sort({order: 1}).exec(function(err, projects) {
-        if (!err) {
-            res.status(200).json(projects);
-        } else {
-            console.log(err);
-            res.status(400).send(err);
-        }
-    })
-});
 
 
 router.get('/', (req, res) => {

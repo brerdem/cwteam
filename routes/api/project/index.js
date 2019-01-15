@@ -41,7 +41,6 @@ router.post('/delete', (req, res) => {
 });
 
 router.get('/:id/team', (req, res) => {
-    console.log('team id is', req.params.id);
 
 
     Project.findOne({_id: req.params.id}, 'team').populate('team').exec((err, team) => {

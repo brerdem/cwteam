@@ -1,20 +1,19 @@
 import produce from 'immer';
-import _ from "underscore";
+
 
 //todo get rid of produce functions and use spread op
 
 const projectReducer = (state = [], action) => {
     switch (action.type) {
         case 'GET_ALL_PROJECTS_DONE':
-
             return action.payload.data;
+
         case 'ADD_PROJECT_DONE':
             return [
                 ...state,
                 action.project
-
             ];
-//fixme add task
+
         case 'ADD_TASK_DONE':
             console.log('type:'+action.type, 'item:'+action.item);
             return produce(state, draft => {
@@ -24,7 +23,11 @@ const projectReducer = (state = [], action) => {
                 draft[index] = project;
             });
 
-        case 'REORDER_TASK_CLIENT':
+
+
+
+
+      /*  case 'REORDER_TASK_CLIENT':
 
             return produce(state, draft => {
 
@@ -39,14 +42,16 @@ const projectReducer = (state = [], action) => {
                 project.tasks[destinationColumn].splice(destinationIndex, 0, task);
                 draft[index] = project;
 
-            });
+            });*/
             case 'REORDER_TASK_DONE':
 
             return produce(state, draft => {
 
-                const index = _.findIndex(state, t => t._id == action.project_id);
+
+                const index = state.findIndex(t => t._id == action.project_id);
                 const project = draft[index];
                 project.tasks = action.tasks;
+                console.log('project reducer', project);
                 draft[index] = project;
 
             });

@@ -29,7 +29,7 @@ class Board extends Component {
             },
         },
         columnOrder: ['backlog', 'progress', 'done'],
-        tasks: this.props.tasks
+
 
     };
 
@@ -37,10 +37,11 @@ class Board extends Component {
 
         console.log(result);
 
-        const {reorderTask, project_id} = this.props;
-        const {tasks} = this.state;
+        const {project_id, tasks} = this.props;
+       // const {tasks} = this.state;
 
         const {destination, source, draggableId} = result;
+        console.log('result', result);
 
         if (!destination) {
             return;
@@ -56,7 +57,7 @@ class Board extends Component {
         const start = source.droppableId;
         const finish = destination.droppableId;
 
-        const task = tasks[start][source.index];
+        const task = tasks[start].find(t => t._id == draggableId);
 
         tasks[start].splice(source.index, 1);
         tasks[finish].splice(destination.index, 0, task);
@@ -87,6 +88,9 @@ class Board extends Component {
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
     render() {
+
+
+
         const {project_id, addTask, tasks} = this.props;
         const {columns, columnOrder} = this.state;
         console.log('board -->', tasks);
