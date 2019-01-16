@@ -1,4 +1,5 @@
 let mongoose = require('mongoose');
+let userSchema = mongoose.model("User").schema;
 let Schema = mongoose.Schema;
 
 let taskSchema = new Schema({
@@ -29,17 +30,15 @@ let taskSchema = new Schema({
         default: 'Yazılım'
     },
     order: {type: Number, default: 0},
-
     assignees: [{
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
+        user: userSchema,
         effort: {
             type: Number,
             default: 3
         }
-    }]
+    }],
+    owner: userSchema
+
 
 });
 
@@ -51,10 +50,7 @@ let projectSchema = new Schema({
         default: Date.now
     },
     active: Boolean,
-    team: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
+    team: [userSchema],
 
     tasks: {
         backlog: [taskSchema],
@@ -69,7 +65,7 @@ let projectSchema = new Schema({
 });
 
 
-projectSchema.index({"tasks.backlog._id": "text", "tasks.progress._id": "text", "tasks.done._id": "text"});
+projectSchema.index({"tasks.backlog._id": "text", "tasks.progress._id": "text", "tasks.done._id": "text", "team._id": "text" });
 
 
 module.exports = mongoose.model('Project', projectSchema);

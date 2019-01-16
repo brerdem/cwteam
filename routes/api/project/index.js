@@ -18,6 +18,7 @@ router.post('/add', (req, res) => {
         if (!err) {
             res.status(200).json(project);
         } else {
+            console.log(err);
             res.status(400).send(err);
         }
     })

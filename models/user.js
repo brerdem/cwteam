@@ -14,17 +14,12 @@ let userSchema = new Schema({
     email: {
         type: String,
         lowercase: true,
-        unique: [true, "is already registered"],
         required: [true, "boş kalamaz"],
         match: [/\S+@\S+\.\S+/, 'geçersiz']
 
     },
     title: String,
-    active: Boolean,
-    todos: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Todo'
-    }]
+    active: Boolean
 
 
 });

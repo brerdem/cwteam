@@ -11,9 +11,10 @@ import {doLogin, doLogout} from "./actions/auth";
 import PrivateRoute from './components/PrivateRoute'
 import Users from "./pages/Users";
 import Register from "./pages/Register";
-import {getAllProjects} from "./actions/project";
+import {addProject, deleteProject, getAllProjects} from "./actions/project";
 import Pusher from "pusher-js";
 import {store} from "./helpers/store";
+import {getAllUsers} from "./actions/user";
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
@@ -36,7 +37,8 @@ class App extends Component {
     };
 
     componentDidMount() {
-        this.props.getAllProjects().then(response => console.log(response)).catch(err => console.log(err));
+
+        this.props.getAllProjects().then().catch(err => console.log(err));
 
         this.pusher = new Pusher(PUSHER_APP_KEY, {
             cluster: PUSHER_APP_CLUSTER,
@@ -45,11 +47,13 @@ class App extends Component {
 
         this.channel = this.pusher.subscribe('projects');
         this.channel.bind('updated', this.dispatchUpdate);
+        this.channel.bind('inserted', this.props.addProject);
+        this.channel.bind('deleted', this.props.deleteProject);
     }
 
     render() {
 
-        const {auth, doLogout, doLogin, ui, projects} = this.props;
+        const {auth, doLogout, doLogin, ui, projects, getAllUsers} = this.props;
         return (
             <React.Fragment>
                 <CssBaseline/>
@@ -60,7 +64,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/login' render={props => <Login doLogin={doLogin} {...props} />}/>
                         <Route exact path='/register' component={Register}/>
-                        <PrivateRoute exact path='/projects' component={Projects} auth={auth}/>
+                        <PrivateRoute exact path='/projects' component={Projects} auth={auth} projects={projects} getAllUsers={getAllUsers}/>
                         <PrivateRoute exact path='/' component={Home} auth={auth} projects={projects}/>
                         <PrivateRoute path='/tasks' component={Tasks} auth={auth}/>
                         <PrivateRoute path='/users' component={Users} auth={auth}/>
@@ -86,7 +90,7 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    {doLogout, doLogin, getAllProjects},
+    {doLogout, doLogin, getAllProjects, addProject, deleteProject, getAllUsers},
     null,
     {
         pure: false,

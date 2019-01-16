@@ -88,13 +88,14 @@ class AddTask extends Component {
         console.log(this.state.selectedUsers);
         let assignees = [];
 
-        this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
+        this.state.selectedUsers.map((member) => assignees.push({user: member, effort: member.effort}));
         const task = {
             project_id: this.props.project_id,
             title: e.target.title.value,
             note: e.target.note.value,
             assignees: assignees,
             department: this.state.department,
+            owner: this.props.auth
         };
 
         axios.post(API_URL + '/task/add', task, {

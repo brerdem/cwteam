@@ -30,6 +30,7 @@ const DashboardGrid = function (props) {
     ];
 
     const {classes, projects} = props;
+
     return (
 
         <Grid container spacing={24}>
@@ -39,8 +40,8 @@ const DashboardGrid = function (props) {
                     <Grid container spacing={24} direction="column" justify="center" alignItems="center">
                         <Grid item xs={8} className={classes.dashboardHeight}>
                             <CircularProgressbar
-                                percentage={61}
-                                text={`${61}%`}
+                                percentage={67}
+                                text={`${67 }%`}
                                 className={classes.dashboardProgress}
                             />
                         </Grid>

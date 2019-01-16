@@ -9,7 +9,7 @@ const withAddButton = (Wrapped) => {
     class HOC extends Component {
         state = {
             open: false,
-            team: []
+            team: this.props.team
         };
 
         handleClose = () => {
@@ -27,26 +27,10 @@ const withAddButton = (Wrapped) => {
 
         };
 
-        componentDidMount() {
-            axios.get('/api/project/' + this.props.project_id + '/team', {
-                headers: {'Authorization': 'bearer ' + getToken()}
-            })
-                .then((response) => {
-                    console.log(response);
-                    this.setState({
-                        team: response.data.team
-                    })
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-
-
         render() {
 
             const {open, team} = this.state;
-            const {addTask, project_id} = this.props;
+            const {addTask, project, auth} = this.props;
 
             return (
                 <div>
@@ -58,7 +42,7 @@ const withAddButton = (Wrapped) => {
                     </ListItem>
 
 
-                    <Wrapped open={open} onClose={this.handleClose} team={team} addTask={addTask} project_id={project_id} {...this.props} />
+                    <Wrapped open={open} onClose={this.handleClose} team={team} addTask={addTask} project_id={project._id} auth={auth}{...this.props} />
                 </div>
 
             );

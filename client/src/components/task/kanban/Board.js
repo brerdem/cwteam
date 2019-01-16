@@ -30,15 +30,14 @@ class Board extends Component {
         },
         columnOrder: ['backlog', 'progress', 'done'],
 
-
     };
 
     onDragEnd = result => {
 
         console.log(result);
 
-        const {project_id, tasks} = this.props;
-       // const {tasks} = this.state;
+        const {project} = this.props;
+        let tasks = project.tasks;
 
         const {destination, source, draggableId} = result;
         console.log('result', result);
@@ -62,12 +61,12 @@ class Board extends Component {
         tasks[start].splice(source.index, 1);
         tasks[finish].splice(destination.index, 0, task);
 
-        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id});
+        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id:project._id});
 
         //todo make another reducer dispatch before async request
 
         axios.post(API_URL + '/task/reorder', {
-            project_id,
+            project_id:project._id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
             sourceColumn: start,
@@ -89,11 +88,9 @@ class Board extends Component {
     // But in this example everything is just done in one place for simplicity
     render() {
 
-
-
-        const {project_id, addTask, tasks} = this.props;
+        const {project, addTask, auth} = this.props;
         const {columns, columnOrder} = this.state;
-        console.log('board -->', tasks);
+        console.log('board -->', project.tasks);
         return (
 
             <Grid container spacing={8}>
@@ -101,8 +98,8 @@ class Board extends Component {
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
 
-                        return <Column key={columnId} column={column} tasks={tasks[columnId]} project_id={project_id}
-                                       addTask={addTask}/>;
+                        return <Column key={columnId} column={column} tasks={project.tasks[columnId]} project={project}
+                                       addTask={addTask} auth={auth}/>;
                     })}
                 </DragDropContext>
             </Grid>

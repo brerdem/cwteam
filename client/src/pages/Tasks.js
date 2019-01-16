@@ -13,17 +13,11 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {getAllProjects} from "../actions/project";
+import {addTask, getAllProjects, reorderTask} from "../actions/project";
 import {compose} from 'recompose';
-import {addTask, reorderTask} from "../actions/project";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
 import Board from "../components/task/kanban/Board";
-import Pusher from "pusher-js";
-import {store} from "../helpers/store";
-
-const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
-const PUSHER_APP_CLUSTER = 'eu';
 
 const extraTheme = createMuiTheme({
     palette: {
@@ -37,53 +31,16 @@ const extraTheme = createMuiTheme({
 class Tasks extends Component {
 
     state = {
-        loading: false,
-        value: 0,
 
-    };
-
-    dispatchUpdate = ({item, project_id}) => {
-
-        if (Object.keys(item)[0] === 'tasks.backlog') {
-            console.log('dispatch:'+item);
-
-            store.dispatch({type: 'ADD_TASK_DONE', item: item['tasks.backlog'], project_id});
-        } else {
-
-            store.dispatch({type: 'REORDER_TASK_DONE', tasks: item.tasks, project_id});
-        }
+        value: 0
 
     };
 
     componentDidMount() {
 
-        const {getAllProjects} = this.props;
-
         this.setState({
             value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
         });
-
-        this.pusher = new Pusher(PUSHER_APP_KEY, {
-            cluster: PUSHER_APP_CLUSTER,
-            useTLS: true,
-        });
-
-        this.channel = this.pusher.subscribe('projects');
-        this.channel.bind('updated', this.dispatchUpdate);
-
-
-     /*   getAllProjects().then((response) => {
-
-
-            this.setState({
-                loading: false
-            });
-
-        }).catch((err) => {
-            console.log(err);
-        });*/
-
-
 
     };
 
@@ -93,10 +50,10 @@ class Tasks extends Component {
     };
 
     render() {
-        const {classes, projects, tasks, addTask, reorderTask} = this.props;
+        const {classes, projects, tasks, addTask, reorderTask, auth} = this.props;
 
         let content;
-        if (this.state.loading) {
+        if (projects.length === 0) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
             content =
@@ -125,8 +82,8 @@ class Tasks extends Component {
                                     <Grid item xs={12}>
                                         {projects.map((project, index) => {
 
-                                            return <Project key={index} project={project}><Board tasks={project.tasks}
-                                                                                                 project_id={project._id}
+                                            return <Project key={index} project={project}><Board project={project}
+                                                                                                 auth={auth}
                                                                                                  addTask={addTask}
                                                                                                  reorderTask={reorderTask}/></Project>;
 
