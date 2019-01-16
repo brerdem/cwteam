@@ -6,11 +6,15 @@ import {Draggable} from "react-beautiful-dnd";
 import classNames from 'classnames';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Rowing from "@material-ui/icons/Rowing";
 import HourglassFull from "@material-ui/icons/HourglassFull";
+import Rowing from "@material-ui/icons/Rowing";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import barkin from '../../../static/media/barkin.png';
 import Fade from "@material-ui/core/Fade/Fade";
+import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
+import ListItem from "@material-ui/core/es/ListItem/ListItem";
+import moment from 'moment';
+import 'moment/locale/tr';
 
 const styles = theme => ({
 
@@ -30,7 +34,7 @@ const styles = theme => ({
     },
 
     dueIcon: {
-        width: 14,
+        width: 16,
         color: theme.palette.secondary,
         margin: 0
 
@@ -67,6 +71,12 @@ class TaskItem extends Component {
         const {classes, task, index} = this.props;
         console.log('task_id', task._id);
 
+        const dateStart = moment(task.startDate);
+        const dateEnd = moment(task.endDate);
+
+        const task_duration = moment.duration(dateEnd.diff(dateStart));
+        const effortTotal = task.assignees.reduce(((m,a) => m + a.effort), 0);
+
         return (
             <Fade in={true} transition={500}>
 
@@ -98,34 +108,46 @@ class TaskItem extends Component {
                                             </Typography>
 
                                         </Grid>
-                                        <Grid item xs={5} container alignItems="center">
-                                            <Grid item>
-                                                <HourglassFull className={classes.dueIcon}/>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="caption" color="textSecondary">
-                                                    2 gün 13 saat
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Rowing className={classes.dueIcon}/>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="caption" color="textSecondary">
-                                                    15 saat
-                                                </Typography>
-                                            </Grid>
+                                        <Grid item>
+                                            <ListItem disableGutters style={{padding: 0}}>
+                                                <ListItemIcon style={{marginRight: 4}}>
+                                                    <HourglassFull className={classes.dueIcon}/>
+                                                </ListItemIcon>
+                                                <ListItemText style={{padding: 0}} primary={task_duration.humanize()}
+                                                              primaryTypographyProps={{
+                                                                  style: {
+                                                                      fontSize: '12px',
+                                                                      padding: 0
+                                                                  }
+                                                              }}/></ListItem>
+                                            <ListItem disableGutters style={{padding: 0}}>
+                                                <ListItemIcon style={{marginRight: 4}}>
+                                                    <Rowing className={classes.dueIcon}/>
+                                                </ListItemIcon>
+                                                <ListItemText style={{padding: 0}} primary={`${effortTotal} saat`}
+                                                              primaryTypographyProps={{
+                                                                  style: {
+                                                                      fontSize: '12px',
+                                                                      padding: 0
+                                                                  }
+                                                              }}/></ListItem>
+
 
                                         </Grid>
                                         <Grid item>
-                                            <Grid container spacing={8} direction="row" alignItems="center">
-                                                <Grid item>
-                                                    <Avatar className={classes.avatar}>BE</Avatar>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Avatar className={classes.avatar} src={barkin}
-                                                            alt="Barkın Bulutbeyaz"/>
-                                                </Grid>
+                                            <Grid container spacing={8} direction="row" alignItems="flex-end"
+                                                  justify="flex-end">
+                                                {task.assignees.map(assignee =>
+                                                    <Grid item key={assignee.user._id}>
+                                                        <Avatar style={{
+                                                            width: 24,
+                                                            height: 24,
+                                                            fontSize: 12,
+                                                            color: '#FFFFFF',
+                                                            backgroundColor: assignee.user.avatar_bg
+                                                        }}>{assignee.user.first_name.charAt(0).toLocaleUpperCase() + assignee.user.last_name.charAt(0).toLocaleUpperCase()}</Avatar>
+                                                    </Grid>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Grid>

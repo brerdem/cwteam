@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import Add from "@material-ui/icons/Add";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
-import axios from "axios";
-import {getToken} from "../../../actions/auth";
 import Button from "@material-ui/core/es/Button/Button";
 
 const withAddButton = (Wrapped) => {
@@ -35,7 +33,7 @@ const withAddButton = (Wrapped) => {
             return (
                 <div>
                     <ListItem>
-                        <Button color="primary" size="medium" onClick={this.handleOpen} variant="raised">
+                        <Button color="primary" size="medium" onClick={this.handleOpen} variant="contained">
                             <Add style={{marginRight: 10}}/>YENİ EKLE
                         </Button>
 
