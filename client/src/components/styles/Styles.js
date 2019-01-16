@@ -90,7 +90,7 @@ export default theme => ({
         flexDirection: 'column',
     },
     cardDashboard: {
-        height: 300,
+        flexGrow:1,
         display: 'flex',
         flexDirection: 'column',
     },

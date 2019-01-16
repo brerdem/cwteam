@@ -24,7 +24,6 @@ import {store} from "../helpers/store";
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
-const API_URL = 'http://localhost:3000/api';
 
 const extraTheme = createMuiTheme({
     palette: {
@@ -38,7 +37,7 @@ const extraTheme = createMuiTheme({
 class Tasks extends Component {
 
     state = {
-        loading: true,
+        loading: false,
         value: 0,
 
     };
@@ -73,7 +72,7 @@ class Tasks extends Component {
         this.channel.bind('updated', this.dispatchUpdate);
 
 
-        getAllProjects().then((response) => {
+     /*   getAllProjects().then((response) => {
 
 
             this.setState({
@@ -82,7 +81,7 @@ class Tasks extends Component {
 
         }).catch((err) => {
             console.log(err);
-        });
+        });*/
 
 
 
