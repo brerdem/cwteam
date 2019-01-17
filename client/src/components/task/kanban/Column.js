@@ -38,8 +38,9 @@ class Column extends Component {
                                  {...provided.droppableProps}
                                  className={classNames(classes.columnInner, snapshot.isDraggingOver ? classes.columnItemDraggingOver : '')}
                             >
-                                {tasks.map((task, index) =>
-                                    <Task key={index} task={task} index={index}/>
+                                {tasks.map((task, index) => {
+                                    return task.show ?  <Task key={index} task={task} index={index}/> : null
+                                    }
                                 )}
 
                                 {provided.placeholder}

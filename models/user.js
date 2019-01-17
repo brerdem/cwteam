@@ -4,13 +4,6 @@ let Schema = mongoose.Schema;
 let userSchema = new Schema({
     first_name: {type: String, required: [true, "boş kalamaz"]},
     last_name: {type: String, required: [true, "boş kalamaz"]},
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    avatar_url: String,
-    avatar_bg: String,
-    password: String,
     email: {
         type: String,
         lowercase: true,
@@ -18,9 +11,27 @@ let userSchema = new Schema({
         match: [/\S+@\S+\.\S+/, 'geçersiz']
 
     },
+    avatar_url: String,
+    avatar_bg: String,
+    password: String,
+    hourly_fee: {
+        type: Number,
+        default: 100
+    },
+    department: {
+        type: String,
+        enum: ['Yazılım', 'Sosyal Medya', 'Tasarım', 'Müşteri'],
+        default: 'Yazılım'
+    },
     title: String,
-    active: Boolean
-
+    active: {
+        type: Boolean,
+        default: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 
 });
 

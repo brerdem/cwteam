@@ -13,11 +13,17 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {addTask, getAllProjects, reorderTask} from "../actions/project";
+import {addTask, filterTaskByDepartments, getAllProjects, reorderTask} from "../actions/project";
 import {compose} from 'recompose';
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
 import Board from "../components/task/kanban/Board";
+import FormControl from "@material-ui/core/es/FormControl/FormControl";
+import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlLabel";
+import FormGroup from "@material-ui/core/es/FormGroup/FormGroup";
+import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
+import departments from '../helpers/departments';
+import _ from 'underscore';
 
 const extraTheme = createMuiTheme({
     palette: {
@@ -32,7 +38,11 @@ class Tasks extends Component {
 
     state = {
 
-        value: 0
+        value: 0,
+        software: true,
+        design: true,
+        account: true,
+        social: true,
 
     };
 
@@ -46,11 +56,18 @@ class Tasks extends Component {
 
     handleChange = (event, value) => {
 
-        this.setState({value})
+        this.setState({value});
+    };
+
+    handleDepartmentChange = name => event => {
+        this.setState({[name]: event.target.checked}, () => {
+            this.props.filterTaskByDepartments(_.chain(departments).filter(t => this.state[t.def]).pluck('name').value());
+        });
     };
 
     render() {
-        const {classes, projects, tasks, addTask, reorderTask, auth} = this.props;
+
+        const {classes, projects, addTask, reorderTask, auth} = this.props;
 
         let content;
         if (projects.length === 0) {
@@ -93,7 +110,7 @@ class Tasks extends Component {
 
                             }/>
                             <Route path="/tasks/timeline"
-                                   render={() => <Timeline projects={projects} tasks={tasks}/>}/>
+                                   render={() => <Timeline projects={projects}/>}/>
                         </Switch>
 
                     </div>
@@ -111,6 +128,27 @@ class Tasks extends Component {
                                     className={classes.headingPadding}>
                             İŞLER
                         </Typography>
+
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <FormGroup>
+                                <Grid container justify="center" alignItems="center" direction="row">
+                                    {departments.map(department =>
+
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox style={{color: department.color}}
+                                                          checked={this.state[department.def]}
+                                                          onChange={this.handleDepartmentChange(department.def)}
+                                                          value={department.def}/>
+                                            }
+                                            label={department.name}
+                                        />
+                                    )}
+                                </Grid>
+                            </FormGroup>
+                        </FormControl>
+
+
                         {content}
                     </div>
 
@@ -134,6 +172,6 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {getAllProjects, addTask, reorderTask}),
+    connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
     withStyles(theme)
 )(Tasks);

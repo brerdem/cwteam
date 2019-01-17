@@ -21,6 +21,10 @@ const PUSHER_APP_CLUSTER = 'eu';
 
 class App extends Component {
 
+    state = {
+        loading: true
+    };
+
     //todo pusher insert bind yapılacak
 
     dispatchUpdate = ({item, project_id}) => {
@@ -38,7 +42,7 @@ class App extends Component {
 
     componentDidMount() {
 
-        this.props.getAllProjects().then().catch(err => console.log(err));
+        this.props.getAllProjects().then(t => this.setState({loading: false})).catch(err => console.log(err));
 
         this.pusher = new Pusher(PUSHER_APP_KEY, {
             cluster: PUSHER_APP_CLUSTER,
@@ -64,7 +68,8 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/login' render={props => <Login doLogin={doLogin} {...props} />}/>
                         <Route exact path='/register' component={Register}/>
-                        <PrivateRoute exact path='/projects' component={Projects} auth={auth} projects={projects} getAllUsers={getAllUsers}/>
+                        <PrivateRoute exact path='/projects' loading={this.state.loading} component={Projects} auth={auth} projects={projects}
+                                      getAllUsers={getAllUsers}/>
                         <PrivateRoute exact path='/' component={Home} auth={auth} projects={projects}/>
                         <PrivateRoute path='/tasks' component={Tasks} auth={auth}/>
                         <PrivateRoute path='/users' component={Users} auth={auth}/>

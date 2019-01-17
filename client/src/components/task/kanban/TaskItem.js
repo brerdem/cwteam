@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from '@material-ui/core/styles';
 import {Draggable} from "react-beautiful-dnd";
@@ -15,6 +14,7 @@ import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import moment from 'moment';
 import 'moment/locale/tr';
+import departments from '../../../helpers/departments'
 
 const styles = theme => ({
 
@@ -75,8 +75,8 @@ class TaskItem extends Component {
         const dateEnd = moment(task.endDate);
 
         const task_duration = moment.duration(dateEnd.diff(dateStart));
-        const effortTotal = task.assignees.reduce(((m,a) => m + a.effort), 0);
-
+        const effortTotal = task.assignees.reduce(((m, a) => m + a.effort), 0);
+        const departmentColor = departments.find(t => t.name === task.department).color;
         return (
             <Fade in={true} transition={500}>
 
@@ -96,7 +96,7 @@ class TaskItem extends Component {
 
                                     onClick={this.handleClickOpen}
                                     className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
-                                    style={{borderLeft: `solid 5px ${task.categoryColor}`}}
+                                    style={{borderLeft: `solid 5px ${departmentColor}`}}
                                     elevation={1}>
 
 

@@ -20,6 +20,7 @@ import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 import PropTypes from 'prop-types';
 import axios from "axios";
 import {getToken} from "../../../actions/auth";
+import departments from '../../../helpers/departments'
 
 const API_URL = 'http://localhost:3000/api';
 const styles = theme => ({
@@ -52,13 +53,6 @@ const style = {
     }
 };
 
-const departments = [
-    {name: 'Yazılım', color: '#9c27b0'},
-    {name: 'Tasarım', color: '#006db0'},
-    {name: 'Sosyal Medya', color: '#00a702'},
-    {name: 'Müşteri', color: '#db6700'},
-
-];
 
 class AddTask extends Component {
 

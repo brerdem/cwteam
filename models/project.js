@@ -15,6 +15,10 @@ let taskSchema = new Schema({
     },
     startDate: Date,
     endDate: Date,
+    show: {
+        type: Boolean,
+        default: true
+    },
     active: {
         type: Boolean,
         default: true
@@ -38,7 +42,6 @@ let taskSchema = new Schema({
         }
     }],
     owner: userSchema
-
 
 });
 
@@ -64,8 +67,11 @@ let projectSchema = new Schema({
 
 });
 
-
-projectSchema.index({"tasks.backlog._id": "text", "tasks.progress._id": "text", "tasks.done._id": "text", "team._id": "text" });
-
+projectSchema.index({
+    "tasks.backlog._id": "text",
+    "tasks.progress._id": "text",
+    "tasks.done._id": "text",
+    "team._id": "text"
+});
 
 module.exports = mongoose.model('Project', projectSchema);

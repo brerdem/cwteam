@@ -195,7 +195,7 @@ export default theme => ({
     taskInfoText: {
         padding: 0,
         fontSize: 10
-    }
+    },
 
 });
 

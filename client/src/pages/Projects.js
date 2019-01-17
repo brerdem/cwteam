@@ -97,10 +97,10 @@ class Projects extends Component {
 
     render() {
 
-        const {classes, getAllUsers, projects} = this.props;
+        const {classes, getAllUsers, projects, loading} = this.props;
 
         let content;
-        if (projects.length === 0) {
+        if (loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
             if (projects.length === 0) {
@@ -154,7 +154,7 @@ class Projects extends Component {
 
 
                         <DialogActions>
-                            <Button onClick={this.closeDialog} color="primary">
+                            <Button onClick={this.closeDeleteDialog} color="primary">
                                 VAZGEÇ
                             </Button>
                             <Button onClick={this.handleProjectDelete} color="primary" autoFocus>
@@ -172,7 +172,7 @@ class Projects extends Component {
             <div>
 
 
-                <ProjectDialog open={this.state.open} addProject={this.handleProjectAdd}
+                <ProjectDialog open={this.state.open} addProject={this.handleProjectAdd} onClose={this.closeDialog}
                                getAllUsers={getAllUsers}/>
 
                 <main className={classes.layout}>
@@ -186,7 +186,7 @@ class Projects extends Component {
 
                     </div>
 
-                    <Fab color="primary" onClick={this.openDialog} className={classes.fabButton}>
+                    <Fab color="primary" onClick={this.openDialog}  className={classes.fabButton}>
                         <Add/>
 
                     </Fab>

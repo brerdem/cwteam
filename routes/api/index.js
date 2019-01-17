@@ -20,7 +20,7 @@ router.use('/project', passport.authenticate('jwt', {session: false}, null), pro
 router.get('/projects', (req, res) => {
 
 
-    Project.find({}).populate('team').populate('tasks.backlog.assignees.user').populate('tasks.progress.assignees.user').populate('tasks.done.assignees.user').exec(function(err, projects) {
+    Project.find({}, function(err, projects) {
         if (!err) {
             res.status(200).json(projects);
         } else {
@@ -29,8 +29,6 @@ router.get('/projects', (req, res) => {
         }
     })
 });
-
-
 
 
 router.get('/', (req, res) => {

@@ -16,6 +16,13 @@ const deleteProjectAC = id => {
     }
 };
 
+const filterTaskByDepartmentsAC = selectedDepartments => {
+    return {
+        type: 'FILTER_TASKS_DONE',
+        selectedDepartments
+    }
+};
+
 //action creators
 export const addProject = project => dispatch => {
 
@@ -27,6 +34,13 @@ export const deleteProject = id => dispatch => {
 
     dispatch(deleteProjectAC(id));
 };
+
+export const filterTaskByDepartments = selectedDepartments => dispatch => {
+
+    dispatch(filterTaskByDepartmentsAC(selectedDepartments));
+};
+
+
 
 
 export const addTask = (task) => {
@@ -58,6 +72,9 @@ export const reorderTask = (project_id, sourceIndex, destinationIndex, sourceCol
         });
 
 };
+
+
+
 export const getAllProjects = ()  => {
     return {
         types: ['GET_ALL_PROJECTS_LOAD', 'GET_ALL_PROJECTS_DONE', 'GET_ALL_PROJECTS_ERROR'],
