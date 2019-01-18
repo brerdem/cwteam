@@ -67,10 +67,10 @@ class Tasks extends Component {
 
     render() {
 
-        const {classes, projects, addTask, reorderTask, auth} = this.props;
+        const {classes, projects, addTask, reorderTask, auth, users, loading} = this.props;
 
         let content;
-        if (projects.length === 0) {
+        if (loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
             content =
@@ -99,7 +99,7 @@ class Tasks extends Component {
                                     <Grid item xs={12}>
                                         {projects.map((project, index) => {
 
-                                            return <Project key={index} project={project}><Board project={project}
+                                            return <Project key={index} project={project} users={users}><Board project={project}
                                                                                                  auth={auth}
                                                                                                  addTask={addTask}
                                                                                                  reorderTask={reorderTask}/></Project>;
@@ -165,13 +165,9 @@ Tasks.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-    return {
-        projects: state.projects,
-    };
-};
 
+//fixme remove from connect
 export default compose(
-    connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
+    connect(null, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
     withStyles(theme)
 )(Tasks);

@@ -33,35 +33,27 @@ const projectReducer = (state = [], action) => {
 
             });
 
-
-
-        /*  case 'REORDER_TASK_CLIENT':
-
-              return produce(state, draft => {
-
-                  const {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn} = action;
-
-                  const index = _.findIndex(state, t => t._id == project_id);
-
-                  const project = draft[index];
-                  const task = project.tasks[sourceColumn][sourceIndex];
-
-                  project.tasks[sourceColumn].splice(sourceIndex, 1);
-                  project.tasks[destinationColumn].splice(destinationIndex, 0, task);
-                  draft[index] = project;
-
-              });*/
         case 'REORDER_TASK_DONE':
+            console.log('project reducer tasks', action.tasks);
 
-            return produce(state, draft => {
+            const project = state.find(t => t._id === action.project_id);
+            const excluded = state.filter(t => t._id !== action.project_id);
+            console.log(state.length, excluded.length);
+            project.tasks = action.tasks;
+            return [
+                ...excluded,
+                project
+            ];
+
+            //todo why immer doesn't work here? investigate
+        /*  return produce(state, draft => {
 
                 const index = state.findIndex(t => t._id === action.project_id);
-                const project = draft[index];
-                project.tasks = action.tasks;
-                console.log('project reducer', project);
-                draft[index] = project;
+                draft[index].tasks = action.tasks;
+                return draft;
 
-            });
+
+            });*/
 
         case 'DELETE_PROJECT_DONE':
             return state.filter(element => element._id !== action.id);

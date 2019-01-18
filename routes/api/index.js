@@ -2,6 +2,7 @@ const passport = require("passport");
 require('../../passport');
 const Project = require('./../../models/project');
 const Task = require('./../../models/task');
+const User = require('./../../models/user');
 
 const router = require('express').Router();
 const auth = require('./auth');
@@ -30,9 +31,22 @@ router.get('/projects', (req, res) => {
     })
 });
 
+router.get('/users', (req, res) => {
+
+    User.find({}, (err, users) => {
+        if (!err) {
+            res.status(200).json(users);
+        } else {
+            res.status(400).send(err);
+        }
+    });
+
+});
 
 router.get('/', (req, res) => {
     res.status(200).json({message: 'Connected to API!'});
 });
+
+
 
 module.exports = router;

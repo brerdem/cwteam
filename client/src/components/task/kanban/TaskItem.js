@@ -69,7 +69,7 @@ class TaskItem extends Component {
 
     render() {
         const {classes, task, index} = this.props;
-        console.log('task_id', task._id);
+        if (!task.show) return null;
 
         const dateStart = moment(task.startDate);
         const dateEnd = moment(task.endDate);

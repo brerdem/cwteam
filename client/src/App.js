@@ -25,7 +25,7 @@ class App extends Component {
         loading: true
     };
 
-    //todo pusher insert bind yapılacak
+    //todo move initial data to components. Make another router group or HOC
 
     dispatchUpdate = ({item, project_id}) => {
 
@@ -41,8 +41,13 @@ class App extends Component {
     };
 
     componentDidMount() {
+        const {getAllProjects, getAllUsers} = this.props;
 
-        this.props.getAllProjects().then(t => this.setState({loading: false})).catch(err => console.log(err));
+        Promise.all([getAllProjects(), getAllUsers()]).then(response => {
+            this.setState({loading: false});
+        }).catch(err => {
+            console.log(err);
+        });
 
         this.pusher = new Pusher(PUSHER_APP_KEY, {
             cluster: PUSHER_APP_CLUSTER,
@@ -57,7 +62,7 @@ class App extends Component {
 
     render() {
 
-        const {auth, doLogout, doLogin, ui, projects, getAllUsers} = this.props;
+        const {auth, doLogout, doLogin, ui, projects, users} = this.props;
         return (
             <React.Fragment>
                 <CssBaseline/>
@@ -68,11 +73,11 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/login' render={props => <Login doLogin={doLogin} {...props} />}/>
                         <Route exact path='/register' component={Register}/>
-                        <PrivateRoute exact path='/projects' loading={this.state.loading} component={Projects} auth={auth} projects={projects}
-                                      getAllUsers={getAllUsers}/>
+                        <PrivateRoute exact path='/projects' loading={this.state.loading} component={Projects}
+                                      auth={auth} projects={projects} users={users} />
                         <PrivateRoute exact path='/' component={Home} auth={auth} projects={projects}/>
-                        <PrivateRoute path='/tasks' component={Tasks} auth={auth}/>
-                        <PrivateRoute path='/users' component={Users} auth={auth}/>
+                        <PrivateRoute path='/tasks' component={Tasks} auth={auth} projects={projects} users={users} loading={this.state.loading}/>
+                        <PrivateRoute path='/users' component={Users} auth={auth} loading={this.state.loading}/>
 
                     </Switch>
                 </div>
@@ -88,7 +93,8 @@ const mapStateToProps = (state) => {
     return {
         auth: state.auth,
         ui: state.ui,
-        projects: state.projects
+        projects: state.projects,
+        users: state.users
 
     };
 };

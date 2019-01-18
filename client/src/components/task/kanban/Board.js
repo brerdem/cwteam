@@ -33,14 +33,14 @@ class Board extends Component {
     };
 
     onDragEnd = result => {
+        console.log('result', result);
 
-        console.log(result);
 
         const {project} = this.props;
         let tasks = project.tasks;
 
         const {destination, source, draggableId} = result;
-        console.log('result', result);
+
 
         if (!destination) {
             return;
@@ -56,17 +56,19 @@ class Board extends Component {
         const start = source.droppableId;
         const finish = destination.droppableId;
 
-        const task = tasks[start].find(t => t._id == draggableId);
+        const task = tasks[start].find(t => t._id === draggableId);
 
         tasks[start].splice(source.index, 1);
         tasks[finish].splice(destination.index, 0, task);
+        console.log('tasks', tasks);
+        console.log('tasks-start', tasks[start]);
+        console.log('tasks-finish', tasks[finish]);
 
-        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id:project._id});
+        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id: project._id});
 
-        //todo make another reducer dispatch before async request
 
-        axios.post(API_URL + '/task/reorder', {
-            project_id:project._id,
+      axios.post(API_URL + '/task/reorder', {
+            project_id: project._id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
             sourceColumn: start,
@@ -77,6 +79,7 @@ class Board extends Component {
         })
             .then(response => {
                 console.log('task reorder action');
+
             })
             .catch(error => {
                 console.log(error);

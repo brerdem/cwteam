@@ -104,8 +104,7 @@ export default theme => ({
     },
     heading: {
         fontSize: theme.typography.pxToRem(20),
-        flexBasis: '33.33%',
-        flexShrink: 0,
+
         fontWeight: 500
     },
     todoBackground: {
@@ -126,7 +125,8 @@ export default theme => ({
         height: 30,
         fontSize: 14,
         fontWeight: 600,
-        color: 'black'
+        color: 'black',
+        margin: '0 3px'
     },
     columnItem: {
         border: 'solid 1px lightgray',

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Task from "./TaskItem";
+import TaskItem from "./TaskItem";
 import {withStyles} from '@material-ui/core/styles';
 import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
@@ -38,9 +38,9 @@ class Column extends Component {
                                  {...provided.droppableProps}
                                  className={classNames(classes.columnInner, snapshot.isDraggingOver ? classes.columnItemDraggingOver : '')}
                             >
-                                {tasks.map((task, index) => {
-                                    return task.show ?  <Task key={index} task={task} index={index}/> : null
-                                    }
+                                {tasks.map((task, index) =>
+                                     <TaskItem key={index} task={task} index={index} />
+
                                 )}
 
                                 {provided.placeholder}

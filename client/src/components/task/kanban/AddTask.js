@@ -64,6 +64,7 @@ class AddTask extends Component {
         department: ''
     };
 
+
     handleStartDateChange = (date) => {
         this.setState({selectedStartDate: date, selectedEndDate: date});
     };
@@ -155,6 +156,7 @@ class AddTask extends Component {
 
 
                             <Grid container direction="row" alignItems="center" spacing={24}>
+
                                 <Grid item>
                                     <b>Başlangıç:</b>
                                 </Grid>

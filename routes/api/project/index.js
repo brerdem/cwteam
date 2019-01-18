@@ -34,6 +34,7 @@ router.post('/delete', (req, res) => {
         if (!err) {
             res.status(200).json(req.body.id);
         } else {
+            console.log(err);
             res.status(400).send(err);
         }
     })

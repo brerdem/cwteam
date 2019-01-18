@@ -97,7 +97,7 @@ class Projects extends Component {
 
     render() {
 
-        const {classes, getAllUsers, projects, loading} = this.props;
+        const {classes, users, projects, loading} = this.props;
 
         let content;
         if (loading) {
@@ -173,7 +173,7 @@ class Projects extends Component {
 
 
                 <ProjectDialog open={this.state.open} addProject={this.handleProjectAdd} onClose={this.closeDialog}
-                               getAllUsers={getAllUsers}/>
+                               users={users}/>
 
                 <main className={classes.layout}>
                     {/* Hero unit */}

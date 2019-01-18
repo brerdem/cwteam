@@ -7,13 +7,11 @@ import theme from '../components/styles/Styles';
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Card from "@material-ui/core/es/Card/Card";
 import CardActionArea from "@material-ui/core/es/CardActionArea/CardActionArea";
-import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
 import CardContent from "@material-ui/core/es/CardContent/CardContent";
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemAvatar from "@material-ui/core/es/ListItemAvatar/ListItemAvatar";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
-import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import UserAvatar from "../components/user/UserAvatar";
 import departments from '../helpers/departments'
 
@@ -31,7 +29,7 @@ class Users extends Component {
 
          });*/
 
-        axios.get('/api/user/all').then((response) => {
+        axios.get('/api/users').then((response) => {
             this.setState({loading: false, users: response.data})
 
         })
@@ -52,9 +50,9 @@ class Users extends Component {
 
 
     render() {
-        const {classes} = this.props;
+        const {classes, loading} = this.props;
         let content;
-        if (this.state.loading) {
+        if (loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
             content =
@@ -65,7 +63,7 @@ class Users extends Component {
 
                                 <CardActionArea onClick={() => this.props.history.push('/')}>
 
-                                    <CardContent className={classes.cardContent} style={{backgroundColor: this.hex2rgb(departments.find(t => t.name === user.department).color, .2)}}>
+                                    <CardContent className={classes.cardContent} style={{borderRight: 'solid 5px '+this.hex2rgb(departments.find(t => t.name === user.department).color, 1)}}>
                                         <ListItem alignItems="flex-start" disableGutters>
                                             <ListItemAvatar>
                                                 <UserAvatar alt="Clockwork" style={{backgroundColor: user.avatar_bg}} first_name={user.first_name} last_name={user.last_name} src={user.avatar_url === ''? '': require(`../static/media/users/${user.avatar_url}.png`)} />
