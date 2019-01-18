@@ -29,18 +29,18 @@ class Board extends Component {
             },
         },
         columnOrder: ['backlog', 'progress', 'done'],
-        tasks: this.props.tasks
 
     };
 
     onDragEnd = result => {
-
         console.log('result', result);
 
-        const {reorderTask, project_id} = this.props;
-        const {tasks} = this.state;
+
+        const {project} = this.props;
+        let tasks = project.tasks;
 
         const {destination, source, draggableId} = result;
+
 
         if (!destination) {
             return;
@@ -56,17 +56,19 @@ class Board extends Component {
         const start = source.droppableId;
         const finish = destination.droppableId;
 
-        const task = tasks[start][source.index];
+        const task = tasks[start].find(t => t._id === draggableId);
 
         tasks[start].splice(source.index, 1);
         tasks[finish].splice(destination.index, 0, task);
+        console.log('tasks', tasks);
+        console.log('tasks-start', tasks[start]);
+        console.log('tasks-finish', tasks[finish]);
 
-        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id});
+        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id: project._id});
 
-        //todo make another reducer dispatch before async request
 
-        axios.post(API_URL + '/task/reorder', {
-            project_id,
+      axios.post(API_URL + '/task/reorder', {
+            project_id: project._id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
             sourceColumn: start,
@@ -77,6 +79,7 @@ class Board extends Component {
         })
             .then(response => {
                 console.log('task reorder action');
+
             })
             .catch(error => {
                 console.log(error);
@@ -87,9 +90,10 @@ class Board extends Component {
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
     render() {
-        const {project_id, addTask, tasks} = this.props;
+
+        const {project, addTask, auth} = this.props;
         const {columns, columnOrder} = this.state;
-        console.log('board -->', tasks);
+        console.log('board -->', project.tasks);
         return (
 
             <Grid container spacing={8}>
@@ -97,8 +101,8 @@ class Board extends Component {
                     {columnOrder.map(columnId => {
                         const column = columns[columnId];
 
-                        return <Column key={columnId} column={column} tasks={tasks[columnId]} project_id={project_id}
-                                       addTask={addTask}/>;
+                        return <Column key={columnId} column={column} tasks={project.tasks[columnId]} project={project}
+                                       addTask={addTask} auth={auth}/>;
                     })}
                 </DragDropContext>
             </Grid>

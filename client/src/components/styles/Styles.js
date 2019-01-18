@@ -2,7 +2,6 @@ import green from '@material-ui/core/colors/green';
 import orange from "@material-ui/core/colors/orange";
 import red from "@material-ui/core/colors/red";
 
-
 export default theme => ({
     '@global': {
         body: {
@@ -35,7 +34,6 @@ export default theme => ({
         flexDirection: 'column',
         justifyContent: 'start'
     },
-
 
     marginTopBottom: {
         margin: `${theme.spacing.unit * 4}px 0`,
@@ -74,7 +72,6 @@ export default theme => ({
         marginTop: theme.spacing.unit * 2,
     },
 
-
     success: {
         backgroundColor: green[600],
     },
@@ -90,7 +87,7 @@ export default theme => ({
         flexDirection: 'column',
     },
     cardDashboard: {
-        height: 300,
+        flexGrow: 1,
         display: 'flex',
         flexDirection: 'column',
     },
@@ -103,12 +100,11 @@ export default theme => ({
         height: 169,
     },
     headingPadding: {
-       marginBottom: theme.spacing.unit * 5
+        marginBottom: theme.spacing.unit * 5
     },
     heading: {
         fontSize: theme.typography.pxToRem(20),
-        flexBasis: '33.33%',
-        flexShrink: 0,
+
         fontWeight: 500
     },
     todoBackground: {
@@ -127,7 +123,10 @@ export default theme => ({
     avatarSmall: {
         width: 30,
         height: 30,
-        fontSize: 14
+        fontSize: 14,
+        fontWeight: 600,
+        color: 'black',
+        margin: '0 3px'
     },
     columnItem: {
         border: 'solid 1px lightgray',
@@ -137,7 +136,6 @@ export default theme => ({
 
     columnItemDraggingOver: {
         backgroundColor: '#ebebeb',
-
 
     },
     columnInner: {
@@ -163,12 +161,12 @@ export default theme => ({
 
     },
     dashboardHeight: {
-       height:140
+        height: 140
 
     },
     dashboardAvatar: {
-        width:120,
-        height:120,
+        width: 120,
+        height: 120,
         backgroundColor: theme.palette.grey[200]
 
     },
@@ -182,16 +180,22 @@ export default theme => ({
     },
     fabButton: {
 
-            position: 'fixed',
-            bottom: theme.spacing.unit * 3,
-            right: theme.spacing.unit * 3,
+        position: 'fixed',
+        bottom: theme.spacing.unit * 3,
+        right: theme.spacing.unit * 3,
 
-    }
+    },
+    taskAvatar: {
+        width: 20,
+        height: 20,
+        fontSize: 10,
 
+    },
 
-
-
-
+    taskInfoText: {
+        padding: 0,
+        fontSize: 10
+    },
 
 });
 

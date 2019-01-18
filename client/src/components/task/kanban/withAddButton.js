@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
-import Fab from "@material-ui/core/Fab";
 import Add from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/es/Typography/Typography";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
-import axios from "axios";
-import {getToken} from "../../../actions/auth";
+import Button from "@material-ui/core/es/Button/Button";
 
 const withAddButton = (Wrapped) => {
     class HOC extends Component {
         state = {
             open: false,
-            team: []
+            team: this.props.team
         };
 
         handleClose = () => {
@@ -28,38 +25,22 @@ const withAddButton = (Wrapped) => {
 
         };
 
-        componentDidMount() {
-            axios.get('/api/project/' + this.props.project_id + '/team', {
-                headers: {'Authorization': 'bearer ' + getToken()}
-            })
-                .then((response) => {
-                    console.log(response);
-                    this.setState({
-                        team: response.data.team
-                    })
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-
-
         render() {
 
             const {open, team} = this.state;
-            const {addTask, project_id} = this.props;
+            const {addTask, project, auth} = this.props;
 
             return (
                 <div>
                     <ListItem>
-                        <Fab color="primary" size="small" style={{marginRight: 10}} onClick={this.handleOpen}>
-                            <Add/>
-                        </Fab>
-                        <Typography variant="button"> YENİ EKLE </Typography>
+                        <Button color="primary" size="medium" onClick={this.handleOpen} variant="contained">
+                            <Add style={{marginRight: 10}}/>YENİ EKLE
+                        </Button>
+
                     </ListItem>
 
 
-                    <Wrapped open={open} onClose={this.handleClose} team={team} addTask={addTask} project_id={project_id} {...this.props} />
+                    <Wrapped open={open} onClose={this.handleClose} team={team} addTask={addTask} project_id={project._id} auth={auth}{...this.props} />
                 </div>
 
             );

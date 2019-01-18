@@ -11,23 +11,26 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Paper from "@material-ui/core/Paper";
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import CountUp from 'react-countup';
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import { push } from 'connected-react-router';
-import {compose} from 'recompose';
-import {connect} from "react-redux";
 
-
-const DashboardGrid = function(props) {
+const DashboardGrid = function (props) {
 
     const cardsContent = [
-        {title: "Projeler", link: "/projects", description: "Proje bazlı gösterim", img: "projects.png"},
-        {title: "İşler", link: "/tasks/kanban", description: "İşlerin Kanban gösterimi", img: "todos.png"},
-        {title: "Kullanıcılar", link: "/users", description: "Kullanıcıların işleri", img: "users.png"},
+        {title: "Projeler", link: "/projects", description: "Projeler ve detayları", img: "projects.png"},
+        {
+            title: "İşler",
+            link: "/tasks/kanban",
+            description: "İşlerin durum gösterimleri ve atamalar",
+            img: "todos.png"
+        },
+        {title: "Kullanıcılar", link: "/users", description: "Kullanıcılar ilgili bilgi, işler", img: "users.png"},
+        {title: "Bilgi Bankası", link: "/", description: "Yararlı bilgiler", img: "knowledgebase.png"},
+        {title: "Şifreler", link: "/users", description: "Grup bazlı şifreler", img: "passwords.png"},
+        {title: "Muhasebe", link: "/users", description: "Muhasebe hesaplamaları, işlemler", img: "accounting.png"},
     ];
 
+    const {classes, projects} = props;
 
-    const {classes} = props;
     return (
 
         <Grid container spacing={24}>
@@ -37,8 +40,8 @@ const DashboardGrid = function(props) {
                     <Grid container spacing={24} direction="column" justify="center" alignItems="center">
                         <Grid item xs={8} className={classes.dashboardHeight}>
                             <CircularProgressbar
-                                percentage={61}
-                                text={`${61}%`}
+                                percentage={67}
+                                text={`${67 }%`}
                                 className={classes.dashboardProgress}
                             />
                         </Grid>
@@ -51,7 +54,8 @@ const DashboardGrid = function(props) {
 
                         <Grid item>
                             <Typography gutterBottom variant="caption" color="textPrimary" align="center">
-                                Performans, bütün projelerdeki biten işlerin, devam eden ya da atanmamış işlere oranıyla elde edilir.
+                                Performans, bütün projelerdeki biten işlerin, devam eden ya da atanmamış işlere oranıyla
+                                elde edilir.
                             </Typography>
 
                         </Grid>
@@ -65,11 +69,10 @@ const DashboardGrid = function(props) {
                     <Grid container spacing={24} direction="column" justify="center" alignItems="center">
                         <Grid item xs={8} className={classes.dashboardHeight}>
                             <Avatar className={classes.dashboardAvatar}>
-                            <CountUp end={38} duration={5} delay={0}>
-                                {({countUpRef}) => (
-                                    <span ref={countUpRef} className={classes.dashboardHeading} />
-                                )}
-                            </CountUp>
+                                <Typography variant="h3" color="secondary">
+                                    {projects.length > 0 ? projects.reduce(((memo, project) => project.tasks.backlog.length + memo), 0) : 0}
+                                </Typography>
+
                             </Avatar>
                         </Grid>
                         <Grid item>
@@ -116,7 +119,7 @@ const DashboardGrid = function(props) {
                 <Grid item xs={4} key={index}>
                     <Card className={classes.cardDashboard}>
 
-                        <CardActionArea onClick={() => props.push(item.link)} >
+                        <CardActionArea onClick={() => props.history.push(item.link)}>
                             <CardMedia
                                 className={classes.cardmedia}
                                 image={require(`../static/media/${item.img}`)}
@@ -139,59 +142,43 @@ const DashboardGrid = function(props) {
         </Grid>
     );
 
-
-
-
-
-}
-
-
-
+};
 
 DashboardGrid.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export const DashboardGridWrapper = compose (
-    withStyles(theme),
-    connect(null, { push })
-)(DashboardGrid);
-
+export const DashboardGridWrapper = withStyles(theme)(DashboardGrid);
 
 class Home extends Component {
     state = {
         labelWidth: 0,
         loading: false
 
-
     };
 
-
-
-
     render() {
-        const {classes} = this.props;
+        const {classes, projects} = this.props;
+        console.log('projects from home', projects);
 
         return (
 
-                <main className={classes.layout}>
-                    {/* Hero unit */}
-                    <div className={classes.heroContent}>
-                        <Typography component="h1" variant="h2" align="center" color="primary"
-                                    className={classes.headingPadding}>
-                            DASHBOARD
-                        </Typography>
-                        <DashboardGridWrapper/>
+            <main className={classes.layout}>
+                {/* Hero unit */}
+                <div className={classes.heroContent}>
+                    <Typography component="h1" variant="h2" align="center" color="primary"
+                                className={classes.headingPadding}>
+                        DASHBOARD
+                    </Typography>
+                    <DashboardGridWrapper projects={projects} {...this.props}/>
 
-                    </div>
+                </div>
 
-                </main>
-
+            </main>
 
         )
     }
 }
-
 
 Home.propTypes = {
     classes: PropTypes.object.isRequired,

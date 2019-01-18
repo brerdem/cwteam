@@ -11,6 +11,7 @@ import theme from '../../styles/Styles'
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import classNames from 'classnames';
 import initialData from '../InitialData';
+import Chip from "@material-ui/core/es/Chip/Chip";
 
 class Project extends Component {
 
@@ -26,40 +27,52 @@ class Project extends Component {
         });
     };
 
-
+    calculateTotalEffort = (m, t) => {
+            console.log('t değeri', t);
+    return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(this.calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m ;
+    };
 
     render() {
         const {expanded} = this.state;
-        const {classes, project, index, children} = this.props;
+        const {classes, project, index, children, loading} = this.props;
+
+        let totalBudget = 0;
+        Object.keys(project.tasks).forEach(p => {
+console.log('project-type', project.tasks[p]);
+            totalBudget += project.tasks[p].length > 0 ?  project.tasks[p].reduce(this.calculateTotalEffort, 0) : 0;
+        });
 
         return (
             <ExpansionPanel expanded={expanded === `panel${index}`}
                             onChange={this.handleChange(`panel${index}`)} className={classes.expansionPanel}>
 
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <Grid container>
-                        <Grid item xs={10}>
+                    <Grid container style={{padding: 0}} alignItems="center" justify="space-between" direction="row">
+
                             <Typography noWrap className={classes.heading}
                                         color="primary">{project.title} </Typography>
-                        </Grid>
 
-                        <Grid item>
-                            <Grid container spacing={8} direction="row" justify="flex-end">
-                                <Grid item>
-                                    <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>0</Avatar>
-                                </Grid>
-                                <Grid item>
-                                    <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>0</Avatar>
-                                </Grid>
-                                <Grid item>
-                                    <Avatar
-                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>0</Avatar>
-                                </Grid>
+
+
+                            <Grid container spacing={8} direction="row" justify="flex-end" alignItems="center" style={{width: 250,marginRight:30}}>
+                                <Chip avatar={<Avatar>TL</Avatar>} label={totalBudget.toString()} className={classes.chip}
+                                      variant="outlined" style={{marginRight:10}}/>
+
+
+                                <Avatar
+                                    className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
+
+
+                                <Avatar
+                                    className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
+
+
+                                <Avatar
+                                    className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
+
                             </Grid>
 
-                        </Grid>
+
                     </Grid>
 
                 </ExpansionPanelSummary>

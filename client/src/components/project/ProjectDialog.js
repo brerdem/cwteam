@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UserSuggestionInput from '../user/UserSuggestionInput';
+import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
 
 const style = {
 
@@ -50,9 +51,10 @@ const style = {
 class ProjectDialog extends Component {
 
     state = {
-        selectedDate: new Date(),
+        selectedStartDate: new Date(),
+        selectedEndDate: new Date(),
         isSetStartEndDate: false,
-        users: [],
+        isProjectApproved: false,
         selectedUsers: []
     };
 
@@ -60,11 +62,17 @@ class ProjectDialog extends Component {
         this.setState({selectedUsers: data});
     };
 
-    handleDateChange = date => {
-        this.setState({selectedDate: date});
+    handleStartDateChange = (date) => {
+        this.setState({selectedStartDate: date, selectedEndDate: date});
     };
-    handleChange = () => {
+    handleEndDateChange = (date) => {
+        this.setState({selectedEndDate: date});
+    };
+    handleDateSetChange = () => {
         this.setState({isSetStartEndDate: !this.state.isSetStartEndDate});
+    };
+    handleProjectApprovalChange = () => {
+        this.setState({isProjectApproved: !this.state.isProjectApproved});
     };
 
     handleSubmit = (e) => {
@@ -73,19 +81,15 @@ class ProjectDialog extends Component {
         this.props.addProject({
             title: e.target.title.value,
             description: e.target.description.value,
-            team: this.state.selectedUsers.map((member) => member._id)
+            team: this.state.selectedUsers
         })
 
     };
 
-    componentDidMount() {
-        this.props.getAllUsers().then((response) => this.setState({users: response.payload.data}));
-    }
-
     render() {
 
-        const {open, onClose} = this.props;
-        const {selectedDate, users} = this.state;
+        const {open, onClose, users} = this.props;
+        const {selectedStartDate, selectedEndDate} = this.state;
         return (
             <Dialog
                 onClose={onClose}
@@ -121,42 +125,68 @@ class ProjectDialog extends Component {
                                 fullWidth
 
                             />
-                        </Grid>
 
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={this.state.isSetStartEndDate}
-                                    onChange={this.handleChange}
-                                    value="checkedB"
-                                    color="primary"
-                                />
+
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={this.state.isSetStartEndDate}
+                                        onChange={this.handleDateSetChange}
+                                        value="checkedB"
+                                        color="primary"
+                                    />
+                                }
+                                label="Başlangıç ve bitiş tarihleri belli"
+                            />
+                            {this.state.isSetStartEndDate &&
+
+                            <Grid container direction="row" alignItems="center" spacing={24}>
+
+                                <Grid item>
+                                    <b>Başlangıç:</b>
+                                </Grid>
+
+                                <Grid item>
+                                    <DatePicker id="selectedStartDate" value={selectedStartDate} format="DD/MM/YYYY"
+                                                onChange={this.handleStartDateChange}/>
+                                </Grid>
+                                <Grid item>
+                                    <b>Bitiş:</b>
+                                </Grid>
+
+                                <Grid item>
+                                    <DatePicker id="selectedEndDate" value={selectedEndDate} format="DD/MM/YYYY"
+                                                onChange={this.handleEndDateChange}/>
+                                </Grid>
+
+                            </Grid>
                             }
-                            label="Başlangıç ve bitiş tarihleri belli"
-                        />
-                        {this.state.isSetStartEndDate &&
 
-                        <Grid container direction="row" alignItems="center" spacing={24}>
-                            <Grid item>
-                                <b>Başlangıç:</b>
-                            </Grid>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={this.state.isProjectApproved}
+                                        onChange={this.handleProjectApprovalChange}
+                                        value="checkedB"
+                                        color="primary"
+                                    />
+                                }
+                                label="Proje onaylandı mı?"
+                            />
 
-                            <Grid item>
-                                <DatePicker value={selectedDate} format="DD/MM/YYYY" onChange={this.handleDateChange}/>
-                            </Grid>
-                            <Grid item>
-                                <b>Bitiş:</b>
-                            </Grid>
+                            {this.state.isProjectApproved &&
 
-                            <Grid item>
-                                <DatePicker value={selectedDate} format="DD/MM/YYYY" onChange={this.handleDateChange}/>
-                            </Grid>
+                            <TextField
+                                label="Bütçe"
+                                id="simple-start-adornment"
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">TL</InputAdornment>,
+                                }}
+                            />
+                            }
 
+                            <UserSuggestionInput list={users} onUserAdd={this.handleTeamUsers}/>
                         </Grid>
-                        }
-
-                        <UserSuggestionInput list={users} onUserAdd={this.handleTeamUsers} />
-
 
                     </DialogContent>
                     <DialogActions>

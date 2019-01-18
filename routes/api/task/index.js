@@ -4,7 +4,7 @@ const Project = require('./../../../models/project');
 
 router.post('/add', (req, res) => {
 
-    const {title, note, assignees, department, project_id} = req.body;
+    const {title, note, assignees, department, project_id, startDate, endDate} = req.body;
 
     Project.findOneAndUpdate({_id: project_id}, {
         $addToSet: {
@@ -12,7 +12,9 @@ router.post('/add', (req, res) => {
                 title,
                 note,
                 assignees,
-                department
+                department,
+                startDate,
+                endDate
             }
         }
     }, {new: true}, function (err, project) {

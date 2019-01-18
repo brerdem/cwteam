@@ -197,7 +197,6 @@ class UserSuggestionInput extends React.Component {
             textFieldInput: ''
         }, () => {
             this.props.onUserAdd(this.state.value);
-            console.log(this.state.list);
         });
 
     }

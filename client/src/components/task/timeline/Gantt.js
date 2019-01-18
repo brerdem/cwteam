@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import {compose} from 'recompose';
 import {setFullScreen} from "../../../actions/ui";
 
+
 function setTitleGridRow(task) {
     if (task.task_type) {
         return "<b style='color:#3F51B5'>" + task.text + "</b>";

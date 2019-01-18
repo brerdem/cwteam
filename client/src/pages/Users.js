@@ -3,41 +3,17 @@ import PropTypes from 'prop-types';
 import {withStyles} from "@material-ui/core/styles/index";
 import axios from "axios/index";
 import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import TableCell from "@material-ui/core/TableCell";
-import Paper from "@material-ui/core/Paper";
-import TableHead from "@material-ui/core/TableHead";
-import Table from "@material-ui/core/Table";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import Avatar from "@material-ui/core/es/Avatar/Avatar";
+import theme from '../components/styles/Styles';
+import Grid from "@material-ui/core/es/Grid/Grid";
+import Card from "@material-ui/core/es/Card/Card";
+import CardActionArea from "@material-ui/core/es/CardActionArea/CardActionArea";
+import CardContent from "@material-ui/core/es/CardContent/CardContent";
+import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
+import ListItemAvatar from "@material-ui/core/es/ListItemAvatar/ListItemAvatar";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
-
-
-const CustomTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.primary,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
-const styles = theme => ({
-
-    table: {
-        minWidth: 700,
-
-    },
-    row: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.background.default,
-        },
-    },
-});
-
+import UserAvatar from "../components/user/UserAvatar";
+import departments from '../helpers/departments'
 
 class Users extends Component {
 
@@ -48,73 +24,66 @@ class Users extends Component {
     };
 
     componentDidMount() {
-        axios.post('/api/users', {
+        /* axios.get('/api/user/makeusers').then((response) => {
+           this.setState({loading: false})
 
-            access_token: localStorage.getItem('id_token')
+         });*/
 
-        }).then((response) => {
-            this.setState({
-                users: response.data,
-                loading: false,
+        axios.get('/api/users').then((response) => {
+            this.setState({loading: false, users: response.data})
 
-            })
-
-        });
-        this.setState({
-            value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
         })
-
 
     }
 
+    hex2rgb = (hex, opacity) => {
+        let h=hex.replace('#', '');
+        h =  h.match(new RegExp('(.{'+h.length/3+'})', 'g'));
+
+        for(let i=0; i<h.length; i++)
+            h[i] = parseInt(h[i].length==1? h[i]+h[i]:h[i], 16);
+
+        if (typeof opacity !== 'undefined')  h.push(opacity);
+
+        return 'rgba('+h.join(',')+')';
+    };
+
 
     render() {
-        const {classes} = this.props;
-        this.state.users.sort((a, b) => a.name.localeCompare(b.name))
+        const {classes, loading} = this.props;
         let content;
-        if (this.state.loading) {
+        if (loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
+            content =
+                <Grid container spacing={24}>
+                    {this.state.users.map((user, index) => (
+                        <Grid item xs={4} key={index}>
+                            <Card className={classes.cardDashboard}>
 
-            content = <Paper className={classes.root}>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <CustomTableCell>İsim</CustomTableCell>
-                            <CustomTableCell align="right">Ünvan</CustomTableCell>
-                            <CustomTableCell align="right">E-mail</CustomTableCell>
-                            <CustomTableCell align="right">Bio</CustomTableCell>
-                            <CustomTableCell align="right">Yetki</CustomTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.state.users.map(user => {
+                                <CardActionArea onClick={() => this.props.history.push('/')}>
 
-                                return (
-                                    <TableRow className={classes.row} key={user.id}>
-                                        <CustomTableCell component="th" scope="row">
-                                            <ListItem>
-                                                <Avatar src={user.avatar_url}/>
-                                                <ListItemText primary={user.name}/>
-                                            </ListItem>
-                                        </CustomTableCell>
-                                        <CustomTableCell align="right">{user.title}</CustomTableCell>
-                                        <CustomTableCell align="right">{user.email_address}</CustomTableCell>
-                                        <CustomTableCell align="right">{user.bio}</CustomTableCell>
-                                        <CustomTableCell align="right">{user.personable_type}</CustomTableCell>
-                                    </TableRow>
-                                );
+                                    <CardContent className={classes.cardContent} style={{borderRight: 'solid 5px '+this.hex2rgb(departments.find(t => t.name === user.department).color, 1)}}>
+                                        <ListItem alignItems="flex-start" disableGutters>
+                                            <ListItemAvatar>
+                                                <UserAvatar alt="Clockwork" style={{backgroundColor: user.avatar_bg}} first_name={user.first_name} last_name={user.last_name} src={user.avatar_url === ''? '': require(`../static/media/users/${user.avatar_url}.png`)} />
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={user.first_name+' '+user.last_name}
+                                                secondary={user.title}
+                                            />
+                                        </ListItem>
+                                    </CardContent>
+                                </CardActionArea>
 
-                        })}
-                    </TableBody>
-                </Table>
-            </Paper>
-
+                            </Card>
+                        </Grid>
+                    ))
+                    }
+                </Grid>
         }
 
-
         return (
-
 
             <main className={classes.layout}>
                 {/* Hero unit */}
@@ -133,9 +102,8 @@ class Users extends Component {
     }
 }
 
-
 Users.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Users);
+export default withStyles(theme)(Users);

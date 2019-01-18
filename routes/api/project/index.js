@@ -18,6 +18,7 @@ router.post('/add', (req, res) => {
         if (!err) {
             res.status(200).json(project);
         } else {
+            console.log(err);
             res.status(400).send(err);
         }
     })
@@ -33,6 +34,7 @@ router.post('/delete', (req, res) => {
         if (!err) {
             res.status(200).json(req.body.id);
         } else {
+            console.log(err);
             res.status(400).send(err);
         }
     })
@@ -41,7 +43,6 @@ router.post('/delete', (req, res) => {
 });
 
 router.get('/:id/team', (req, res) => {
-    console.log('team id is', req.params.id);
 
 
     Project.findOne({_id: req.params.id}, 'team').populate('team').exec((err, team) => {

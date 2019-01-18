@@ -15,10 +15,11 @@ const deleteProjectAC = id => {
         id
     }
 };
-const reorderTaskImmediatelyAC = (project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) => {
+
+const filterTaskByDepartmentsAC = selectedDepartments => {
     return {
-        type: 'DELETE_PROJECT_DONE',
-        project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn
+        type: 'FILTER_TASKS_DONE',
+        selectedDepartments
     }
 };
 
@@ -34,24 +35,13 @@ export const deleteProject = id => dispatch => {
     dispatch(deleteProjectAC(id));
 };
 
+export const filterTaskByDepartments = selectedDepartments => dispatch => {
 
-
-export const reorderTaskImmediately = (project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) => dispatch => {
-
-    dispatch(reorderTaskImmediatelyAC(project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn));
+    dispatch(filterTaskByDepartmentsAC(selectedDepartments));
 };
 
-export const getAllProjects = () => {
-    return {
-        types: ['GET_ALL_PROJECTS_LOAD', 'GET_ALL_PROJECTS_DONE', 'GET_ALL_PROJECTS_ERROR'],
-        payload: {
-            request: {
-                url: '/projects'
-            }
-        }
-    }
 
-};
+
 
 export const addTask = (task) => {
     console.log('task', task);
@@ -82,6 +72,21 @@ export const reorderTask = (project_id, sourceIndex, destinationIndex, sourceCol
         });
 
 };
+
+
+
+export const getAllProjects = ()  => {
+    return {
+        types: ['GET_ALL_PROJECTS_LOAD', 'GET_ALL_PROJECTS_DONE', 'GET_ALL_PROJECTS_ERROR'],
+        payload: {
+            request: {
+                url: '/projects'
+            }
+        }
+    }
+
+};
+
 
 
 

@@ -20,6 +20,7 @@ import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 import PropTypes from 'prop-types';
 import axios from "axios";
 import {getToken} from "../../../actions/auth";
+import departments from '../../../helpers/departments'
 
 const API_URL = 'http://localhost:3000/api';
 const styles = theme => ({
@@ -36,12 +37,10 @@ const styles = theme => ({
         padding: 10,
 
     },
- listItemText: {
+    listItemText: {
         padding: 0,
 
     },
-
-
 
 });
 
@@ -54,27 +53,23 @@ const style = {
     }
 };
 
-const departments = [
-    {name: 'Yazılım', color:'#9c27b0'},
-    {name: 'Tasarım', color:'#006db0'},
-    {name: 'Sosyal Medya', color:'#00a702'},
-    {name: 'Müşteri', color:'#db6700'},
-
-];
-
 
 class AddTask extends Component {
 
-
     state = {
-        selectedDate: new Date(),
+        selectedStartDate: new Date(),
+        selectedEndDate: new Date(),
         team: this.props.team,
         selectedUsers: [],
         department: ''
     };
 
-    handleDateChange = (date) => {
-        this.setState({selectedDate: date});
+
+    handleStartDateChange = (date) => {
+        this.setState({selectedStartDate: date, selectedEndDate: date});
+    };
+    handleEndDateChange = (date) => {
+        this.setState({selectedEndDate: date});
     };
 
     handleDepartmentChange = (e) => {
@@ -82,19 +77,21 @@ class AddTask extends Component {
 
     };
 
-
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state.selectedUsers);
         let assignees = [];
 
-        this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
+        this.state.selectedUsers.map((member) => assignees.push({user: member, effort: member.effort}));
         const task = {
             project_id: this.props.project_id,
             title: e.target.title.value,
             note: e.target.note.value,
             assignees: assignees,
             department: this.state.department,
+            startDate: this.state.selectedStartDate,
+            endDate: this.state.selectedEndDate,
+            owner: this.props.auth
         };
 
         axios.post(API_URL + '/task/add', task, {
@@ -119,10 +116,9 @@ class AddTask extends Component {
         this.setState({team: this.props.team})
     }
 
-
     render() {
 
-        const {selectedDate, department} = this.state;
+        const {selectedStartDate, selectedEndDate, department} = this.state;
         const {open, onClose, classes, team} = this.props;
 
         return (
@@ -134,92 +130,96 @@ class AddTask extends Component {
                     fullWidth={true}
                 >
                     <form onSubmit={this.handleSubmit}>
-                    <DialogContent>
-                        <Grid container direction="column" alignItems="flex-start">
+                        <DialogContent>
+                            <Grid container direction="column" alignItems="flex-start">
 
 
-                            <TextField
-                                id="task-name"
-                                name="title"
-                                placeholder="Başlık"
-                                margin="normal"
-                                InputLabelProps={style.titleTextInput}
-                                inputProps={style.titleTextInput}
-                                fullWidth
+                                <TextField
+                                    id="task-name"
+                                    name="title"
+                                    placeholder="Başlık"
+                                    margin="normal"
+                                    InputLabelProps={style.titleTextInput}
+                                    inputProps={style.titleTextInput}
+                                    fullWidth
 
-                            />
-                            <TextField
-                                id="task-description"
-                                name="note"
-                                placeholder="Açıklama"
-                                margin="dense"
-                                fullWidth
+                                />
+                                <TextField
+                                    id="task-description"
+                                    name="note"
+                                    placeholder="Açıklama"
+                                    margin="dense"
+                                    fullWidth
 
-                            />
-                        </Grid>
-
-
-                        <Grid container direction="row" alignItems="center" spacing={24}>
-                            <Grid item>
-                                <b>Başlangıç:</b>
+                                />
                             </Grid>
 
-                            <Grid item>
-                                <DatePicker value={selectedDate} format="DD/MM/YYYY" onChange={this.handleDateChange}/>
+
+                            <Grid container direction="row" alignItems="center" spacing={24}>
+
+                                <Grid item>
+                                    <b>Başlangıç:</b>
+                                </Grid>
+
+                                <Grid item>
+                                    <DatePicker id="selectedStartDate" value={selectedStartDate} format="DD/MM/YYYY"
+                                                onChange={this.handleStartDateChange}/>
+                                </Grid>
+                                <Grid item>
+                                    <b>Bitiş:</b>
+                                </Grid>
+
+                                <Grid item>
+                                    <DatePicker id="selectedEndDate" value={selectedEndDate} format="DD/MM/YYYY"
+                                                onChange={this.handleEndDateChange}/>
+                                </Grid>
+
                             </Grid>
-                            <Grid item>
-                                <b>Bitiş:</b>
-                            </Grid>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel htmlFor={'department-select'}>Departman</InputLabel>
+                                <Select
+                                    value={department}
+                                    onChange={this.handleDepartmentChange}
+                                    name="department"
 
-                            <Grid item>
-                                <DatePicker value={selectedDate} format="DD/MM/YYYY" onChange={this.handleDateChange}/>
-                            </Grid>
+                                    className={classes.selectEmpty}
+                                    renderValue={value => value}
+                                    inputProps={{
+                                        name: 'department',
+                                        id: 'department-select',
+                                    }}
+                                >
 
-                        </Grid>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel htmlFor={'department-select'}>Departman</InputLabel>
-                            <Select
-                                value={department}
-                                onChange={this.handleDepartmentChange}
-                                name="department"
+                                    {
+                                        departments.map((department, key) =>
+                                            <MenuItem key={key} value={department.name} className={classes.menuItem}>
+                                                <ListItemIcon><Brightness
+                                                    style={{color: department.color}}/></ListItemIcon>
+                                                <ListItemText inset primary={department.name}
+                                                              className={classes.listItemText}/>
+                                            </MenuItem>
+                                        )
 
-                                className={classes.selectEmpty}
-                                renderValue={value => value}
-                                inputProps={{
-                                    name: 'department',
-                                    id: 'department-select',
-                                }}
-                            >
-
-                                {
-                                    departments.map((department, key) =>
-                                    <MenuItem key={key} value={department.name} className={classes.menuItem}>
-                                        <ListItemIcon><Brightness style={{color: department.color}}/></ListItemIcon>
-                                        <ListItemText inset primary={department.name} className={classes.listItemText}/>
-                                        </MenuItem>
-                                    )
-
-                                }
+                                    }
 
 
+                                </Select>
 
-                            </Select>
+                            </FormControl>
 
-                        </FormControl>
-
-                        <UserSuggestionInput list={team} onUserAdd={this.handleTeamUsers} effort="true" />
+                            <UserSuggestionInput list={team} onUserAdd={this.handleTeamUsers} effort="true"/>
 
 
-                    </DialogContent>
+                        </DialogContent>
 
-                    <DialogActions>
-                        <Button onClick={onClose} color="primary">
-                            VAZGEÇ
-                        </Button>
-                        <Button color="primary" type="submit">
-                            KAYDET
-                        </Button>
-                    </DialogActions>
+                        <DialogActions>
+                            <Button onClick={onClose} color="primary">
+                                VAZGEÇ
+                            </Button>
+                            <Button color="primary" type="submit">
+                                KAYDET
+                            </Button>
+                        </DialogActions>
                     </form>
                 </Dialog>
 
@@ -229,13 +229,11 @@ class AddTask extends Component {
     }
 }
 
-
 AddTask.propTypes = {
     addTask: PropTypes.func.isRequired,
     project_id: PropTypes.string.isRequired,
 
 };
-
 
 export default compose(
     withStyles(styles),
