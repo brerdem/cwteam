@@ -35,7 +35,7 @@ class Board extends Component {
 
     onDragEnd = result => {
 
-        console.log(result);
+        console.log('result', result);
 
         const {reorderTask, project_id} = this.props;
         const {tasks} = this.state;
