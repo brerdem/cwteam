@@ -78,7 +78,7 @@ class TaskItem extends Component {
         const effortTotal = task.assignees.reduce(((m, a) => m + a.effort), 0);
         const departmentColor = departments.find(t => t.name === task.department).color;
         return (
-            <Fade in={true} transition={500}>
+
 
                 <div>
 
@@ -158,7 +158,7 @@ class TaskItem extends Component {
                         }
                     </Draggable>
                 </div>
-            </Fade>
+
         );
     }
 }
