@@ -73,6 +73,16 @@ export const reorderTask = (project_id, sourceIndex, destinationIndex, sourceCol
 
 };
 
+export const reorderTaskImmediately = (project_id, tasks) => dispatch => {
+    dispatch({
+        type: 'REORDER_TASK_DONE',
+        project_id,
+        tasks
+    })
+
+
+};
+
 
 
 export const getAllProjects = ()  => {

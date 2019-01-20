@@ -35,13 +35,13 @@ class App extends Component {
             store.dispatch({type: 'ADD_TASK_DONE', item: item['tasks.backlog'], project_id});
         } else {
 
-            store.dispatch({type: 'REORDER_TASK_DONE', tasks: item.tasks, project_id});
+            store.dispatch({type: 'REORDER_TASK_SERVER', tasks: item.tasks, project_id});
         }
 
     };
 
     componentDidMount() {
-        const {getAllProjects, getAllUsers} = this.props;
+        const {getAllProjects, getAllUsers, addProject, deleteProject} = this.props;
 
         Promise.all([getAllProjects(), getAllUsers()]).then(response => {
             this.setState({loading: false});
@@ -56,8 +56,8 @@ class App extends Component {
 
         this.channel = this.pusher.subscribe('projects');
         this.channel.bind('updated', this.dispatchUpdate);
-        this.channel.bind('inserted', this.props.addProject);
-        this.channel.bind('deleted', this.props.deleteProject);
+        this.channel.bind('inserted', addProject);
+        this.channel.bind('deleted', deleteProject);
     }
 
     render() {

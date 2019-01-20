@@ -105,7 +105,7 @@ class Projects extends Component {
         } else {
             if (projects.length === 0) {
                 content =
-                    <Typography component="h4" variant="h6" color="error">Herhangi bir proje bulunmamakta</Typography>
+                    <Typography component="h4" variant="h6" style={{color: 'grey'}}>Herhangi bir proje bulunmamakta</Typography>
             } else {
 
                 content = <Grid container spacing={40}>
@@ -146,7 +146,7 @@ class Projects extends Component {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <DialogTitle id="alert-dialog-title">
+                        <DialogTitle id="alert-dialog-title" disableTypography>
 
                             <Typography variant="h6" color="error"> Silmek istediğinize emin misiniz?</Typography>
 

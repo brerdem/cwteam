@@ -36,8 +36,8 @@ class Board extends Component {
         console.log('result', result);
 
 
-        const {project} = this.props;
-        let tasks = project.tasks;
+        const {project, reorderTaskImmediately} = this.props;
+
 
         const {destination, source, draggableId} = result;
 
@@ -56,15 +56,17 @@ class Board extends Component {
         const start = source.droppableId;
         const finish = destination.droppableId;
 
-        const task = tasks[start].find(t => t._id === draggableId);
-
+        const task = project.tasks[start].find(t => t._id === draggableId);
+/*
         tasks[start].splice(source.index, 1);
         tasks[finish].splice(destination.index, 0, task);
         console.log('tasks', tasks);
         console.log('tasks-start', tasks[start]);
-        console.log('tasks-finish', tasks[finish]);
+        console.log('tasks-finish', tasks[finish]);*/
 
-        store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id: project._id});
+        store.dispatch({type:'REORDER_TASK_CLIENT', project_id:project._id, start, finish, sourceIndex:source.index, destinationIndex: destination.index, task});
+
+        //store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id: project._id});
 
 
       axios.post(API_URL + '/task/reorder', {

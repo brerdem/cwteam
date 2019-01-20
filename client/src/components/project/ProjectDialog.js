@@ -81,7 +81,8 @@ class ProjectDialog extends Component {
         this.props.addProject({
             title: e.target.title.value,
             description: e.target.description.value,
-            team: this.state.selectedUsers
+            team: this.state.selectedUsers,
+            budget: e.target.budget.value,
         })
 
     };
@@ -178,7 +179,8 @@ class ProjectDialog extends Component {
 
                             <TextField
                                 label="Bütçe"
-                                id="simple-start-adornment"
+                                name="budget"
+                                id="budget"
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">TL</InputAdornment>,
                                 }}

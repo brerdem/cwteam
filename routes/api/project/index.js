@@ -8,6 +8,7 @@ router.post('/add', (req, res) => {
     let project = new Project({
         title: req.body.title,
         description: req.body.description,
+        budget: req.body.budget,
         createdAt: new Date(),
         active: true,
         team: req.body.team

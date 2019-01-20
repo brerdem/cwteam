@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import HourglassFull from "@material-ui/icons/HourglassFull";
 import Rowing from "@material-ui/icons/Rowing";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import Fade from "@material-ui/core/Fade/Fade";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";

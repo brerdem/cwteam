@@ -13,7 +13,13 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {addTask, filterTaskByDepartments, getAllProjects, reorderTask} from "../actions/project";
+import {
+    addTask,
+    filterTaskByDepartments,
+    getAllProjects,
+    reorderTask,
+    reorderTaskImmediately
+} from "../actions/project";
 import {compose} from 'recompose';
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
@@ -67,7 +73,7 @@ class Tasks extends Component {
 
     render() {
 
-        const {classes, projects, addTask, reorderTask, auth, users, loading} = this.props;
+        const {classes, projects, addTask, reorderTask, auth, users, loading, reorderTaskImmediately} = this.props;
 
         let content;
         if (loading) {
@@ -99,10 +105,12 @@ class Tasks extends Component {
                                     <Grid item xs={12}>
                                         {projects.map((project, index) => {
 
-                                            return <Project key={index} project={project} users={users}><Board project={project}
-                                                                                                 auth={auth}
-                                                                                                 addTask={addTask}
-                                                                                                 reorderTask={reorderTask}/></Project>;
+                                            return <Project key={index} project={project} users={users}><Board
+                                                project={project}
+                                                auth={auth}
+                                                addTask={addTask}
+                                                reorderTaskImmediately={reorderTaskImmediately}
+                                                reorderTask={reorderTask}/></Project>;
 
                                         })}
                                     </Grid>
@@ -165,9 +173,15 @@ Tasks.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => {
+
+    return {
+        projects: state.projects,
+    };
+};
 
 //fixme remove from connect
 export default compose(
-    connect(null, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
+    connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments, reorderTaskImmediately}),
     withStyles(theme)
 )(Tasks);

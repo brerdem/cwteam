@@ -24,11 +24,10 @@ class Users extends Component {
     };
 
     componentDidMount() {
-        /* axios.get('/api/user/makeusers').then((response) => {
+       /*axios.get('/api/user/makeusers').then((response) => {
            this.setState({loading: false})
 
          });*/
-
         axios.get('/api/users').then((response) => {
             this.setState({loading: false, users: response.data})
 

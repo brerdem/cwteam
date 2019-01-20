@@ -60,6 +60,7 @@ let projectSchema = new Schema({
         progress: [taskSchema],
         done: [taskSchema],
     },
+    budget: Number,
 
     comments: [{
         type: String
