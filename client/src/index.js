@@ -15,7 +15,6 @@ import {getToken} from "./actions/auth";
 import {AUTH_LOGIN} from "./actions/types";
 import jwt from 'jsonwebtoken';
 
-
 moment.locale('tr');
 
 //todo move check token to actions
@@ -28,6 +27,7 @@ if (token) {
 
 render((
     <Provider store={store}>
+
         <ConnectedRouter history={history}>
             <SnackbarProvider maxSnack={3}>
                 <MuiPickersUtilsProvider utils={MomentUtils} locale="tr" moment={moment}>
@@ -37,6 +37,7 @@ render((
                 </MuiPickersUtilsProvider>
             </SnackbarProvider>
         </ConnectedRouter>
+
     </Provider>
 ), document.getElementById('root'));
 

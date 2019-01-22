@@ -25,14 +25,37 @@ const filterTaskByDepartmentsAC = selectedDepartments => {
 
 //action creators
 export const addProject = project => dispatch => {
+    axios.post(API_URL + '/project/add', project, {
+        headers: {'Authorization': 'bearer ' + getToken()},
 
-    dispatch(addProjectAC(project));
+    })
+        .then(response => {
+            console.log('project added');
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+
+    // dispatch(addProjectAC(project));
 
 };
 
 export const deleteProject = id => dispatch => {
 
-    dispatch(deleteProjectAC(id));
+    axios.post(API_URL + '/project/delete', id, {
+        headers: {'Authorization': 'bearer ' + getToken()},
+
+    })
+        .then(response => {
+            console.log('project deleted');
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    //dispatch(deleteProjectAC(id));
 };
 
 export const filterTaskByDepartments = selectedDepartments => dispatch => {
@@ -70,16 +93,6 @@ export const reorderTask = (project_id, sourceIndex, destinationIndex, sourceCol
         .catch(error => {
             console.log(error);
         });
-
-};
-
-export const reorderTaskImmediately = (project_id, tasks) => dispatch => {
-    dispatch({
-        type: 'REORDER_TASK_DONE',
-        project_id,
-        tasks
-    })
-
 
 };
 

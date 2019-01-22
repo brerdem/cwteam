@@ -19,6 +19,7 @@ router.get('/makeusers', (req, res) => {
 
     const arr = [
         {
+            name: "Burak Erdem",
             first_name: 'Burak',
             last_name: 'Erdem',
             email: 'burak.erdem@clockwork.com.tr',
@@ -29,6 +30,7 @@ router.get('/makeusers', (req, res) => {
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Hakan Tezcan",
             first_name: 'Hakan',
             last_name: 'Tezcan',
             email: 'hakan.tezcan@clockwork.com.tr',
@@ -39,6 +41,7 @@ router.get('/makeusers', (req, res) => {
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Burcu Kanyılmaz",
             first_name: 'Burcu',
             last_name: 'Kanyılmaz',
             email: 'burcu.kanyilmaz@clockwork.com.tr',
@@ -49,6 +52,7 @@ router.get('/makeusers', (req, res) => {
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Serkan Arı",
             first_name: 'Serkan',
             last_name: 'Arı',
             email: 'serkan.ari@clockwork.com.tr',
@@ -59,16 +63,17 @@ router.get('/makeusers', (req, res) => {
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Nazım Tunç",
             first_name: 'Nazım',
             last_name: 'Tunç',
             email: 'nazim.tunc@clockwork.com.tr',
-            avatar_url: '',
             password: 'nazim',
             department: 'Tasarım',
             title: 'Art Direktör',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Aybüke Şahin",
             first_name: 'Aybüke',
             last_name: 'Şahin',
             email: 'aybuke.sahin@clockwork.com.tr',
@@ -79,10 +84,10 @@ router.get('/makeusers', (req, res) => {
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Deniz Zengin",
             first_name: 'Deniz',
             last_name: 'Zengin',
             email: 'deniz.zengin@clockwork.com.tr',
-            avatar_url: 'deniz',
             password: 'deniz',
             department: 'Müşteri',
             title: 'Müşteri Yöneticisi',

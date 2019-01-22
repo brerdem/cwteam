@@ -3,6 +3,17 @@ require('../../../passport');
 const Project = require('./../../../models/project');
 
 
+const Pusher = require('pusher');
+
+const pusher = new Pusher({
+    appId: '689385',
+    key: '8042ee8184c51b5ff049',
+    secret: '9ee8d1d20c3ceb337d83',
+    cluster: 'eu',
+    useTLS: true,
+});
+
+
 router.post('/add', (req, res) => {
 
     let project = new Project({
@@ -17,7 +28,14 @@ router.post('/add', (req, res) => {
     });
     project.save((err, project) => {
         if (!err) {
-            res.status(200).json(project);
+
+            pusher.trigger(
+                'projects',
+                'project_added',
+                project
+            );
+            res.status(200).send("project added");
+
         } else {
             console.log(err);
             res.status(400).send(err);
@@ -33,7 +51,13 @@ router.post('/delete', (req, res) => {
 
     Project.findByIdAndRemove(req.body.id, (err) => {
         if (!err) {
-            res.status(200).json(req.body.id);
+            pusher.trigger(
+                'projects',
+                'project_deleted',
+                req.body.id
+            );
+
+            res.status(200).send("project deleted");
         } else {
             console.log(err);
             res.status(400).send(err);

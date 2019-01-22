@@ -13,7 +13,6 @@ import {connect} from "react-redux";
 import {compose} from 'recompose';
 import {setFullScreen} from "../../../actions/ui";
 
-
 function setTitleGridRow(task) {
     if (task.task_type) {
         return "<b style='color:#3F51B5'>" + task.text + "</b>";
@@ -21,17 +20,13 @@ function setTitleGridRow(task) {
     return task.text;
 }
 
-
 class Gantt extends Component {
 
-    state= {
+    state = {
         fullscreen: false
     };
 
-
-
     componentDidMount() {
-
 
         gantt.config.columns = [
             {name: "text", label: "Görev Adı", tree: true, width: 300, template: setTitleGridRow},
@@ -39,7 +34,6 @@ class Gantt extends Component {
             {name: "holder", label: "Sorumlu", align: "center", width: 100},
             {name: "duration", label: "Süre", align: "center", width: 40},
         ];
-
 
         gantt.config.sort = true;
         gantt.config.order_branch = true;
@@ -76,7 +70,6 @@ class Gantt extends Component {
 
          });*/
 
-
         gantt.templates.task_class = function (start, end, task) {
             let css = [];
             if (task.task_type === 'project') {
@@ -85,10 +78,8 @@ class Gantt extends Component {
             return css.join(" ");
         };
 
-
         gantt.init(this.ganttContainer);
         gantt.parse(this.props.tasks);
-
 
     }
 
@@ -98,8 +89,6 @@ class Gantt extends Component {
             gantt.expand();
             this.props.setFullScreen(true);
 
-
-
         }
         else {
             // collapsing the gantt to the normal mode
@@ -107,15 +96,13 @@ class Gantt extends Component {
             this.props.setFullScreen(false);
         }
 
-
-
     };
 
     render() {
 
         const {classes} = this.props;
         return (
-            <div style={{height:500}}>
+            <div style={{height: 500}}>
                 <div ref={(input) => {
                     this.ganttContainer = input
                 }} style={{width: '100%', height: '100%'}}/>
@@ -127,11 +114,8 @@ class Gantt extends Component {
 
             </div>
 
-
         );
     }
-
-
 
 }
 
@@ -142,8 +126,6 @@ const mapStateToProps = (state) => {
 
     };
 };
-
-
 
 export default compose(
     connect(mapStateToProps,

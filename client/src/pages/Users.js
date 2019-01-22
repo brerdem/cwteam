@@ -24,7 +24,7 @@ class Users extends Component {
     };
 
     componentDidMount() {
-       /*axios.get('/api/user/makeusers').then((response) => {
+     /*  axios.get('/api/user/makeusers').then((response) => {
            this.setState({loading: false})
 
          });*/

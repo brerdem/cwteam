@@ -25,12 +25,9 @@ class Project extends Component {
         });
     };
 
-
-
-
-
     calculateTotalEffort = (m, t) => {
-    return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(this.calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m ;
+        console.log('t değeri', t);
+        return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(this.calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m;
     };
 
     render() {
@@ -39,12 +36,11 @@ class Project extends Component {
 
         let totalBudget = 0;
         Object.keys(project.tasks).forEach(p => {
-console.log('project-type', project.tasks[p]);
-            totalBudget += project.tasks[p].length > 0 ?  project.tasks[p].reduce(this.calculateTotalEffort, 0) : 0;
+            console.log('project-type', project.tasks[p]);
+            totalBudget += project.tasks[p].length > 0 ? project.tasks[p].reduce(this.calculateTotalEffort, 0) : 0;
         });
 
         const tooltipText = (totalBudget < project.budget ? '-' : '+') + Math.abs(totalBudget - project.budget);
-
 
         return (
             <ExpansionPanel expanded={expanded === `panel${index}`}
@@ -53,32 +49,34 @@ console.log('project-type', project.tasks[p]);
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                     <Grid container style={{padding: 0}} alignItems="center" justify="space-between" direction="row">
 
-                            <Typography noWrap className={classes.heading}
-                                        color="primary">{project.title} </Typography>
+                        <Typography noWrap className={classes.heading}
+                                    color="primary">{project.title} </Typography>
 
 
+                        <Grid container spacing={8} direction="row" justify="flex-end" alignItems="center"
+                              style={{width: 250, marginRight: 30}}>
 
-                            <Grid container spacing={8} direction="row" justify="flex-end" alignItems="center" style={{width: 250,marginRight:30}}>
-
-                                <Tooltip placement="left"  title={tooltipText}>
-                                <Chip avatar={<Avatar style={{color: '#FFF', backgroundColor: totalBudget < project.budget ? 'green' : 'red'}}>TL</Avatar>} label={totalBudget.toString()} className={classes.chip}
-                                      variant="outlined" style={{marginRight:10}}/>
-                                </Tooltip>
-
-
-
-                                <Avatar
-                                    className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
+                            <Tooltip placement="left" title={tooltipText}>
+                                <Chip avatar={<Avatar style={{
+                                    color: '#FFF',
+                                    backgroundColor: totalBudget < project.budget ? 'green' : 'red'
+                                }}>TL</Avatar>} label={totalBudget.toString()} className={classes.chip}
+                                      variant="outlined" style={{marginRight: 10}}/>
+                            </Tooltip>
 
 
-                                <Avatar
-                                    className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
+                            <Avatar
+                                className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
 
 
-                                <Avatar
-                                    className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
+                            <Avatar
+                                className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
 
-                            </Grid>
+
+                            <Avatar
+                                className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
+
+                        </Grid>
 
 
                     </Grid>

@@ -30,6 +30,7 @@ const withAddButton = (Wrapped) => {
             const {open, team} = this.state;
             const {addTask, project, auth} = this.props;
 
+
             return (
                 <div>
                     <ListItem>
@@ -40,7 +41,7 @@ const withAddButton = (Wrapped) => {
                     </ListItem>
 
 
-                    <Wrapped open={open} onClose={this.handleClose} team={team} addTask={addTask} project_id={project._id} auth={auth}{...this.props} />
+                    <Wrapped open={open} onClose={this.handleClose} team={team} addTask={addTask} project_id={project._id} auth={auth} {...this.props} />
                 </div>
 
             );

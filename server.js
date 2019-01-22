@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const Pusher = require('pusher');
 
-
 const pusher = new Pusher({
     appId      : '689385',
     key        : '8042ee8184c51b5ff049',
@@ -15,6 +14,9 @@ const pusher = new Pusher({
     cluster    : 'eu',
     useTLS  : true,
 });
+
+
+
 const channel = 'projects';
 
 
@@ -34,6 +36,7 @@ mongoose.connect("mongodb://localhost:27017/cwteam", { useNewUrlParser: true }).
 }).catch((err) => {
     console.log("Not Connected to Database ERROR! ", err);
 });
+/*
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Connection Error:'));
@@ -69,6 +72,7 @@ db.once('open', () => {
 });
 
 
+*/
 
 
 //routes

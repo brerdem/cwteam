@@ -12,22 +12,10 @@ import Paper from "@material-ui/core/Paper";
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
+import menuContent from '../helpers/menu'
 
 const DashboardGrid = function (props) {
 
-    const cardsContent = [
-        {title: "Projeler", link: "/projects", description: "Projeler ve detayları", img: "projects.png"},
-        {
-            title: "İşler",
-            link: "/tasks/kanban",
-            description: "İşlerin durum gösterimleri ve atamalar",
-            img: "todos.png"
-        },
-        {title: "Kullanıcılar", link: "/users", description: "Kullanıcılar ilgili bilgi, işler", img: "users.png"},
-        {title: "Bilgi Bankası", link: "/", description: "Yararlı bilgiler", img: "knowledgebase.png"},
-        {title: "Şifreler", link: "/users", description: "Grup bazlı şifreler", img: "passwords.png"},
-        {title: "Muhasebe", link: "/users", description: "Muhasebe hesaplamaları, işlemler", img: "accounting.png"},
-    ];
 
     const {classes, projects} = props;
 
@@ -115,7 +103,7 @@ const DashboardGrid = function (props) {
             </Grid>
 
 
-            {cardsContent.map((item, index) => (
+            {menuContent.map((item, index) => (
                 <Grid item xs={4} key={index}>
                     <Card className={classes.cardDashboard}>
 

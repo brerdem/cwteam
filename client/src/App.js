@@ -6,7 +6,6 @@ import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Header from "./components/Header";
 import {doLogin, doLogout} from "./actions/auth";
 import PrivateRoute from './components/PrivateRoute'
 import Users from "./pages/Users";
@@ -28,11 +27,18 @@ import {withStyles} from '@material-ui/core/styles';
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
+import LoginGroup from "./components/LoginGroup";
+import Grid from "@material-ui/core/es/Grid/Grid";
+import menuContent from './helpers/menu'
+import Icon from "@material-ui/core/es/Icon/Icon";
+import {push} from 'connected-react-router';
+import Library from "./pages/Library";
+import Accounting from "./pages/Accounting";
+import Passwords from "./pages/Passwords";
+import {withSnackbar} from 'notistack';
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
@@ -105,7 +111,8 @@ class App extends Component {
 
     state = {
         loading: true,
-        open: false
+        open: false,
+        socketId: null
     };
 
     handleDrawerOpen = () => {
@@ -116,20 +123,58 @@ class App extends Component {
         this.setState({open: false});
     };
 
-    //todo move initial data to components. Make another router group or HOC
+    handleMenuButton = param => () => {
+        this.props.push(param);
+    };
 
-    dispatchUpdate = ({item, project_id}) => {
+    handleLogout = () => {
 
-        if (Object.keys(item)[0] === 'tasks.backlog') {
-            console.log('dispatch:' + item);
+        this.props.push('/login');
+        this.props.doLogout();
+    };
 
-            store.dispatch({type: 'ADD_TASK_DONE', item: item['tasks.backlog'], project_id});
-        } else {
-
-            store.dispatch({type: 'REORDER_TASK_SERVER', tasks: item.tasks, project_id});
-        }
+    addTaskDispatch = ({insertedTask, project_id}) => {
+        console.log('add task dispatch ---->', insertedTask, project_id);
+        insertedTask.assignees.forEach(a => {
+            if (a.user._id === this.props.auth.user._id) {
+                this.props.enqueueSnackbar(insertedTask.owner.name + ', sana bir iş atadı.', {
+                    variant: 'warning'
+                });
+            }
+        });
+        store.dispatch({type: 'ADD_TASK_DONE', insertedTask, project_id});
 
     };
+
+    updateTaskDispatch = (payload) => {
+        console.log('update task dispatch ---->', payload);
+        const {task, start, finish} = payload;
+      task.assignees.forEach(a => {
+            if (a.user._id === this.props.auth.user._id) {
+                this.props.enqueueSnackbar(`Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`, {
+                    variant: 'warning'
+                });
+            }
+        });
+       store.dispatch({type: 'REORDER_TASK_DONE', payload});
+
+    };
+
+    addProjectDispatch = project => {
+
+        store.dispatch({type: 'ADD_PROJECT_DONE', project});
+
+    };
+
+    deleteProjectDispatch = id => {
+
+        store.dispatch({type: 'DELETE_PROJECT_DONE', id});
+
+    };
+
+
+
+
 
     componentDidMount() {
         const {getAllProjects, getAllUsers, addProject, deleteProject} = this.props;
@@ -145,91 +190,111 @@ class App extends Component {
             useTLS: true,
         });
 
+
+        this.pusher.connection.bind('connected', () => {
+            this.setState({socketId: this.pusher.connection.socket_id});
+        });
+
+//fixme pusher limits event data content - allowed maximum (10240 bytes)
         this.channel = this.pusher.subscribe('projects');
-        this.channel.bind('updated', this.dispatchUpdate);
-        this.channel.bind('inserted', addProject);
-        this.channel.bind('deleted', deleteProject);
+        this.channel.bind('project_added', this.addProjectDispatch);
+        this.channel.bind('project_deleted', this.deleteProjectDispatch);
+        this.channel.bind('task_added', this.addTaskDispatch);
+        this.channel.bind('task_updated', this.updateTaskDispatch);
     }
 
     render() {
 
-        const {auth, doLogout, doLogin, ui, projects, users, classes, theme} = this.props;
+        const {auth, doLogin, ui, projects, users, classes, theme} = this.props;
         return (
 
             <div className={classes.root}>
                 <React.Fragment>
                     <CssBaseline/>
                     {!ui.isGanttFullscreen &&
-                    <AppBar
-                        position="fixed"
-                        className={classNames(classes.appBar, {
-                            [classes.appBarShift]: this.state.open,
-                        })}
-                    >
-                        <Toolbar disableGutters={!this.state.open}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="Open drawer"
-                                onClick={this.handleDrawerOpen}
-                                className={classNames(classes.menuButton, {
-                                    [classes.hide]: this.state.open,
-                                })}
-                            >
-                                <MenuIcon/>
-                            </IconButton>
-                            <Typography variant="h6" color="inherit" noWrap>
-                                CW Team </Typography>
-                        </Toolbar>
-                    </AppBar>
+                    <div>
+                        <AppBar
+                            position="fixed"
+                            className={classNames(classes.appBar, {
+                                [classes.appBarShift]: this.state.open,
+                            })}
+                        >
+                            <Toolbar disableGutters={!this.state.open}>
+                                <Grid container justify="flex-start" direction="row" alignItems="center">
 
-                    }
-                    <Drawer
-                        variant="permanent"
-                        className={classNames(classes.drawer, {
-                            [classes.drawerOpen]: this.state.open,
-                            [classes.drawerClose]: !this.state.open,
-                        })}
-                        classes={{
-                            paper: classNames({
+                                    <IconButton
+                                        color="inherit"
+                                        aria-label="Open drawer"
+                                        onClick={this.handleDrawerOpen}
+                                        className={classNames(classes.menuButton, {
+                                            [classes.hide]: this.state.open,
+                                        })}
+                                    >
+                                        <MenuIcon/>
+                                    </IconButton>
+                                    <Typography variant="h6" color="inherit" noWrap>
+                                        CW Team </Typography>
+
+                                    {auth.isLoggedIn && <LoginGroup auth={auth}/>}
+                                </Grid>
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            variant="permanent"
+                            className={classNames(classes.drawer, {
                                 [classes.drawerOpen]: this.state.open,
                                 [classes.drawerClose]: !this.state.open,
-                            }),
-                        }}
-                        open={this.state.open}
-                    >
-                        <div className={classes.toolbar}>
-                            <IconButton onClick={this.handleDrawerClose}>
-                                {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
-                            </IconButton>
-                        </div>
-                        <Divider/>
-                        <List>
-                            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                                    <ListItemText primary={text}/>
+                            })}
+                            classes={{
+                                paper: classNames({
+                                    [classes.drawerOpen]: this.state.open,
+                                    [classes.drawerClose]: !this.state.open,
+                                }),
+                            }}
+                            open={this.state.open}
+                        >
+                            <div className={classes.toolbar}>
+                                <IconButton onClick={this.handleDrawerClose}>
+                                    {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                                </IconButton>
+                            </div>
+                            <Divider/>
+                            <List>
+                                {menuContent.map(item => (
+                                    <ListItem button key={item.title} onClick={this.handleMenuButton(item.link)}>
+                                        <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
+                                        <ListItemText primary={item.title}/>
+                                    </ListItem>
+                                ))}
+                            </List>
+                            <Divider/>
+                            <List>
+
+                                <ListItem button key="Ayarlar" onClick={this.handleMenuButton('/settings')}>
+                                    <ListItemIcon><Icon>settings</Icon></ListItemIcon>
+                                    <ListItemText primary="Ayarlar"/>
                                 </ListItem>
-                            ))}
-                        </List>
-                        <Divider/>
-                        <List>
-                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                                    <ListItemText primary={text}/>
+                                <ListItem button key="Çıkış" onClick={this.handleLogout}>
+                                    <ListItemIcon><Icon>exit_to_app</Icon></ListItemIcon>
+                                    <ListItemText primary="Çıkış"/>
                                 </ListItem>
-                            ))}
-                        </List>
-                    </Drawer>
+
+                            </List>
+                        </Drawer>
+                    </div>
+                    }
                     <main className={classes.content}>
                         <Switch>
                             <Route exact path='/login' render={props => <Login doLogin={doLogin} {...props} />}/>
                             <Route exact path='/register' component={Register}/>
+                            <Route exact path='/library' component={Library}/>
+                            <Route exact path='/accounting' component={Accounting}/>
+                            <Route exact path='/passwords' component={Passwords}/>
                             <PrivateRoute exact path='/projects' loading={this.state.loading} component={Projects}
                                           auth={auth} projects={projects} users={users}/>
                             <PrivateRoute exact path='/' component={Home} auth={auth} projects={projects}/>
                             <PrivateRoute path='/tasks' component={Tasks} auth={auth} projects={projects} users={users}
-                                          loading={this.state.loading}/>
+                                          loading={this.state.loading} socket_id={this.state.socketId}/>
                             <PrivateRoute path='/users' component={Users} auth={auth} loading={this.state.loading}/>
 
                         </Switch>
@@ -256,7 +321,7 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(
         mapStateToProps,
-        {doLogout, doLogin, getAllProjects, addProject, deleteProject, getAllUsers},
+        {doLogout, doLogin, getAllProjects, addProject, deleteProject, getAllUsers, push},
         null,
         {
             pure: false,
@@ -264,6 +329,8 @@ export default compose(
                 return next.auth === prev.auth
             }
         }
-    ), withStyles(styles, {withTheme: true})
+    ),
+    withStyles(styles, {withTheme: true}),
+    withSnackbar
 )(App);
 

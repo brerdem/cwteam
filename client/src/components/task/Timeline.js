@@ -7,11 +7,16 @@ function makeDataForGantt(projects) {
     let data = {};
     data.data = [];
     projects.forEach((project) => {
+        let projectStartDate =  moment(project.startDate).format("DD-MM-YYYY");
+        let projectDuration = moment.duration(moment(project.endDate).diff(moment(project.startDate)));
+
 
         data.data.push({
             id: `${project._id}`,
             text: project.title,
             open: true,
+            start_date: projectStartDate,
+            duration: projectDuration,
             color: '#2b8496',
             holder: '',
             progress: 1.9 / 4,

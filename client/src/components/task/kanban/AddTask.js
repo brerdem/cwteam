@@ -79,22 +79,22 @@ class AddTask extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state.selectedUsers);
+
         let assignees = [];
 
         this.state.selectedUsers.map((member) => assignees.push({user: member, effort: member.effort}));
         const task = {
-            project_id: this.props.project_id,
+
             title: e.target.title.value,
             note: e.target.note.value,
             assignees: assignees,
             department: this.state.department,
             startDate: this.state.selectedStartDate,
             endDate: this.state.selectedEndDate,
-            owner: this.props.auth
+            owner: this.props.auth.user
         };
 
-        axios.post(API_URL + '/task/add', task, {
+        axios.post(API_URL + '/task/add', {task,  project_id: this.props.project_id}, {
             headers: {'Authorization': 'bearer ' + getToken()},
 
         })

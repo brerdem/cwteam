@@ -73,8 +73,8 @@ class Tasks extends Component {
 
     render() {
 
-        const {classes, projects, addTask, reorderTask, auth, users, loading, reorderTaskImmediately} = this.props;
-
+        const {classes, projects, addTask, reorderTask, auth, users, loading, socket_id} = this.props;
+        console.log('auth is', auth);
         let content;
         if (loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
@@ -109,8 +109,11 @@ class Tasks extends Component {
                                                 project={project}
                                                 auth={auth}
                                                 addTask={addTask}
-                                                reorderTaskImmediately={reorderTaskImmediately}
-                                                reorderTask={reorderTask}/></Project>;
+                                                reorderTask={reorderTask}
+                                                socket_id={socket_id}
+
+
+                                            /></Project>;
 
                                         })}
                                     </Grid>
@@ -142,7 +145,7 @@ class Tasks extends Component {
                                 <Grid container justify="center" alignItems="center" direction="row">
                                     {departments.map(department =>
 
-                                        <FormControlLabel
+                                        <FormControlLabel key={department.def}
                                             control={
                                                 <Checkbox style={{color: department.color}}
                                                           checked={this.state[department.def]}
@@ -182,6 +185,6 @@ const mapStateToProps = (state) => {
 
 //fixme remove from connect
 export default compose(
-    connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments, reorderTaskImmediately}),
+    connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
     withStyles(theme)
 )(Tasks);

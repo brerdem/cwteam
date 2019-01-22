@@ -35,12 +35,9 @@ class Board extends Component {
     onDragEnd = result => {
         console.log('result', result);
 
-
-        const {project, reorderTaskImmediately} = this.props;
-
+        const {project, socket_id} = this.props;
 
         const {destination, source, draggableId} = result;
-
 
         if (!destination) {
             return;
@@ -57,24 +54,34 @@ class Board extends Component {
         const finish = destination.droppableId;
 
         const task = project.tasks[start].find(t => t._id === draggableId);
-/*
-        tasks[start].splice(source.index, 1);
-        tasks[finish].splice(destination.index, 0, task);
-        console.log('tasks', tasks);
-        console.log('tasks-start', tasks[start]);
-        console.log('tasks-finish', tasks[finish]);*/
+        /*
+                tasks[start].splice(source.index, 1);
+                tasks[finish].splice(destination.index, 0, task);
+                console.log('tasks', tasks);
+                console.log('tasks-start', tasks[start]);
+                console.log('tasks-finish', tasks[finish]);*/
 
-        store.dispatch({type:'REORDER_TASK_CLIENT', project_id:project._id, start, finish, sourceIndex:source.index, destinationIndex: destination.index, task});
+        store.dispatch({
+            type: 'REORDER_TASK_DONE',
+            payload: {
+                project_id: project._id,
+                start,
+                finish,
+                sourceIndex: source.index,
+                destinationIndex: destination.index,
+                task
+            }
+        });
 
-        //store.dispatch({type: 'REORDER_TASK_DONE', tasks, project_id: project._id});
-
-
-      axios.post(API_URL + '/task/reorder', {
+        axios.post(API_URL + '/task/reorder', {
             project_id: project._id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
-            sourceColumn: start,
-            destinationColumn: finish
+            task,
+            start,
+            finish,
+            socket_id
+
         }, {
             headers: {'Authorization': 'bearer ' + getToken()},
 
@@ -95,6 +102,7 @@ class Board extends Component {
 
         const {project, addTask, auth} = this.props;
         const {columns, columnOrder} = this.state;
+
         console.log('board -->', project.tasks);
         return (
 

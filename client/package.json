@@ -33,6 +33,8 @@
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
+    "react-treeview-mui": "^0.1.2",
+    "react-user-avatar": "^1.10.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-axios-middleware": "^4.0.0",
