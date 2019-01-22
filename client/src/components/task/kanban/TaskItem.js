@@ -13,7 +13,8 @@ import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import moment from 'moment';
 import 'moment/locale/tr';
-import departments from '../../../helpers/departments'
+import departments from '../../../helpers/departments';
+import UserAvatar from 'react-user-avatar'
 
 const styles = theme => ({
 
@@ -138,13 +139,7 @@ class TaskItem extends Component {
                                                   justify="flex-end">
                                                 {task.assignees.map(assignee =>
                                                     <Grid item key={assignee.user._id}>
-                                                        <Avatar style={{
-                                                            width: 24,
-                                                            height: 24,
-                                                            fontSize: 12,
-                                                            color: '#FFFFFF',
-                                                            backgroundColor: assignee.user.avatar_bg
-                                                        }}>{assignee.user.first_name.charAt(0).toLocaleUpperCase() + assignee.user.last_name.charAt(0).toLocaleUpperCase()}</Avatar>
+                                                        <UserAvatar size={24} style={{fontSize: 12, color: '#FFF', fontWeight: 600}} name={assignee.user.name} src={assignee.user.avatar_url ? require(`../../../static/media/users/${assignee.user.avatar_url}.png`): null } />
                                                     </Grid>
                                                 )}
                                             </Grid>

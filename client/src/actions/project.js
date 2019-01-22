@@ -3,18 +3,6 @@ import axios from "axios";
 
 const API_URL = 'http://localhost:3000/api';
 
-const addProjectAC = project => {
-    return {
-        type: 'ADD_PROJECT_DONE',
-        project
-    }
-};
-const deleteProjectAC = id => {
-    return {
-        type: 'DELETE_PROJECT_DONE',
-        id
-    }
-};
 
 const filterTaskByDepartmentsAC = selectedDepartments => {
     return {

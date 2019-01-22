@@ -12,6 +12,7 @@ import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import _ from 'underscore';
+import UserAvatar from 'react-user-avatar';
 
 let thisClass;
 
@@ -32,10 +33,7 @@ function renderInput(inputProps) {
             chipRenderer={({value, text, chip}, key) => <Chip
                 key={key}
                 className={classes.chipWithAvatar}
-                avatar={<Avatar style={{
-                    backgroundColor: chip.avatar_bg,
-                    color: 'white'
-                }}>{(chip.first_name + ' ' + chip.last_name).replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g).join('')}</Avatar>}
+                avatar={<UserAvatar style={{color: '#FFF'}} size={32} name={chip.name} src={chip.avatar_url ? `http://www.clockwork.com.tr/mailing/users/${chip.avatar_url}.png`: null } />}
                 label={
 
                     <Grid container direction={"row"} alignItems={"center"}>

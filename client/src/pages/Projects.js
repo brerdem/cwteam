@@ -22,6 +22,9 @@ import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import axios from "axios";
 import {getToken} from "../actions/auth";
 import Fade from "@material-ui/core/Fade/Fade";
+import classNames from "classnames";
+import Avatar from "@material-ui/core/es/Avatar/Avatar";
+import ViewWeek from '@material-ui/icons/ViewWeek';
 
 //todo make alert dialogs as a new component
 
@@ -52,11 +55,15 @@ class Projects extends Component {
         this.setState({alertOpen: false});
     };
 
-    handleProjectDeleteDialog = (e) => {
+    handleProjectDeleteDialog = id => e => {
         this.setState({
             alertOpen: true,
-            deleteProjectId: e.currentTarget.id
+            deleteProjectId: id
         });
+    };
+
+    handleOpenKanban = id => e => {
+        this.props.history.push(`/tasks/kanban/${id}`);
     };
     handleProjectDelete = () => {
         axios.post(API_URL + '/project/delete', {id: this.state.deleteProjectId}, {
@@ -105,7 +112,8 @@ class Projects extends Component {
         } else {
             if (projects.length === 0) {
                 content =
-                    <Typography component="h4" variant="h6" style={{color: 'grey'}}>Herhangi bir proje bulunmamakta</Typography>
+                    <Typography component="h4" variant="h6" style={{color: 'grey'}}>Herhangi bir proje
+                        bulunmamakta</Typography>
             } else {
 
                 content = <Grid container spacing={40}>
@@ -123,12 +131,38 @@ class Projects extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
+                                        <Grid container justify="space-between" direction="row" alignItems="center">
 
-                                        <Grid container justify={"flex-end"}> <IconButton size="small" color="primary"
-                                                                                          id={project._id}
-                                                                                          onClick={this.handleProjectDeleteDialog}>
-                                            <Delete/>
-                                        </IconButton>
+                                            <Grid item alignItems={"flex-start"}>
+                                                <Grid container direction="row" justify="flex-start">
+                                                    <Avatar
+                                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
+
+
+                                                    <Avatar
+                                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
+
+
+                                                    <Avatar
+                                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
+                                                </Grid>
+                                            </Grid>
+
+
+                                            <Grid item alignItems={"flex-end"}>
+                                                <Grid container direction="row" justify="flex-start">
+                                                    <IconButton size="small" color="primary"
+                                                                onClick={this.handleOpenKanban(project._id)}>
+                                                        <ViewWeek/>
+                                                    </IconButton>
+
+                                                <IconButton size="small" color="primary"
+                                                            onClick={this.handleProjectDeleteDialog(project._id)}>
+                                                    <Delete/>
+                                                </IconButton>
+
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
 
 
@@ -186,7 +220,7 @@ class Projects extends Component {
 
                     </div>
 
-                    <Fab color="primary" onClick={this.openDialog}  className={classes.fabButton}>
+                    <Fab color="primary" onClick={this.openDialog} className={classes.fabButton}>
                         <Add/>
 
                     </Fab>

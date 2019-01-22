@@ -13,11 +13,31 @@ import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import menuContent from '../helpers/menu'
+import moment from 'moment';
 
 const DashboardGrid = function (props) {
 
-
     const {classes, projects} = props;
+
+    const calculateTotalEffort = (m, t) => {
+        return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m;
+    };
+
+    let totalCurrentBudgets = 0;
+    let totalBudgets = 0;
+
+
+
+    projects.map(project => {
+        let projectBudget = 0;
+        totalBudgets += project.budget;
+        Object.keys(project.tasks).forEach(p => {
+
+            projectBudget += project.tasks[p].length > 0 ? project.tasks[p].reduce(calculateTotalEffort, 0) : 0;
+        });
+
+        return totalCurrentBudgets += projectBudget;
+    });
 
     return (
 
@@ -85,15 +105,28 @@ const DashboardGrid = function (props) {
                     <Grid container spacing={24} direction="column" justify="center" alignItems="center">
                         <Grid item xs={8} className={classes.dashboardHeight}>
 
+                            <Typography variant="h3" style={{
+                                marginTop: 40,
+                                fontWeight: 600,
+                                color: totalBudgets > totalCurrentBudgets ? 'green' : 'red'
+                            }}>
+                                {totalCurrentBudgets} TL
+                            </Typography>
+
+
                         </Grid>
                         <Grid item>
                             <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
-                                Diğer
+                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
+                                    Toplam Maliyet
+                                </Typography>
                             </Typography>
 
                         </Grid>
                         <Grid item>
-
+                            <Typography gutterBottom variant="caption" color="textPrimary" align="center">
+                                Bütün projelerin bütün işlerinin efor bazında maliyetlerinin toplamı
+                            </Typography>
 
                         </Grid>
                     </Grid>
@@ -146,7 +179,7 @@ class Home extends Component {
     };
 
     render() {
-        const {classes, projects} = this.props;
+        const {classes, projects, auth} = this.props;
         console.log('projects from home', projects);
 
         return (
@@ -154,9 +187,12 @@ class Home extends Component {
             <main className={classes.layout}>
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
-                    <Typography component="h1" variant="h2" align="center" color="primary"
+                    <Typography variant="h4" align="center" color="primary"
                                 className={classes.headingPadding}>
-                        DASHBOARD
+                        Hoş geldiniz, {auth.user.name}
+                    </Typography>
+                    <Typography variant="h6" align="center" color="primary" gutterBottom style={{marginBottom:20}}>
+                        Sisteme en son girişiniz: {moment(auth.user.lastLogin).format("DD.MM.YYYY HH:mm")}
                     </Typography>
                     <DashboardGridWrapper projects={projects} {...this.props}/>
 

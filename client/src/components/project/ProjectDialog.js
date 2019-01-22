@@ -79,6 +79,8 @@ class ProjectDialog extends Component {
         e.preventDefault();
         console.log(this.state.selectedUsers);
         this.props.addProject({
+            startDate: this.state.selectedStartDate,
+            endDate: this.state.selectedEndDate,
             title: e.target.title.value,
             description: e.target.description.value,
             team: this.state.selectedUsers,

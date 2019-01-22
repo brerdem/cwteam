@@ -1,12 +1,9 @@
 const passport = require('passport');
 const passportJWT = require("passport-jwt");
-const JWTStrategy   = passportJWT.Strategy;
+const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
-
-
-
 
 passport.use(new LocalStrategy({
         usernameField: 'email',
@@ -19,6 +16,8 @@ passport.use(new LocalStrategy({
                 if (!user) {
                     return cb(null, false, {message: 'Incorrect email or password.'});
                 }
+                user.lastLogin = Date.now();
+                user.save();
                 return cb(null, user, {message: 'Logged In Successfully'});
             })
             .catch(err => cb(err));
@@ -27,7 +26,7 @@ passport.use(new LocalStrategy({
 
 passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey   : 'MIGpAgEAAiEAz5EYGJlmW/rIW6I9UpstI3/i6oabVoeGxoNHXIb4haMCAwEAAQIg\n' +
+        secretOrKey: 'MIGpAgEAAiEAz5EYGJlmW/rIW6I9UpstI3/i6oabVoeGxoNHXIb4haMCAwEAAQIg\n' +
         'EI7WiT/Tdoru6MBse+Z9Fy8ZKtEHXlg9anfzbVGTR6ECEQDoKNQBV3to8xZ7vJFs\n' +
         '1kDVAhEA5OHBZ/lCwMSFp6tw9BsolwIQRXwK0Af98NBo10n+AKQzrQIQMwm8bQkC\n' +
         'P6YS/76VI3ni5QIQKrx93E1t59XUAS26ISvUcw=='

@@ -100,7 +100,7 @@ export default theme => ({
         height: 169,
     },
     headingPadding: {
-        marginBottom: theme.spacing.unit * 5
+        marginBottom: theme.spacing.unit * 3
     },
     heading: {
         fontSize: theme.typography.pxToRem(20),
@@ -129,8 +129,8 @@ export default theme => ({
         margin: '0 3px'
     },
     columnItem: {
-        border: 'solid 1px lightgray',
-        padding: 18,
+
+        padding: 0,
 
     },
 
@@ -185,17 +185,18 @@ export default theme => ({
         right: theme.spacing.unit * 3,
 
     },
-    taskAvatar: {
-        width: 20,
-        height: 20,
-        fontSize: 10,
-
+    userAvatarText: {
+        color: '#FFF',
+        fontWeight: 600
     },
+
 
     taskInfoText: {
         padding: 0,
         fontSize: 10
     },
+
+
 
 });
 

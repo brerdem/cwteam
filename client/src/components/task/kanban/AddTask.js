@@ -57,8 +57,8 @@ const style = {
 class AddTask extends Component {
 
     state = {
-        selectedStartDate: new Date(),
-        selectedEndDate: new Date(),
+        selectedStartDate:this.props.project.startDate,
+        selectedEndDate: this.props.project.startDate,
         team: this.props.team,
         selectedUsers: [],
         department: ''
@@ -94,7 +94,7 @@ class AddTask extends Component {
             owner: this.props.auth.user
         };
 
-        axios.post(API_URL + '/task/add', {task,  project_id: this.props.project_id}, {
+        axios.post(API_URL + '/task/add', {task,  project_id: this.props.project._id}, {
             headers: {'Authorization': 'bearer ' + getToken()},
 
         })
@@ -231,7 +231,7 @@ class AddTask extends Component {
 
 AddTask.propTypes = {
     addTask: PropTypes.func.isRequired,
-    project_id: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
 
 };
 

@@ -25,6 +25,11 @@ class Accounting extends Component {
                         MUHASEBE
                     </Typography>
 
+                    <Typography variant="h6" align="center" color="primary"
+                                className={classes.headingPadding}>
+                        Muhasebeyi ilgilendiren işlemler
+                    </Typography>
+
                 </div>
 
             </main>

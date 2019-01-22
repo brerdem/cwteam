@@ -20,6 +20,8 @@ router.post('/add', (req, res) => {
         title: req.body.title,
         description: req.body.description,
         budget: req.body.budget,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
         createdAt: new Date(),
         active: true,
         team: req.body.team

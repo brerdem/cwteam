@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import Login from './pages/Login';
 import Projects from './pages/Projects';
@@ -38,6 +38,7 @@ import {push} from 'connected-react-router';
 import Library from "./pages/Library";
 import Accounting from "./pages/Accounting";
 import Passwords from "./pages/Passwords";
+import Settings from "./pages/Settings";
 import {withSnackbar} from 'notistack';
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
@@ -209,78 +210,87 @@ class App extends Component {
         return (
 
             <div className={classes.root}>
-                <React.Fragment>
+                <Fragment>
                     <CssBaseline/>
                     {!ui.isGanttFullscreen &&
+
                     <div>
-                        <AppBar
-                            position="fixed"
-                            className={classNames(classes.appBar, {
-                                [classes.appBarShift]: this.state.open,
-                            })}
-                        >
-                            <Toolbar disableGutters={!this.state.open}>
-                                <Grid container justify="flex-start" direction="row" alignItems="center">
+                        {auth.isLoggedIn &&
+                        <Fragment>
+                            <AppBar
+                                position="fixed"
+                                className={classNames(classes.appBar, {
+                                    [classes.appBarShift]: this.state.open,
+                                })}
+                            >
+                                <Toolbar disableGutters={!this.state.open}>
+                                    <Grid container justify="flex-start" direction="row" alignItems="center">
 
-                                    <IconButton
-                                        color="inherit"
-                                        aria-label="Open drawer"
-                                        onClick={this.handleDrawerOpen}
-                                        className={classNames(classes.menuButton, {
-                                            [classes.hide]: this.state.open,
-                                        })}
-                                    >
-                                        <MenuIcon/>
-                                    </IconButton>
-                                    <Typography variant="h6" color="inherit" noWrap>
-                                        CW Team </Typography>
+                                        <IconButton
+                                            color="inherit"
+                                            aria-label="Open drawer"
+                                            onClick={this.handleDrawerOpen}
+                                            className={classNames(classes.menuButton, {
+                                                [classes.hide]: this.state.open,
+                                            })}
+                                        >
+                                            <MenuIcon/>
+                                        </IconButton>
+                                        <Typography variant="h6" color="inherit" noWrap>
+                                            CW Team </Typography>
 
-                                    {auth.isLoggedIn && <LoginGroup auth={auth}/>}
-                                </Grid>
-                            </Toolbar>
-                        </AppBar>
-                        <Drawer
-                            variant="permanent"
-                            className={classNames(classes.drawer, {
-                                [classes.drawerOpen]: this.state.open,
-                                [classes.drawerClose]: !this.state.open,
-                            })}
-                            classes={{
-                                paper: classNames({
+                                        {auth.isLoggedIn && <LoginGroup auth={auth}/>}
+                                    </Grid>
+                                </Toolbar>
+                            </AppBar>
+                            <Drawer
+                                variant="permanent"
+                                className={classNames(classes.drawer, {
                                     [classes.drawerOpen]: this.state.open,
                                     [classes.drawerClose]: !this.state.open,
-                                }),
-                            }}
-                            open={this.state.open}
-                        >
-                            <div className={classes.toolbar}>
-                                <IconButton onClick={this.handleDrawerClose}>
-                                    {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
-                                </IconButton>
-                            </div>
-                            <Divider/>
-                            <List>
-                                {menuContent.map(item => (
-                                    <ListItem button key={item.title} onClick={this.handleMenuButton(item.link)}>
-                                        <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
-                                        <ListItemText primary={item.title}/>
+                                })}
+                                classes={{
+                                    paper: classNames({
+                                        [classes.drawerOpen]: this.state.open,
+                                        [classes.drawerClose]: !this.state.open,
+                                    }),
+                                }}
+                                open={this.state.open}
+                            >
+                                <div className={classes.toolbar}>
+                                    <IconButton onClick={this.handleDrawerClose}>
+                                        {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                                    </IconButton>
+                                </div>
+                                <Divider/>
+                                <List>
+                                    <ListItem button key={'Home'} onClick={this.handleMenuButton('/')}>
+                                        <ListItemIcon><Icon>home</Icon></ListItemIcon>
+                                        <ListItemText primary="Dashboard"/>
                                     </ListItem>
-                                ))}
-                            </List>
-                            <Divider/>
-                            <List>
+                                    {menuContent.map(item => (
+                                        <ListItem button key={item.title} onClick={this.handleMenuButton(item.link)}>
+                                            <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
+                                            <ListItemText primary={item.title}/>
+                                        </ListItem>
+                                    ))}
+                                </List>
+                                <Divider/>
+                                <List>
 
-                                <ListItem button key="Ayarlar" onClick={this.handleMenuButton('/settings')}>
-                                    <ListItemIcon><Icon>settings</Icon></ListItemIcon>
-                                    <ListItemText primary="Ayarlar"/>
-                                </ListItem>
-                                <ListItem button key="Çıkış" onClick={this.handleLogout}>
-                                    <ListItemIcon><Icon>exit_to_app</Icon></ListItemIcon>
-                                    <ListItemText primary="Çıkış"/>
-                                </ListItem>
+                                    <ListItem button key="Ayarlar" onClick={this.handleMenuButton('/settings')}>
+                                        <ListItemIcon><Icon>settings</Icon></ListItemIcon>
+                                        <ListItemText primary="Ayarlar"/>
+                                    </ListItem>
+                                    <ListItem button key="Çıkış" onClick={this.handleLogout}>
+                                        <ListItemIcon><Icon>exit_to_app</Icon></ListItemIcon>
+                                        <ListItemText primary="Çıkış"/>
+                                    </ListItem>
 
-                            </List>
-                        </Drawer>
+                                </List>
+                            </Drawer>
+                        </Fragment>
+                        }
                     </div>
                     }
                     <main className={classes.content}>
@@ -290,6 +300,7 @@ class App extends Component {
                             <Route exact path='/library' component={Library}/>
                             <Route exact path='/accounting' component={Accounting}/>
                             <Route exact path='/passwords' component={Passwords}/>
+                            <Route exact path='/settings' component={Settings}/>
                             <PrivateRoute exact path='/projects' loading={this.state.loading} component={Projects}
                                           auth={auth} projects={projects} users={users}/>
                             <PrivateRoute exact path='/' component={Home} auth={auth} projects={projects}/>
@@ -300,7 +311,7 @@ class App extends Component {
                         </Switch>
                     </main>
 
-                </React.Fragment>
+                </Fragment>
             </div>
         )
 

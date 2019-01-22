@@ -48,6 +48,8 @@ let taskSchema = new Schema({
 let projectSchema = new Schema({
     title: {type: String, required: true},
     description: String,
+    startDate: Date,
+    endDate: Date,
     createdAt: {
         type: Date,
         default: Date.now

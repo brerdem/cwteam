@@ -6,7 +6,6 @@ import MailIcon from '@material-ui/icons/Mail';
 import Button from "@material-ui/core/Button";
 import Badge from "@material-ui/core/Badge";
 import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import withRouter from "react-router-dom/es/withRouter";
@@ -19,6 +18,7 @@ import List from "@material-ui/core/es/List/List";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import Warning from "@material-ui/icons/Warning"
 import Divider from "@material-ui/core/es/Divider/Divider";
+import UserAvatar from 'react-user-avatar'
 
 const styles = theme => ({
 
@@ -84,8 +84,7 @@ class LoginGroup extends Component {
 
 
                     <IconButton color="inherit">
-                        <Avatar
-                            className={classes.avatar}>{auth.user.first_name.charAt(0).toLocaleUpperCase() + auth.user.last_name.charAt(0).toLocaleUpperCase()}</Avatar>
+                        <UserAvatar size={40} name={auth.user.name} src={auth.user.avatar_url ? `http://www.clockwork.com.tr/mailing/users/${auth.user.avatar_url}.png`: null } />
                     </IconButton>
 
                     <Popper open={open} anchorEl={anchorEl} transition disablePortal placement="bottom-end" style={{marginTop:10}}>

@@ -13,13 +13,7 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {
-    addTask,
-    filterTaskByDepartments,
-    getAllProjects,
-    reorderTask,
-    reorderTaskImmediately
-} from "../actions/project";
+import {addTask, filterTaskByDepartments, getAllProjects, reorderTask} from "../actions/project";
 import {compose} from 'recompose';
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../components/task/kanban/Project";
@@ -100,12 +94,12 @@ class Tasks extends Component {
                             </AppBar>
                         </MuiThemeProvider>
                         <Switch>
-                            <Route path="/tasks/kanban" render={() =>
+                            <Route path="/tasks/kanban/:project_id?" render={(props) =>
                                 <Grid container spacing={24}>
                                     <Grid item xs={12}>
                                         {projects.map((project, index) => {
 
-                                            return <Project key={index} project={project} users={users}><Board
+                                            return <Project key={index} project={project} users={users} edit={props.match.params.project_id === project._id}><Board
                                                 project={project}
                                                 auth={auth}
                                                 addTask={addTask}
@@ -113,7 +107,7 @@ class Tasks extends Component {
                                                 socket_id={socket_id}
 
 
-                                            /></Project>;
+                                            /></Project>
 
                                         })}
                                     </Grid>
@@ -146,13 +140,13 @@ class Tasks extends Component {
                                     {departments.map(department =>
 
                                         <FormControlLabel key={department.def}
-                                            control={
-                                                <Checkbox style={{color: department.color}}
-                                                          checked={this.state[department.def]}
-                                                          onChange={this.handleDepartmentChange(department.def)}
-                                                          value={department.def}/>
-                                            }
-                                            label={department.name}
+                                                          control={
+                                                              <Checkbox style={{color: department.color}}
+                                                                        checked={this.state[department.def]}
+                                                                        onChange={this.handleDepartmentChange(department.def)}
+                                                                        value={department.def}/>
+                                                          }
+                                                          label={department.name}
                                         />
                                     )}
                                 </Grid>

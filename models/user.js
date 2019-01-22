@@ -33,6 +33,12 @@ let userSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    access: {
+        type: String,
+        enum: ['admin', 'user', 'client'],
+        default: 'user'
+    },
+    lastLogin: Date
 
 });
 

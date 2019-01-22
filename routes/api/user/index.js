@@ -27,6 +27,7 @@ router.get('/makeusers', (req, res) => {
             password: 'burak',
             department: 'Müşteri',
             title: 'Kurucu Ortak',
+            access: 'admin',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -38,6 +39,7 @@ router.get('/makeusers', (req, res) => {
             password: 'hakan',
             department: 'Yazılım',
             title: 'Front-End Developer',
+            access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -49,6 +51,7 @@ router.get('/makeusers', (req, res) => {
             password: 'burcu',
             department: 'Müşteri',
             title: 'Finans Yöneticisi',
+            access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -60,6 +63,7 @@ router.get('/makeusers', (req, res) => {
             password: 'serkan',
             department: 'Müşteri',
             title: 'Kurucu',
+            access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -70,6 +74,7 @@ router.get('/makeusers', (req, res) => {
             password: 'nazim',
             department: 'Tasarım',
             title: 'Art Direktör',
+            access: 'admin',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -81,6 +86,7 @@ router.get('/makeusers', (req, res) => {
             password: 'aybuke',
             department: 'Sosyal Medya',
             title: 'Sosyal Medya Süpervizörü',
+            access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -91,6 +97,7 @@ router.get('/makeusers', (req, res) => {
             password: 'deniz',
             department: 'Müşteri',
             title: 'Müşteri Yöneticisi',
+            access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
     ];

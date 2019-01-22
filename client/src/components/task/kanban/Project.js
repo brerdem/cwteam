@@ -13,26 +13,31 @@ import classNames from 'classnames';
 import Chip from "@material-ui/core/es/Chip/Chip";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 
+
 class Project extends Component {
 
     state = {
-        expanded: null,
+        expanded: this.props.edit,
     };
 
-    handleChange = panel => (event, expanded) => {
+    handleChange = event => {
         this.setState({
-            expanded: expanded ? panel : false,
+            expanded: !this.state.expanded,
         });
     };
 
     calculateTotalEffort = (m, t) => {
-        console.log('t değeri', t);
         return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(this.calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m;
     };
 
+
+
     render() {
+
         const {expanded} = this.state;
-        const {classes, project, index, children} = this.props;
+        const {classes, project, index, children, edit} = this.props;
+
+        console.log('edit param  ->', edit);
 
         let totalBudget = 0;
         Object.keys(project.tasks).forEach(p => {
@@ -43,8 +48,8 @@ class Project extends Component {
         const tooltipText = (totalBudget < project.budget ? '-' : '+') + Math.abs(totalBudget - project.budget);
 
         return (
-            <ExpansionPanel expanded={expanded === `panel${index}`}
-                            onChange={this.handleChange(`panel${index}`)} className={classes.expansionPanel}>
+            <ExpansionPanel expanded={expanded}
+                            onChange={this.handleChange} className={classes.expansionPanel}>
 
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                     <Grid container style={{padding: 0}} alignItems="center" justify="space-between" direction="row">
