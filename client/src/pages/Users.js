@@ -20,35 +20,26 @@ class Users extends Component {
 
     state = {
         loading: true,
-        users: []
-
     };
 
-    componentDidMount() {
-        /*  axios.get('/api/user/makeusers').then((response) => {
-              this.setState({loading: false})
+    handleLink = id => e => {
+        this.props.history.push(`/user/detail/${id}`);
+    };
 
-            });*/
-        axios.get('/api/users').then((response) => {
-            this.setState({loading: false, users: response.data})
-
-        })
-
-    }
 
     render() {
-        const {classes, loading} = this.props;
+        const {classes, loading, users} = this.props;
         let content;
         if (loading) {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
             content =
                 <Grid container spacing={24}>
-                    {this.state.users.map((user, index) => (
+                    {users.map((user, index) => (
                         <Grid item xs={4} key={index}>
                             <Card className={classes.cardDashboard}>
 
-                                <CardActionArea onClick={() => this.props.history.push('/')}>
+                                <CardActionArea onClick={this.handleLink(user._id)}>
 
                                     <CardContent className={classes.cardContent}
                                                  style={{borderRight: 'solid 5px ' + departments.find(t => t.name === user.department).color}}>

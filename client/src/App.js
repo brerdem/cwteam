@@ -40,6 +40,9 @@ import Accounting from "./pages/Accounting";
 import Passwords from "./pages/Passwords";
 import Settings from "./pages/Settings";
 import {withSnackbar} from 'notistack';
+import UserDetail from "./components/user/UserDetail";
+import ZReport from "./pages/ZReport";
+import ReactNotifications from 'react-browser-notifications';
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
@@ -113,7 +116,11 @@ class App extends Component {
     state = {
         loading: true,
         open: false,
-        socketId: null
+        socketId: null,
+        notifTitle: '',
+        notifBody: '',
+        notifIcon: 'cwteam_logo'
+
     };
 
     handleDrawerOpen = () => {
@@ -134,13 +141,23 @@ class App extends Component {
         this.props.doLogout();
     };
 
+    showNotifications() {
+        // If the Notifications API is supported by the browser
+        // then show the notification
+        if(this.n.supported()) this.n.show();
+    }
+
+
     addTaskDispatch = ({insertedTask, project_id}) => {
         console.log('add task dispatch ---->', insertedTask, project_id);
         insertedTask.assignees.forEach(a => {
             if (a.user._id === this.props.auth.user._id) {
+
                 this.props.enqueueSnackbar(insertedTask.owner.name + ', sana bir iş atadı.', {
                     variant: 'warning'
                 });
+                this.setState({notifTitle: 'Yeni İş!', notifBody: insertedTask.owner.name + ', sana bir iş atadı.', notifIcon:  insertedTask.owner.avatar_url ?  insertedTask.owner.avatar_url : 'cwteam_logo'}, () => this.showNotifications());
+
             }
         });
         store.dispatch({type: 'ADD_TASK_DONE', insertedTask, project_id});
@@ -155,6 +172,7 @@ class App extends Component {
                 this.props.enqueueSnackbar(`Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`, {
                     variant: 'warning'
                 });
+                this.setState({notifTitle: 'İş Durumu Değişti!', notifBody: `Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`, notifIcon:  task.owner.avatar_url ?  task.owner.avatar_url : 'cwteam_logo'}, () => this.showNotifications());
             }
         });
        store.dispatch({type: 'REORDER_TASK_DONE', payload});
@@ -172,7 +190,6 @@ class App extends Component {
         store.dispatch({type: 'DELETE_PROJECT_DONE', id});
 
     };
-
 
 
 
@@ -208,6 +225,16 @@ class App extends Component {
 
         const {auth, doLogin, ui, projects, users, classes, theme} = this.props;
         return (
+            <Fragment>
+            <ReactNotifications
+                onRef={ref => (this.n = ref)} // Required
+                title={this.state.notifTitle} // Required
+                body={this.state.notifBody}
+                icon={`https://www.clockwork.com.tr/mailing/users/${this.state.notifIcon}.png`}
+                tag="abcdef"
+                timeout="5000"
+
+            />
 
             <div className={classes.root}>
                 <Fragment>
@@ -306,13 +333,16 @@ class App extends Component {
                             <PrivateRoute exact path='/' component={Home} auth={auth} projects={projects}/>
                             <PrivateRoute path='/tasks' component={Tasks} auth={auth} projects={projects} users={users}
                                           loading={this.state.loading} socket_id={this.state.socketId}/>
-                            <PrivateRoute path='/users' component={Users} auth={auth} loading={this.state.loading}/>
+                            <PrivateRoute path='/users' component={Users} users={users} auth={auth} loading={this.state.loading}/>
+                            <PrivateRoute path='/user/detail/:id' component={UserDetail} auth={auth} users={users} loading={this.state.loading}/>
+                            <Route path='/z-report' component={ZReport} loading={this.state.loading}/>
 
                         </Switch>
                     </main>
 
                 </Fragment>
             </div>
+            </Fragment>
         )
 
     }

@@ -196,6 +196,21 @@ export default theme => ({
         fontSize: 10
     },
 
+    userDetailCard: {
+
+        padding: '10px 10px 0 10px'
+    },
+    userDetailCardContent: {
+        flexGrow: 1,
+        padding: 10
+    },
+    userDetailCardListIcon: {
+      paddingRight: 0,
+        marginRight: 0
+    },
+
+
+
 
 
 });

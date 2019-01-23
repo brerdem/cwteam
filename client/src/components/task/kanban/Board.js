@@ -86,7 +86,7 @@ class Board extends Component {
             headers: {'Authorization': 'bearer ' + getToken()},
 
         })
-            .then(response => {
+            .then(() => {
                 console.log('task reorder action');
 
             })

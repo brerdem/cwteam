@@ -24,6 +24,10 @@ class Passwords extends Component {
                                 className={classes.headingPadding}>
                         ŞİFRELER
                     </Typography>
+                    <Typography variant="h6" align="center" color="primary"
+                                className={classes.headingPadding}>
+                        Şifre işlemleri
+                    </Typography>
 
                 </div>
 

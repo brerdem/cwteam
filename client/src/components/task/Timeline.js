@@ -14,9 +14,6 @@ function makeDataForGantt(projects) {
         data.data.push({
             id: `${project._id}`,
             text: project.title,
-            open: true,
-            start_date: projectStartDate,
-            duration: projectDuration,
             color: '#2b8496',
             holder: '',
             progress: 1.9 / 4,
@@ -29,6 +26,22 @@ function makeDataForGantt(projects) {
             let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
 
            data.data.push({
+                id: `${t._id}`,
+                text: t.title,
+                start_date: startDate,
+                duration: duration.days(),
+                holder: t.assignees[0].user.first_name,
+                parent: `${project._id}`,
+                color: t.categoryColor,
+                progress: 0.4
+            })
+        });
+        project.tasks.progress.forEach(t => {
+
+            let startDate =  moment(t.startDate).format("DD-MM-YYYY");
+            let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
+
+            data.data.push({
                 id: `${t._id}`,
                 text: t.title,
                 start_date: startDate,
