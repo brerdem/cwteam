@@ -5,8 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import {store} from '../../../helpers/store';
 import axios from "axios";
 import {getToken} from "../../../actions/auth";
+import API_URL from '../../../helpers/api_url';
 
-const API_URL = 'http://localhost:3000/api';
 
 class Board extends Component {
 

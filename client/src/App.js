@@ -195,7 +195,7 @@ class App extends Component {
 
 
     componentDidMount() {
-        const {getAllProjects, getAllUsers, addProject, deleteProject} = this.props;
+        const {getAllProjects, getAllUsers} = this.props;
 
         Promise.all([getAllProjects(), getAllUsers()]).then(response => {
             this.setState({loading: false});
@@ -213,7 +213,6 @@ class App extends Component {
             this.setState({socketId: this.pusher.connection.socket_id});
         });
 
-//fixme pusher limits event data content - allowed maximum (10240 bytes)
         this.channel = this.pusher.subscribe('projects');
         this.channel.bind('project_added', this.addProjectDispatch);
         this.channel.bind('project_deleted', this.deleteProjectDispatch);
@@ -362,7 +361,7 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(
         mapStateToProps,
-        {doLogout, doLogin, getAllProjects, addProject, deleteProject, getAllUsers, push},
+        {doLogout, doLogin, getAllProjects,getAllUsers, push},
         null,
         {
             pure: false,

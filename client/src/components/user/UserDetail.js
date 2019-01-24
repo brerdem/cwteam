@@ -170,8 +170,8 @@ class UserDetail extends Component {
                                     <ListItemIcon className={classes.userDetailCardListIcon}><Icon
                                     >local_hotel</Icon></ListItemIcon>
                                     <ListItemText
-                                        primary="Kalan izin"
-                                        secondary="12 gün"
+                                        primary="Adam/Saat Fiyatı"
+                                        secondary="100 TL"
                                     />
                                 </ListItem>
                             </CardContent>

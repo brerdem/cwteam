@@ -21,8 +21,11 @@ import PropTypes from 'prop-types';
 import axios from "axios";
 import {getToken} from "../../../actions/auth";
 import departments from '../../../helpers/departments'
+import API_URL from '../../../helpers/api_url';
 
-const API_URL = 'http://localhost:3000/api';
+
+
+
 const styles = theme => ({
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,

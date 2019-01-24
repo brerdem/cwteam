@@ -25,10 +25,10 @@ import Fade from "@material-ui/core/Fade/Fade";
 import classNames from "classnames";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import ViewWeek from '@material-ui/icons/ViewWeek';
+import API_URL from '../helpers/api_url';
 
 //todo make alert dialogs as a new component
 
-const API_URL = 'http://localhost:3000/api';
 
 class Projects extends Component {
 
