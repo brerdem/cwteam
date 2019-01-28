@@ -7,16 +7,12 @@ import CssBaseline from "@material-ui/core/es/CssBaseline/CssBaseline";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 import Input from "@material-ui/core/es/Input/Input";
-import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlLabel";
 import Paper from "@material-ui/core/es/Paper/Paper";
-import team from './../static/media/team.png'
+import team from '../../img/team.png'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
-import {Link} from "react-router-dom";
-import axios from "axios/index";
+import axios from 'axios';
 import {withSnackbar} from 'notistack';
 import {compose} from 'recompose';
-
 
 const styles = theme => ({
     main: {
@@ -52,7 +48,8 @@ const styles = theme => ({
 });
 
 
-class Login extends Component {
+class Register extends Component {
+
 
     showMessage = (message, variant) => {
         this.props.enqueueSnackbar(message, {
@@ -64,41 +61,38 @@ class Login extends Component {
         })
     };
 
+
     handleSubmit = e => {
         e.preventDefault();
+        console.log(e.target.first_name.value);
 
-        axios.post('/api/auth/login', {
+        axios.post('/api/auth/register', {
+            first_name: e.target.first_name.value,
+            last_name: e.target.last_name.value,
             email: e.target.email.value,
             password: e.target.password.value
 
         })
             .then((response) => {
-                if (response.statusText === "OK") {
-                    //console.log(response.data.token);
-                    this.handleLogin(response.data.user, response.data.token.toString())
-
+                if (response.data) {
+                    this.showMessage("Başarıyla Üye Oldunuz!", 'success');
+                    this.props.history.push('/login');
                 }
-
 
             })
             .catch((error) => {
                 let errStr;
-                console.log(error);
-                errStr = error.response.data.code === 11000 ? 'Bu kullanıcı mevcut' : 'Bilinmeyen hata';
+
+                errStr =  error.response.data.code === 11000 ? 'Bu kullanıcı mevcut': 'Bilinmeyen hata';
+
+
                 this.showMessage(errStr, 'error');
             });
 
     };
 
-    handleLogin = (user, token) => {
-        console.log(this.props);
-        this.props.doLogin(user, token);
-        this.props.history.push('/');
-    };
-
 
     render() {
-
         const {classes} = this.props;
 
         return (
@@ -109,17 +103,17 @@ class Login extends Component {
 
 
                     <Typography component="h1" variant="h5">
-                        Giriş Yap
+                        Üye Ol
                     </Typography>
-                    <Typography component="p" variant="body2">
-                        veya
-                    </Typography>
-                    <Link to={'/register'}>
-                        <Typography component="p" variant="body2" color="primary">
-                            Kaydol
-                        </Typography>
-                    </Link>
                     <form className={classes.form} onSubmit={this.handleSubmit}>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="first_name">İsim</InputLabel>
+                            <Input id="first_name" name="first_name" autoComplete="first_name" autoFocus/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="last_name">Soyisim</InputLabel>
+                            <Input id="last_name" name="last_name" autoComplete="last_name" autoFocus/>
+                        </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="email">Email Adresi</InputLabel>
                             <Input id="email" name="email" autoComplete="email" autoFocus/>
@@ -128,10 +122,7 @@ class Login extends Component {
                             <InputLabel htmlFor="password">Şifre</InputLabel>
                             <Input name="password" type="password" id="password" autoComplete="current-password"/>
                         </FormControl>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
-                            label="Beni hatırla"
-                        />
+
                         <Button
                             type="submit"
                             fullWidth
@@ -139,7 +130,7 @@ class Login extends Component {
                             color="primary"
                             className={classes.submit}
                         >
-                            GİRİŞ
+                            KAYDET
                         </Button>
                     </form>
                 </Paper>
@@ -148,14 +139,12 @@ class Login extends Component {
     }
 }
 
-Login.propTypes = {
+Register.propTypes = {
     classes: PropTypes.object.isRequired,
 
 };
 
-
 export default compose(
     withStyles(styles),
-    withSnackbar,
-)(Login);
-
+    withSnackbar
+)(Register);

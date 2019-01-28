@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import theme from "../components/styles/Styles";
+import theme from "../styles/Styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -12,10 +12,12 @@ import Paper from "@material-ui/core/Paper";
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import menuContent from '../helpers/menu'
+import menuContent from '../../helpers/menu'
 import moment from 'moment';
 
 const DashboardGrid = function (props) {
+
+
 
     const {classes, projects} = props;
 
@@ -143,7 +145,7 @@ const DashboardGrid = function (props) {
                         <CardActionArea onClick={() => props.history.push(item.link)}>
                             <CardMedia
                                 className={classes.cardmedia}
-                                image={require(`../static/media/${item.img}`)}
+                                image={`https://www.clockwork.com.tr/mailing/cwteam/${item.img}`}
                                 title={item.title}
                             />
                             <CardContent className={classes.cardContent}>

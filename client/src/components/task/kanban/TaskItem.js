@@ -138,7 +138,7 @@ class TaskItem extends Component {
                                                   justify="flex-end">
                                                 {task.assignees.map(assignee =>
                                                     <Grid item key={assignee.user._id}>
-                                                        <UserAvatar size={24} style={{fontSize: 12, color: '#FFF', fontWeight: 600}} name={assignee.user.name} src={assignee.user.avatar_url ? require(`../../../static/media/users/${assignee.user.avatar_url}.png`): null } />
+                                                        <UserAvatar size={24} style={{fontSize: 12, color: '#FFF', fontWeight: 600}} name={assignee.user.name} src={assignee.user.avatar_url ? `https://www.clockwork.com.tr/mailing/cwteam/users/${assignee.user.avatar_url}.png` : null } />
                                                     </Grid>
                                                 )}
                                             </Grid>

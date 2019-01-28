@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import theme from "../components/styles/Styles";
+import theme from "../styles/Styles";
 import 'react-circular-progressbar/dist/styles.css';
 import Paper from "@material-ui/core/es/Paper/Paper";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";

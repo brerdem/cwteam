@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from "@material-ui/core/styles/index";
 import Typography from "@material-ui/core/Typography";
-import theme from '../components/styles/Styles';
+import theme from '../styles/Styles';
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Card from "@material-ui/core/es/Card/Card";
 import CardActionArea from "@material-ui/core/es/CardActionArea/CardActionArea";
@@ -11,7 +11,7 @@ import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProg
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemAvatar from "@material-ui/core/es/ListItemAvatar/ListItemAvatar";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
-import departments from '../helpers/departments'
+import departments from '../../helpers/departments'
 import UserAvatar from 'react-user-avatar'
 import Icon from "@material-ui/core/es/Icon/Icon";
 

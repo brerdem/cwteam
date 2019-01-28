@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import theme from "../components/styles/Styles";
+import theme from "../styles/Styles";
 import 'react-circular-progressbar/dist/styles.css';
 
 class Accounting extends Component {

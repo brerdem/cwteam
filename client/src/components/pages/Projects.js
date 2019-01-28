@@ -10,22 +10,22 @@ import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import Add from "@material-ui/icons/Add";
 import {compose} from 'recompose';
-import theme from '../components/styles/Styles';
+import theme from '../styles/Styles';
 import {withStyles} from '@material-ui/core';
 import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
-import ProjectDialog from "../components/project/ProjectDialog";
+import ProjectDialog from "../project/ProjectDialog";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import Dialog from "@material-ui/core/es/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import axios from "axios";
-import {getToken} from "../actions/auth";
+import {getToken} from "../../actions/auth";
 import Fade from "@material-ui/core/Fade/Fade";
 import classNames from "classnames";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import ViewWeek from '@material-ui/icons/ViewWeek';
-import API_URL from '../helpers/api_url';
+import API_URL from '../../helpers/api_url';
 
 //todo make alert dialogs as a new component
 

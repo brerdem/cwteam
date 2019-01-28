@@ -1,15 +1,15 @@
 import React, {Component, Fragment} from 'react';
 import {Route, Switch} from 'react-router-dom';
-import Login from './pages/Login';
-import Projects from './pages/Projects';
-import Home from "./pages/Home";
-import Tasks from "./pages/Tasks";
+import Login from './components/pages/Login';
+import Projects from './components/pages/Projects';
+import Home from "./components/pages/Home";
+import Tasks from "./components/pages/Tasks";
 import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {doLogin, doLogout} from "./actions/auth";
 import PrivateRoute from './components/PrivateRoute'
-import Users from "./pages/Users";
-import Register from "./pages/Register";
+import Users from "./components/pages/Users";
+import Register from "./components/pages/Register";
 import {addProject, deleteProject, getAllProjects} from "./actions/project";
 import Pusher from "pusher-js";
 import {store} from "./helpers/store";
@@ -35,13 +35,13 @@ import Grid from "@material-ui/core/es/Grid/Grid";
 import menuContent from './helpers/menu'
 import Icon from "@material-ui/core/es/Icon/Icon";
 import {push} from 'connected-react-router';
-import Library from "./pages/Library";
-import Accounting from "./pages/Accounting";
-import Passwords from "./pages/Passwords";
-import Settings from "./pages/Settings";
+import Library from "./components/pages/Library";
+import Accounting from "./components/pages/Accounting";
+import Passwords from "./components/pages/Passwords";
+import Settings from "./components/pages/Settings";
 import {withSnackbar} from 'notistack';
 import UserDetail from "./components/user/UserDetail";
-import ZReport from "./pages/ZReport";
+import ZReport from "./components/pages/ZReport";
 import ReactNotifications from 'react-browser-notifications';
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
@@ -195,9 +195,11 @@ class App extends Component {
 
 
     componentDidMount() {
+
+
         const {getAllProjects, getAllUsers} = this.props;
 
-        Promise.all([getAllProjects(), getAllUsers()]).then(response => {
+        Promise.all([getAllProjects(), getAllUsers()]).then(() => {
             this.setState({loading: false});
         }).catch(err => {
             console.log(err);
@@ -229,7 +231,7 @@ class App extends Component {
                 onRef={ref => (this.n = ref)} // Required
                 title={this.state.notifTitle} // Required
                 body={this.state.notifBody}
-                icon={`https://www.clockwork.com.tr/mailing/users/${this.state.notifIcon}.png`}
+                icon={`https://www.clockwork.com.tr/mailing/cwteam/users/${this.state.notifIcon}.png`}
                 tag="abcdef"
                 timeout="5000"
 

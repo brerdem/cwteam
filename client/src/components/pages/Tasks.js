@@ -2,27 +2,27 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
-import theme from "../components/styles/Styles";
+import theme from "../styles/Styles";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Timeline from "../components/task/Timeline";
+import Timeline from "../task/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {addTask, filterTaskByDepartments, getAllProjects, reorderTask} from "../actions/project";
+import {addTask, filterTaskByDepartments, getAllProjects, reorderTask} from "../../actions/project";
 import {compose} from 'recompose';
 import Grid from "@material-ui/core/es/Grid/Grid";
-import Project from "../components/task/kanban/Project";
-import Board from "../components/task/kanban/Board";
+import Project from "../task/kanban/Project";
+import Board from "../task/kanban/Board";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlLabel";
 import FormGroup from "@material-ui/core/es/FormGroup/FormGroup";
 import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
-import departments from '../helpers/departments';
+import departments from '../../helpers/departments';
 import _ from 'underscore';
 
 const extraTheme = createMuiTheme({
@@ -105,8 +105,6 @@ class Tasks extends Component {
                                                 addTask={addTask}
                                                 reorderTask={reorderTask}
                                                 socket_id={socket_id}
-
-
                                             /></Project>
 
                                         })}
