@@ -62,7 +62,6 @@ function renderInput(inputProps) {
                     }
                     onDelete={handleDelete}
 
-
                 />
             }}
             {...other}
