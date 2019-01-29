@@ -118,11 +118,11 @@ const DashboardGrid = function (props) {
 
                         </Grid>
                         <Grid item>
-                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
-                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
+
+                                <Typography gutterBottom variant="h5" color="textPrimary" align="center">
                                     Toplam Maliyet
                                 </Typography>
-                            </Typography>
+
 
                         </Grid>
                         <Grid item>

@@ -35,7 +35,7 @@ class Project extends Component {
     render() {
 
         const {expanded} = this.state;
-        const {classes, project, index, children, edit} = this.props;
+        const {classes, project, children, edit} = this.props;
 
         console.log('edit param  ->', edit);
 

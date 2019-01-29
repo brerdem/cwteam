@@ -7,7 +7,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Timeline from "../task/Timeline";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -24,6 +23,7 @@ import FormGroup from "@material-ui/core/es/FormGroup/FormGroup";
 import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
 import departments from '../../helpers/departments';
 import _ from 'underscore';
+import withLoading from "../withLoading";
 
 const extraTheme = createMuiTheme({
     palette: {
@@ -69,57 +69,6 @@ class Tasks extends Component {
 
         const {classes, projects, addTask, reorderTask, auth, users, loading, socket_id} = this.props;
         console.log('auth is', auth);
-        let content;
-        if (loading) {
-            content = <CircularProgress className={classes.progress} color="secondary"/>
-        } else {
-            content =
-                <BrowserRouter>
-                    <div className={classes.todoTabContainer}>
-                        <MuiThemeProvider theme={extraTheme}>
-                            <AppBar position="static" color="primary">
-
-                                <Tabs
-                                    value={this.state.value}
-                                    onChange={this.handleChange}
-                                    fullWidth
-                                    indicatorColor="secondary"
-                                    textColor="inherit"
-                                >
-                                    <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/tasks/kanban"/>
-                                    <Tab icon={<ClearAll/>} label="TIMELINE" component={Link} to="/tasks/timeline"/>
-
-                                </Tabs>
-
-                            </AppBar>
-                        </MuiThemeProvider>
-                        <Switch>
-                            <Route path="/tasks/kanban/:project_id?" render={(props) =>
-                                <Grid container spacing={24}>
-                                    <Grid item xs={12}>
-                                        {projects.map((project, index) => {
-
-                                            return <Project key={index} project={project} users={users} edit={props.match.params.project_id === project._id}><Board
-                                                project={project}
-                                                auth={auth}
-                                                addTask={addTask}
-                                                reorderTask={reorderTask}
-                                                socket_id={socket_id}
-                                            /></Project>
-
-                                        })}
-                                    </Grid>
-                                </Grid>
-
-                            }/>
-                            <Route path="/tasks/timeline"
-                                   render={() => <Timeline projects={projects}/>}/>
-                        </Switch>
-
-                    </div>
-                </BrowserRouter>
-
-        }
 
         return (
             <div>
@@ -151,8 +100,52 @@ class Tasks extends Component {
                             </FormGroup>
                         </FormControl>
 
+                        <BrowserRouter>
+                            <div className={classes.todoTabContainer}>
+                                <MuiThemeProvider theme={extraTheme}>
+                                    <AppBar position="static" color="primary">
 
-                        {content}
+                                        <Tabs
+                                            value={this.state.value}
+                                            onChange={this.handleChange}
+                                            fullWidth
+                                            indicatorColor="secondary"
+                                            textColor="inherit"
+                                        >
+                                            <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/tasks/kanban"/>
+                                            <Tab icon={<ClearAll/>} label="TIMELINE" component={Link}
+                                                 to="/tasks/timeline"/>
+
+                                        </Tabs>
+
+                                    </AppBar>
+                                </MuiThemeProvider>
+                                <Switch>
+                                    <Route path="/tasks/kanban/:project_id?" render={(props) =>
+                                        <Grid container spacing={24}>
+                                            <Grid item xs={12}>
+                                                {projects.map((project, index) => {
+
+                                                    return <Project key={index} project={project} users={users}
+                                                                    edit={props.match.params.project_id === project._id}><Board
+                                                        project={project}
+                                                        auth={auth}
+                                                        addTask={addTask}
+                                                        reorderTask={reorderTask}
+                                                        socket_id={socket_id}
+                                                    /></Project>
+
+                                                })}
+                                            </Grid>
+                                        </Grid>
+
+                                    }/>
+                                    <Route path="/tasks/timeline"
+                                           render={() => <Timeline projects={projects}/>}/>
+                                </Switch>
+
+                            </div>
+                        </BrowserRouter>
                     </div>
 
 
@@ -178,5 +171,6 @@ const mapStateToProps = (state) => {
 //fixme remove from connect
 export default compose(
     connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
-    withStyles(theme)
+    withStyles(theme),
+    withLoading
 )(Tasks);

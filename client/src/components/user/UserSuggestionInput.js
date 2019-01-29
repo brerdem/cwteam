@@ -8,14 +8,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import {withStyles} from '@material-ui/core/styles'
 import ChipInput from 'material-ui-chip-input'
 import Chip from "@material-ui/core/es/Chip/Chip";
-import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Grid from "@material-ui/core/es/Grid/Grid";
-import _ from 'underscore';
 import UserAvatar from 'react-user-avatar';
 
 let thisClass;
-
 
 function renderInput(inputProps) {
     const {classes, autoFocus, value, onChange, onAdd, onDelete, chips, ref, onUserAdd, ...other} = inputProps;
@@ -23,43 +20,51 @@ function renderInput(inputProps) {
     return (
         <ChipInput
             fullWidth
-            placeholder={'İlgili kişiler'}
+            placeholder="İlgili kişiler"
             clearInputValueOnChange
             onUpdateInput={onChange}
             onAdd={onAdd}
             onDelete={onDelete}
             value={chips}
             inputRef={ref}
-            chipRenderer={({value, text, chip}, key) => <Chip
-                key={key}
-                className={classes.chipWithAvatar}
-                avatar={<UserAvatar style={{color: '#FFF'}} size={32} name={chip.name} src={chip.avatar_url ? `http://www.clockwork.com.tr/mailing/users/${chip.avatar_url}.png`: null } />}
-                label={
 
-                    <Grid container direction={"row"} alignItems={"center"}>
-                        <div>{value.first_name + ' ' + value.last_name}</div>
-                        {thisClass.props.effort &&
-                        <TextField
-                            id="standard-number"
-                            value={_.findWhere(thisClass.state.value, {_id: chip._id}).effort || thisClass.state.effort}
-                            onChange={thisClass.handleChipEffortChange(chip)}
-                            type="number"
-                            style={{width: 30, marginTop: 1, marginLeft: 5, height: 25}}
-                            InputProps={{
-                                disableUnderline: true,
-                                style: {
-                                    fontSize: 13,
-                                    fontWeight: 600
-                                }
-                            }}
+            chipRenderer={({value, text, chip, handleDelete}, key) => {
 
-                        />
-                        }
-                    </Grid>
-                }
-                onDelete={onDelete}
+                let user = thisClass.state.list.filter(u => u.name === value)[0];
 
-            />}
+                return <Chip
+                    key={key}
+                    className={classes.chipWithAvatar}
+                    avatar={<UserAvatar style={{color: '#FFF'}} size={32} name={value}
+                                        src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>}
+                    label={
+
+                        <Grid container direction={"row"} alignItems={"center"}>
+                            <div>{value}</div>
+                            {thisClass.props.effort &&
+                            <TextField
+                                id="standard-number"
+                                value={user.effort || thisClass.state.effort}
+                                onChange={thisClass.handleChipEffortChange(user)}
+                                type="number"
+                                style={{width: 30, marginTop: 1, marginLeft: 5, height: 25}}
+                                InputProps={{
+                                    disableUnderline: true,
+                                    style: {
+                                        fontSize: 13,
+                                        fontWeight: 600
+                                    }
+                                }}
+
+                            />
+                            }
+                        </Grid>
+                    }
+                    onDelete={handleDelete}
+
+
+                />
+            }}
             {...other}
         />
 
@@ -67,8 +72,8 @@ function renderInput(inputProps) {
 }
 
 function renderSuggestion(suggestion, {query, isHighlighted}) {
-    const matches = match(suggestion.first_name + ' ' + suggestion.last_name, query)
-    const parts = parse(suggestion.first_name + ' ' + suggestion.last_name, matches)
+    const matches = match(suggestion.name, query);
+    const parts = parse(suggestion.name, matches);
 
     return (
         <MenuItem
@@ -94,7 +99,7 @@ function renderSuggestion(suggestion, {query, isHighlighted}) {
 }
 
 function renderSuggestionsContainer(options) {
-    const {containerProps, children} = options
+    const {containerProps, children} = options;
 
     return (
         <Paper {...containerProps} square>
@@ -104,10 +109,11 @@ function renderSuggestionsContainer(options) {
 }
 
 function getSuggestionValue(suggestion) {
-    return suggestion;
+    return suggestion.name;
 }
 
 function getSuggestions(value, suggestions) {
+
     const inputValue = value.trim().toLocaleLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
@@ -116,7 +122,7 @@ function getSuggestions(value, suggestions) {
         ? []
         : suggestions.filter(suggestion => {
             const keep =
-                count < 5 && (suggestion.first_name + ' ' + suggestion.last_name).toLowerCase().slice(0, inputLength) === inputValue;
+                count < 5 && suggestion.name.toLowerCase().slice(0, inputLength) === inputValue;
 
             if (keep) {
                 count += 1
@@ -158,7 +164,6 @@ const styles = theme => ({
 });
 
 class UserSuggestionInput extends React.Component {
-
 
     state = {
         list: [],
@@ -222,7 +227,6 @@ class UserSuggestionInput extends React.Component {
 
     };
 
-
     componentDidMount() {
         thisClass = this;
         this.setState({list: this.props.list});
@@ -259,7 +263,6 @@ class UserSuggestionInput extends React.Component {
                     value: this.state.textFieldInput,
                     onAdd: (chip) => this.handleAddChip(chip),
                     onDelete: (chip, index) => this.handleDeleteChip(chip, index),
-
                     ...rest
                 }}
             />
@@ -270,6 +273,6 @@ class UserSuggestionInput extends React.Component {
 UserSuggestionInput.propTypes = {
     classes: PropTypes.object.isRequired,
     onUserAdd: PropTypes.func
-}
+};
 
 export default withStyles(styles)(UserSuggestionInput)

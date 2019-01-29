@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -28,7 +27,6 @@ import ViewWeek from '@material-ui/icons/ViewWeek';
 import API_URL from '../../helpers/api_url';
 
 //todo make alert dialogs as a new component
-
 
 class Projects extends Component {
 
@@ -104,101 +102,97 @@ class Projects extends Component {
 
     render() {
 
-        const {classes, users, projects, loading} = this.props;
+        const {classes, users, projects} = this.props;
 
         let content;
-        if (loading) {
-            content = <CircularProgress className={classes.progress} color="secondary"/>
+
+        if (projects.length === 0) {
+            content =
+                <Typography component="h4" variant="h6" style={{color: 'grey'}}>Herhangi bir proje
+                    bulunmamakta</Typography>
         } else {
-            if (projects.length === 0) {
-                content =
-                    <Typography component="h4" variant="h6" style={{color: 'grey'}}>Herhangi bir proje
-                        bulunmamakta</Typography>
-            } else {
 
-                content = <Grid container spacing={40}>
-                    {projects.map(project => (
-                        <Fade in={true} timeout={1000} key={project._id}>
+            content = <Grid container spacing={40}>
+                {projects.map(project => (
+                    <Fade in={true} timeout={1000} key={project._id}>
 
-                            <Grid item xs={4}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
-                                            {project.title}
-                                        </Typography>
-                                        <Typography>
-                                            {project.description}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Grid container justify="space-between" direction="row" alignItems="center">
+                        <Grid item xs={4}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                        {project.title}
+                                    </Typography>
+                                    <Typography>
+                                        {project.description}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Grid container justify="space-between" direction="row" alignItems="center">
 
-                                            <Grid item alignItems={"flex-start"}>
-                                                <Grid container direction="row" justify="flex-start">
-                                                    <Avatar
-                                                        className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
+                                        <Grid item>
+                                            <Grid container direction="row" justify="flex-start">
+                                                <Avatar
+                                                    className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
 
 
-                                                    <Avatar
-                                                        className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
+                                                <Avatar
+                                                    className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
 
 
-                                                    <Avatar
-                                                        className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
-                                                </Grid>
+                                                <Avatar
+                                                    className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
                                             </Grid>
+                                        </Grid>
 
 
-                                            <Grid item alignItems={"flex-end"}>
-                                                <Grid container direction="row" justify="flex-start">
-                                                    <IconButton size="small" color="primary"
-                                                                onClick={this.handleOpenKanban(project._id)}>
-                                                        <ViewWeek/>
-                                                    </IconButton>
+                                        <Grid item>
+                                            <Grid container direction="row" justify="flex-start">
+                                                <IconButton size="small" color="primary"
+                                                            onClick={this.handleOpenKanban(project._id)}>
+                                                    <ViewWeek/>
+                                                </IconButton>
 
                                                 <IconButton size="small" color="primary"
                                                             onClick={this.handleProjectDeleteDialog(project._id)}>
                                                     <Delete/>
                                                 </IconButton>
 
-                                                </Grid>
                                             </Grid>
                                         </Grid>
+                                    </Grid>
 
 
-                                    </CardActions>
-                                </Card>
-                            </Grid>
+                                </CardActions>
+                            </Card>
+                        </Grid>
 
-                        </Fade>
-                    ))
-                    }
+                    </Fade>
+                ))
+                }
 
-                    <Dialog
-                        open={this.state.alertOpen}
-                        onClose={this.closeDeleteDialog}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title" disableTypography>
+                <Dialog
+                    open={this.state.alertOpen}
+                    onClose={this.closeDeleteDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title" disableTypography>
 
-                            <Typography variant="h6" color="error"> Silmek istediğinize emin misiniz?</Typography>
+                        <Typography variant="h6" color="error"> Silmek istediğinize emin misiniz?</Typography>
 
-                        </DialogTitle>
+                    </DialogTitle>
 
 
-                        <DialogActions>
-                            <Button onClick={this.closeDeleteDialog} color="primary">
-                                VAZGEÇ
-                            </Button>
-                            <Button onClick={this.handleProjectDelete} color="primary" autoFocus>
-                                SİL
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                </Grid>
-
-            }
+                    <DialogActions>
+                        <Button onClick={this.closeDeleteDialog} color="primary">
+                            VAZGEÇ
+                        </Button>
+                        <Button onClick={this.handleProjectDelete} color="primary" autoFocus>
+                            SİL
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Grid>
 
         }
 
