@@ -90,6 +90,7 @@ export default theme => ({
         flexGrow: 1,
         display: 'flex',
         flexDirection: 'column',
+        height: '100%'
     },
 
     cardContent: {

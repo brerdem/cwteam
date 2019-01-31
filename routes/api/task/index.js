@@ -16,7 +16,7 @@ router.post('/add', (req, res) => {
 
     const {project_id, task} = req.body;
 
-//todo should project_id be sent?
+
     Project.findOneAndUpdate({_id: project_id}, {
         $addToSet: {
             'tasks.backlog': task

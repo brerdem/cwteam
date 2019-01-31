@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Route, Switch, withRouter} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Login from './components/pages/Login';
 import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";

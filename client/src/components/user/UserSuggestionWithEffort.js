@@ -32,6 +32,7 @@ const AssigneeCardContent = ({user, classes, onEffortChange, onDelete, index}) =
             <CardContent className={classes.cardContent}
                          style={{
                              padding: '12px 0px 12px 16px',
+
                              borderRight: 'solid 5px ' + departments.find(t => t.name === user.department).color
                          }}>
                 <Grid container>
@@ -42,7 +43,7 @@ const AssigneeCardContent = ({user, classes, onEffortChange, onDelete, index}) =
                             style={{width: 14, height: 14}}/></IconButton>
                     </Grid>
                     <Grid item container direction="row" justify="flex-start" alignItems="center">
-                        <Grid xs={8}>
+                        <Grid item xs={8}>
                             <ListItem alignItems="flex-start" disableGutters>
                                 <ListItemAvatar>
                                     <UserAvatar className={classes.userAvatarText} size={40}
@@ -298,7 +299,7 @@ class UserSuggestionInput extends React.Component {
 
                     }}
                 />
-                <Grid container spacing={8}>
+                <Grid container spacing={8} alignItems="stretch">
                     {value.map((val, index) =>
                         <Grid item xs={4} key={val}>
                             <AssigneeCard user={list.find(u => u.name === val)}

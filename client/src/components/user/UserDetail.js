@@ -96,53 +96,6 @@ class UserDetail extends Component {
                         </Grid>
                         <Grid item xs={4}>
                             <Typography variant="h6" align="center" gutterBottom style={{color: 'gray'}}>
-                                Bulunduğu Projeler
-                            </Typography>
-                            <Card className={classes.userDetailCard}>
-
-                                <CardContent className={classes.userDetailCardContent}>
-                                    <ListItem alignItems="flex-start" disableGutters>
-                                        <ListItemText
-                                            primary="Mapfre Sigorta"
-                                            secondary="12 iş"
-                                        />
-                                    </ListItem>
-                                    <Divider/>
-                                    <ListItem alignItems="flex-start" disableGutters>
-                                        <ListItemText
-                                            primary="Little Caesars"
-                                            secondary="5 iş"
-                                        />
-                                    </ListItem>
-                                    <Divider/>
-                                    <ListItem alignItems="flex-start" disableGutters>
-                                        <ListItemText
-                                            primary="Electrip Uygulaması"
-                                            secondary="2 iş"
-                                        />
-                                    </ListItem>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography variant="h6" align="center" gutterBottom style={{color: 'gray'}}>
-                                Çalışma Süresi
-                            </Typography>
-                            <Card className={classes.userDetailCard}>
-
-                                <CardContent className={classes.userDetailCardContent}>
-                                    <Chart
-                                        chartType="ColumnChart"
-                                        width="100%"
-                                        height="200px"
-                                        data={data}
-                                    />
-                                </CardContent>
-                            </Card>
-                        </Grid>
-
-                        <Grid item xs={4}>
-                            <Typography variant="h6" align="center" gutterBottom style={{color: 'gray'}}>
                                 Muhasebe
                             </Typography>
                             <Card className={classes.userDetailCard}> <CardContent
@@ -178,6 +131,24 @@ class UserDetail extends Component {
 
                             </Card>
                         </Grid>
+                        <Grid item xs={4}>
+                            <Typography variant="h6" align="center" gutterBottom style={{color: 'gray'}}>
+                                Çalışma Süresi
+                            </Typography>
+                            <Card className={classes.userDetailCard}>
+
+                                <CardContent className={classes.userDetailCardContent}>
+                                    <Chart
+                                        chartType="ColumnChart"
+                                        width="100%"
+                                        height="200px"
+                                        data={data}
+                                    />
+                                </CardContent>
+                            </Card>
+                        </Grid>
+
+
                     </Grid>
                 </Grid>
 
