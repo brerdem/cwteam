@@ -8,7 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import UserSuggestionInput from '../user/UserSuggestionInput';
+import UserSuggestion from '../user/UserSuggestion';
 import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
 
 const style = {
@@ -189,8 +189,9 @@ class ProjectDialog extends Component {
                             />
                             }
 
-                            <UserSuggestionInput list={users} onUserAdd={this.handleTeamUsers}/>
+
                         </Grid>
+                        <UserSuggestion list={users} onUserAdd={this.handleTeamUsers}/>
 
                     </DialogContent>
                     <DialogActions>

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, withRouter} from 'react-router-dom';
 import Login from './components/pages/Login';
 import {connect} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,7 +17,6 @@ import Passwords from "./components/pages/Passwords";
 import Settings from "./components/pages/Settings";
 import {withSnackbar} from 'notistack';
 import ZReport from "./components/pages/ZReport";
-
 import Navigation from "./components/Navigation";
 import Application from "./components/Application";
 
@@ -29,10 +28,10 @@ const styles = theme => ({
         flexGrow: 1,
         padding: theme.spacing.unit * 3,
     },
+
 });
 
 class App extends Component {
-
 
     render() {
 
@@ -40,35 +39,39 @@ class App extends Component {
 
         return (
 
+            <div className={classes.root}>
+                <Fragment>
+                    <CssBaseline/>
+                    {!ui.isGanttFullscreen &&
 
-                <div className={classes.root}>
-                    <Fragment>
-                        <CssBaseline/>
-                        {!ui.isGanttFullscreen &&
+                    <div>
+                        {auth.isLoggedIn && <Navigation auth={auth} doLogout={doLogout}/>
 
-                        <div>
-                            {auth.isLoggedIn && <Navigation auth={auth} doLogout={doLogout}/>
-
-                            }
-                        </div>
                         }
-                        <main className={classes.content}>
+                    </div>
+                    }
 
-                            <Switch>
-                                <Route exact path='/login' render={props => <Login doLogin={doLogin} {...props} />}/>
-                                <Route exact path='/register' component={Register}/>
-                                <Route exact path='/library' component={Library}/>
-                                <Route exact path='/accounting' component={Accounting}/>
-                                <Route exact path='/passwords' component={Passwords}/>
-                                <Route exact path='/settings' component={Settings}/>
-                                <Route path='/z-report' component={ZReport} />
-                                <PrivateRoute path='/' component={Application} auth={auth} />
+                    <main className={classes.content}>
 
-                            </Switch>
-                        </main>
 
-                    </Fragment>
-                </div>
+                        <Switch>
+                            <Route exact path='/login'
+                                   render={props => <Login doLogin={doLogin} {...props} />}/>
+                            <Route exact path='/register' component={Register}/>
+                            <Route exact path='/library' component={Library}/>
+                            <Route exact path='/accounting' component={Accounting}/>
+                            <Route exact path='/passwords' component={Passwords}/>
+                            <Route exact path='/settings' component={Settings}/>
+                            <Route path='/z-report' component={ZReport}/>
+                            <PrivateRoute path='/' component={Application} auth={auth}/>
+
+                        </Switch>
+
+                    </main>
+
+
+                </Fragment>
+            </div>
 
         )
 

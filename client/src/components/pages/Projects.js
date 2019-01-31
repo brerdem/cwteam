@@ -20,7 +20,6 @@ import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import axios from "axios";
 import {getToken} from "../../actions/auth";
-import Fade from "@material-ui/core/Fade/Fade";
 import classNames from "classnames";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import ViewWeek from '@material-ui/icons/ViewWeek';
@@ -114,59 +113,57 @@ class Projects extends Component {
 
             content = <Grid container spacing={40}>
                 {projects.map(project => (
-                    <Fade in={true} timeout={1000} key={project._id}>
 
-                        <Grid item xs={4}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
-                                        {project.title}
-                                    </Typography>
-                                    <Typography>
-                                        {project.description}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Grid container justify="space-between" direction="row" alignItems="center">
+                    <Grid item xs={4}>
+                        <Card className={classes.card}>
+                            <CardContent className={classes.cardContent}>
+                                <Typography gutterBottom variant="h5" component="h2" color="textPrimary">
+                                    {project.title}
+                                </Typography>
+                                <Typography>
+                                    {project.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Grid container justify="space-between" direction="row" alignItems="center">
 
-                                        <Grid item>
-                                            <Grid container direction="row" justify="flex-start">
-                                                <Avatar
-                                                    className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
-
-
-                                                <Avatar
-                                                    className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
+                                    <Grid item>
+                                        <Grid container direction="row" justify="flex-start">
+                                            <Avatar
+                                                className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
 
 
-                                                <Avatar
-                                                    className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
-                                            </Grid>
-                                        </Grid>
+                                            <Avatar
+                                                className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
 
 
-                                        <Grid item>
-                                            <Grid container direction="row" justify="flex-start">
-                                                <IconButton size="small" color="primary"
-                                                            onClick={this.handleOpenKanban(project._id)}>
-                                                    <ViewWeek/>
-                                                </IconButton>
-
-                                                <IconButton size="small" color="primary"
-                                                            onClick={this.handleProjectDeleteDialog(project._id)}>
-                                                    <Delete/>
-                                                </IconButton>
-
-                                            </Grid>
+                                            <Avatar
+                                                className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
                                         </Grid>
                                     </Grid>
 
 
-                                </CardActions>
-                            </Card>
-                        </Grid>
+                                    <Grid item>
+                                        <Grid container direction="row" justify="flex-start">
+                                            <IconButton size="small" color="primary"
+                                                        onClick={this.handleOpenKanban(project._id)}>
+                                                <ViewWeek/>
+                                            </IconButton>
 
-                    </Fade>
+                                            <IconButton size="small" color="primary"
+                                                        onClick={this.handleProjectDeleteDialog(project._id)}>
+                                                <Delete/>
+                                            </IconButton>
+
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+
+
+                            </CardActions>
+                        </Card>
+                    </Grid>
+
                 ))
                 }
 

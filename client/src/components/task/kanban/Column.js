@@ -8,9 +8,8 @@ import classNames from "classnames";
 import theme from '../../styles/Styles'
 import AddTask from "./AddTask";
 
-const Column = props => {
+const Column = ({column, classes, project, addTask, tasks, auth}) => {
 
-    const {column, classes, project, addTask, tasks, auth} = props;
 
     return (
 

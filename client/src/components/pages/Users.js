@@ -47,7 +47,7 @@ class Users extends Component {
                                         <CardContent className={classes.cardContent}
                                                      style={{borderRight: 'solid 5px ' + departments.find(t => t.name === user.department).color}}>
                                             <Grid container direction="row" alignItems="center" justify="space-between">
-                                                <Grid item xs={20}>
+                                                <Grid item>
                                                     <ListItem alignItems="flex-start" disableGutters>
                                                         <ListItemAvatar>
                                                             <UserAvatar className={classes.userAvatarText} size={40}
@@ -55,7 +55,7 @@ class Users extends Component {
                                                                         src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>
                                                         </ListItemAvatar>
                                                         <ListItemText
-                                                            primary={user.first_name + ' ' + user.last_name}
+                                                            primary={user.name}
                                                             secondary={user.title}
                                                         />
                                                     </ListItem>

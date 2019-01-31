@@ -68,9 +68,9 @@ export const addTask = (task) => {
 
 
 };
-export const reorderTask = (project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn) => dispatch => {
+export const reorderTask = (data) => dispatch => {
 
-    axios.post(API_URL + '/task/reorder', {project_id, sourceIndex, destinationIndex, sourceColumn, destinationColumn}, {
+    axios.post(API_URL + '/task/reorder', data, {
         headers: {'Authorization': 'bearer ' + getToken()},
 
     })

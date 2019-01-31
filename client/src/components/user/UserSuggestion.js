@@ -8,14 +8,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 import {withStyles} from '@material-ui/core/styles'
 import ChipInput from 'material-ui-chip-input'
 import Chip from "@material-ui/core/es/Chip/Chip";
-import TextField from "@material-ui/core/es/TextField/TextField";
-import Grid from "@material-ui/core/es/Grid/Grid";
 import UserAvatar from 'react-user-avatar';
 
 let thisClass;
 
 function renderInput(inputProps) {
-    const {classes, autoFocus, value, onChange, onAdd, onDelete, chips, ref, onUserAdd, ...other} = inputProps;
+    const {classes, autoFocus, value, onChange, onAdd, onUserAdd, onDelete, chips, ref, ...other} = inputProps;
 
     return (
         <ChipInput
@@ -37,29 +35,7 @@ function renderInput(inputProps) {
                     className={classes.chipWithAvatar}
                     avatar={<UserAvatar style={{color: '#FFF'}} size={32} name={value}
                                         src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>}
-                    label={
-
-                        <Grid container direction={"row"} alignItems={"center"}>
-                            <div>{value}</div>
-                            {thisClass.props.effort &&
-                            <TextField
-                                id="standard-number"
-                                value={user.effort || thisClass.state.effort}
-                                onChange={thisClass.handleChipEffortChange(user)}
-                                type="number"
-                                style={{width: 30, marginTop: 1, marginLeft: 5, height: 25}}
-                                InputProps={{
-                                    disableUnderline: true,
-                                    style: {
-                                        fontSize: 13,
-                                        fontWeight: 600
-                                    }
-                                }}
-
-                            />
-                            }
-                        </Grid>
-                    }
+                    label={value}
                     onDelete={handleDelete}
 
                 />
@@ -160,9 +136,10 @@ const styles = theme => ({
     chipWithAvatar: {
         margin: '0 5px 18px 0'
     }
+
 });
 
-class UserSuggestionInput extends React.Component {
+class UserSuggestion extends React.Component {
 
     state = {
         list: [],
@@ -198,7 +175,8 @@ class UserSuggestionInput extends React.Component {
             value: [...this.state.value, chip],
             textFieldInput: ''
         }, () => {
-            this.props.onUserAdd(this.state.value);
+            console.log('this.state.value -->', this.state.value);
+            this.props.onUserAdd(this.state.list.filter(m => this.state.value.includes(m.name)));
         });
 
     }
@@ -214,17 +192,6 @@ class UserSuggestionInput extends React.Component {
             //list: this.state.list.push()
         })
     }
-
-    handleChipEffortChange = name => e => {
-        name.effort = e.currentTarget.value;
-        let temp = this.state.value;
-        let foundIndex = temp.findIndex(x => x._id === name._id);
-        temp[foundIndex] = name;
-        this.setState({value: temp}, () => {
-            this.props.onUserAdd(this.state.value)
-        });
-
-    };
 
     componentDidMount() {
         thisClass = this;
@@ -269,9 +236,9 @@ class UserSuggestionInput extends React.Component {
     }
 }
 
-UserSuggestionInput.propTypes = {
+UserSuggestion.propTypes = {
     classes: PropTypes.object.isRequired,
-    onUserAdd: PropTypes.func
+
 };
 
-export default withStyles(styles)(UserSuggestionInput)
+export default withStyles(styles)(UserSuggestion)

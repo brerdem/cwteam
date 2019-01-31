@@ -9,7 +9,7 @@ import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import Button from "@material-ui/core/es/Button/Button";
 import {DatePicker} from "material-ui-pickers";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import UserSuggestionInput from "../../user/UserSuggestionInput";
+import UserSuggestionInput from "../../user/UserSuggestion";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import Select from "@material-ui/core/es/Select/Select";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
@@ -22,6 +22,7 @@ import axios from "axios";
 import {getToken} from "../../../actions/auth";
 import departments from '../../../helpers/departments'
 import API_URL from '../../../helpers/api_url';
+import UserSuggestionWithEffort from "../../user/UserSuggestionWithEffort";
 
 
 
@@ -131,6 +132,8 @@ class AddTask extends Component {
                     aria-labelledby="add-task-dialog"
                     open={open}
                     fullWidth={true}
+                    maxWidth="md"
+
                 >
                     <form onSubmit={this.handleSubmit}>
                         <DialogContent>
@@ -210,7 +213,7 @@ class AddTask extends Component {
 
                             </FormControl>
 
-                            <UserSuggestionInput list={team} onUserAdd={this.handleTeamUsers} effort="true"/>
+                            <UserSuggestionWithEffort list={team} onUserAdd={this.handleTeamUsers} />
 
 
                         </DialogContent>
