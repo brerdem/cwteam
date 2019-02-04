@@ -38,6 +38,10 @@ let userSchema = new Schema({
         enum: ['admin', 'user', 'client'],
         default: 'user'
     },
+    tasks: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Task'
+    }],
     lastLogin: Date
 
 });

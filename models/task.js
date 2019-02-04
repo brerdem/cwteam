@@ -1,7 +1,6 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-
 let taskSchema = new Schema({
     project_id: {
         type: Schema.Types.ObjectId,
@@ -15,6 +14,10 @@ let taskSchema = new Schema({
     },
     startDate: Date,
     endDate: Date,
+    show: {
+        type: Boolean,
+        default: true
+    },
     active: {
         type: Boolean,
         default: true
@@ -30,17 +33,20 @@ let taskSchema = new Schema({
         default: 'Yazılım'
     },
     order: {type: Number, default: 0},
-
     assignees: [{
-        user: {
+        user_id: {
             type: Schema.Types.ObjectId,
             ref: 'User'
         },
         effort: {
             type: Number,
-            default: 3
+            default: 1
         }
-    }]
+    }],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 
 });
 
