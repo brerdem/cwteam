@@ -21,6 +21,8 @@ import Clear from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
 const minEffort = 1;
+const minHourlyFee = 100;
+
 
 const AssigneeCardContent = ({user, classes, onEffortChange, onDelete, index}) => {
 
