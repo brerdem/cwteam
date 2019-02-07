@@ -21,10 +21,9 @@ import Clear from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
 const minEffort = 1;
-const minHourlyFee = 100;
+const minFee = 100;
 
-
-const AssigneeCardContent = ({user, classes, onEffortChange, onDelete, index}) => {
+const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, dataType}) => {
 
     return (
 
@@ -61,8 +60,8 @@ const AssigneeCardContent = ({user, classes, onEffortChange, onDelete, index}) =
 
                         <NumericInput
                             min={minEffort}
-                            value={user.effort || minEffort}
-                            onChange={onEffortChange(user)}
+                            value={dataType === 'effort' ? minEffort : minFee}
+                            onChange={onDataChange(user)}
                             style={{
                                 input: {
                                     width: 50,
@@ -88,7 +87,7 @@ const AssigneeCardContent = ({user, classes, onEffortChange, onDelete, index}) =
 export const AssigneeCard = withStyles(stylesMain)(AssigneeCardContent);
 
 function renderInput(inputProps) {
-    const {classes, autoFocus, value, onChange, onAdd, onDelete, chips, ref, onUserAdd, ...other} = inputProps;
+    const {classes, value, onChange, ref, ...other} = inputProps;
 
     return (
         <TextField
@@ -195,14 +194,13 @@ const styles = theme => ({
     }
 });
 
-class UserSuggestionInput extends React.Component {
+class UserSuggestionWithData extends React.Component {
 
     state = {
         list: [],
         suggestions: [],
         value: [],
         textFieldInput: '',
-        age: 0,
 
     };
 
@@ -229,7 +227,6 @@ class UserSuggestionInput extends React.Component {
         console.log('member -->', member);
 
         this.setState({
-            //list: this.state.list.filter(el => el._id !== chip._id),
             value: [...this.state.value, member],
             textFieldInput: ''
         }, () => {
@@ -250,9 +247,9 @@ class UserSuggestionInput extends React.Component {
         })
     };
 
-    handleMemberEffortChange = user => val => {
+    handleMemberDataChange = user => val => {
 
-        user.effort = val;
+        user[this.props.dataType] = val;
         let temp = this.state.value;
         let foundIndex = temp.findIndex(x => x._id === user._id);
         temp[foundIndex] = user;
@@ -267,7 +264,7 @@ class UserSuggestionInput extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, dataType} = this.props;
         const {suggestions, value, textFieldInput, list} = this.state;
 
         return (
@@ -305,8 +302,8 @@ class UserSuggestionInput extends React.Component {
                     {value.map((val, index) =>
                         <Grid item xs={4} key={val}>
                             <AssigneeCard user={list.find(u => u.name === val)}
-                                          onEffortChange={this.handleMemberEffortChange}
-                                          onDelete={this.handleDeleteMember} index={index}/>
+                                          onDataChange={this.handleMemberDataChange}
+                                          onDelete={this.handleDeleteMember} index={index} dataType={dataType}/>
                         </Grid>
                     )}
 
@@ -319,9 +316,9 @@ class UserSuggestionInput extends React.Component {
     }
 }
 
-UserSuggestionInput.propTypes = {
+UserSuggestionWithData.propTypes = {
     classes: PropTypes.object.isRequired,
     onUserAdd: PropTypes.func
 };
 
-export default withStyles(styles)(UserSuggestionInput)
+export default withStyles(styles)(UserSuggestionWithData)

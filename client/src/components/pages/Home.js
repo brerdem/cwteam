@@ -25,20 +25,18 @@ const DashboardGrid = function (props) {
         return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m;
     };
 
-    let totalCurrentBudgets = 0;
-    let totalBudgets = 0;
-
-
+    let totalCost = 0;
+    let totalBudget = 0;
 
     projects.map(project => {
-        let projectBudget = 0;
-        totalBudgets += project.budget;
+        let projectCost = 0;
+        totalBudget += project.budget;
         Object.keys(project.tasks).forEach(p => {
 
-            projectBudget += project.tasks[p].length > 0 ? project.tasks[p].reduce(calculateTotalEffort, 0) : 0;
+            projectCost += project.tasks[p].length > 0 ? project.tasks[p].reduce(calculateTotalEffort, 0) : 0;
         });
 
-        return totalCurrentBudgets += projectBudget;
+        return totalCost += projectCost;
     });
 
     return (
@@ -110,9 +108,9 @@ const DashboardGrid = function (props) {
                             <Typography variant="h3" style={{
                                 marginTop: 40,
                                 fontWeight: 600,
-                                color: totalBudgets > totalCurrentBudgets ? 'green' : 'red'
+                                color: totalBudget > totalCost ? 'green' : 'red'
                             }}>
-                                {totalCurrentBudgets} TL
+                                {totalCost} TL
                             </Typography>
 
 

@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import Users from "./pages/Users";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
-import UserDetail from "./user/UserDetail";
+import UserDetail from "./pages/UserDetail";
 import Tasks from "./pages/Tasks";
 import {Switch} from 'react-router-dom';
 import PropsRoute from "./PropsRoute";

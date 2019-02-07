@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UserSuggestion from '../user/UserSuggestion';
 import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
+import UserSuggestionWithData from "../user/UserSuggestionWithData";
 
 const style = {
 
@@ -191,7 +192,7 @@ class ProjectDialog extends Component {
 
 
                         </Grid>
-                        <UserSuggestion list={users} onUserAdd={this.handleTeamUsers}/>
+                        <UserSuggestionWithData list={users} onUserAdd={this.handleTeamUsers} dataType="hourly_fee" />
 
                     </DialogContent>
                     <DialogActions>

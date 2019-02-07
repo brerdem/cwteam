@@ -22,7 +22,7 @@ import axios from "axios";
 import {getToken} from "../../../actions/auth";
 import departments from '../../../helpers/departments'
 import API_URL from '../../../helpers/api_url';
-import UserSuggestionWithEffort from "../../user/UserSuggestionWithEffort";
+import UserSuggestionWithData from "../../user/UserSuggestionWithData";
 
 
 
@@ -213,7 +213,7 @@ class AddTask extends Component {
 
                             </FormControl>
 
-                            <UserSuggestionWithEffort list={team} onUserAdd={this.handleTeamUsers} />
+                            <UserSuggestionWithData list={team} onUserAdd={this.handleTeamUsers} dataType="effort" />
 
 
                         </DialogContent>

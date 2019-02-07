@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import UserAvatar from 'react-user-avatar';
 import PropTypes from 'prop-types';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
-import theme from '../../components/styles/Styles';
+import theme from '../styles/Styles';
 import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Divider from "@material-ui/core/es/Divider/Divider";
