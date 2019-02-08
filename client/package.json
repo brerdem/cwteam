@@ -17,6 +17,7 @@
     "immer": "^1.10.0",
     "material-ui-chip-input": "^1.0.0-beta.11",
     "material-ui-pickers": "^2.0.4",
+    "mdi-material-ui": "^5.9.0",
     "moment": "^2.22.2",
     "notistack": "^0.4.0",
     "prop-types": "^15.6.2",

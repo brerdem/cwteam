@@ -51,8 +51,6 @@ class UserDetail extends Component {
                         {user.name}
                     </Typography>
 
-                    <Divider style={{border: 'solid 1px #e4e4e4', width: 120,}} variant="fullWidth"/>
-
                     <Typography variant="h6" align="center" className={classes.headingPadding}
                                 style={{color: 'gray', fontWeight: 100}}>
                         {user.title}

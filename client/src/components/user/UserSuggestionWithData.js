@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Autosuggest from 'react-autosuggest'
 import match from 'autosuggest-highlight/match'
@@ -21,7 +21,6 @@ import Clear from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
 const minEffort = 1;
-const minFee = 100;
 
 const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, dataType}) => {
 
@@ -60,7 +59,7 @@ const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, data
 
                         <NumericInput
                             min={minEffort}
-                            value={dataType === 'effort' ? minEffort : minFee}
+                            value={dataType === 'effort' ? minEffort : user.hourly_fee}
                             onChange={onDataChange(user)}
                             style={{
                                 input: {
@@ -194,7 +193,7 @@ const styles = theme => ({
     }
 });
 
-class UserSuggestionWithData extends React.Component {
+class UserSuggestionWithData extends Component {
 
     state = {
         list: [],

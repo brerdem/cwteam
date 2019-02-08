@@ -13,8 +13,11 @@ let projectSchema = new Schema({
     },
     active: Boolean,
     team: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        hourly_fee: Number,
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
     }],
 
     tasks: {

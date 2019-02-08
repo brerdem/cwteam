@@ -21,7 +21,7 @@ router.use('/project', passport.authenticate('jwt', {session: false}, null), pro
 router.get('/projects', (req, res) => {
 
 
-    Project.find({}, function(err, projects) {
+    Project.find({}).populate('team.user').exec(function(err, projects) {
         if (!err) {
             res.status(200).json(projects);
         } else {

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
@@ -8,7 +9,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import UserSuggestion from '../user/UserSuggestion';
 import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
 import UserSuggestionWithData from "../user/UserSuggestionWithData";
 
@@ -60,7 +60,8 @@ class ProjectDialog extends Component {
     };
 
     handleTeamUsers = data => {
-        this.setState({selectedUsers: data});
+        const userData = data.map(m => {return {hourly_fee:m.hourly_fee, user:m._id}});
+        this.setState({selectedUsers: userData});
     };
 
     handleStartDateChange = (date) => {
@@ -100,6 +101,7 @@ class ProjectDialog extends Component {
                 aria-labelledby="customized-dialog-title"
                 open={open}
                 fullWidth={true}
+                maxWidth="md"
                 style={style.dialog}
 
             >
@@ -208,5 +210,10 @@ class ProjectDialog extends Component {
         );
     }
 }
+
+ProjectDialog.propTypes = {
+    addProject: PropTypes.func
+};
+
 
 export default ProjectDialog;

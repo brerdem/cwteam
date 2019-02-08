@@ -9,7 +9,6 @@ import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import Button from "@material-ui/core/es/Button/Button";
 import {DatePicker} from "material-ui-pickers";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import UserSuggestionInput from "../../user/UserSuggestion";
 import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import Select from "@material-ui/core/es/Select/Select";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
@@ -23,9 +22,6 @@ import {getToken} from "../../../actions/auth";
 import departments from '../../../helpers/departments'
 import API_URL from '../../../helpers/api_url';
 import UserSuggestionWithData from "../../user/UserSuggestionWithData";
-
-
-
 
 const styles = theme => ({
     selectEmpty: {
@@ -57,17 +53,15 @@ const style = {
     }
 };
 
-
 class AddTask extends Component {
 
     state = {
-        selectedStartDate:this.props.project.startDate,
+        selectedStartDate: this.props.project.startDate,
         selectedEndDate: this.props.project.startDate,
         team: this.props.team,
         selectedUsers: [],
         department: ''
     };
-
 
     handleStartDateChange = (date) => {
         this.setState({selectedStartDate: date, selectedEndDate: date});
@@ -86,9 +80,9 @@ class AddTask extends Component {
 
         let assignees = [];
 
-        this.state.selectedUsers.map((member) => assignees.push({user: member, effort: member.effort}));
+        this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
         const task = {
-
+            project_id: this.props.project._id,
             title: e.target.title.value,
             note: e.target.note.value,
             assignees: assignees,
@@ -98,7 +92,7 @@ class AddTask extends Component {
             owner: this.props.auth.user
         };
 
-        axios.post(API_URL + '/task/add', {task,  project_id: this.props.project._id}, {
+        axios.post(API_URL + '/task/add', task, {
             headers: {'Authorization': 'bearer ' + getToken()},
 
         })
@@ -213,7 +207,7 @@ class AddTask extends Component {
 
                             </FormControl>
 
-                            <UserSuggestionWithData list={team} onUserAdd={this.handleTeamUsers} dataType="effort" />
+                            <UserSuggestionWithData list={team} onUserAdd={this.handleTeamUsers} dataType="effort"/>
 
 
                         </DialogContent>

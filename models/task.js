@@ -34,7 +34,7 @@ let taskSchema = new Schema({
     },
     order: {type: Number, default: 0},
     assignees: [{
-        user_id: {
+        user: {
             type: Schema.Types.ObjectId,
             ref: 'User'
         },

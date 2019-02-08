@@ -1,6 +1,7 @@
 const router = require('express').Router();
 require('../../../passport');
 const Project = require('./../../../models/project');
+const Task = require('./../../../models/task');
 
 const Pusher = require('pusher');
 
@@ -14,28 +15,17 @@ const pusher = new Pusher({
 
 router.post('/add', (req, res) => {
 
-    const {project_id, task} = req.body;
 
 
-    Project.findOneAndUpdate({_id: project_id}, {
-        $addToSet: {
-            'tasks.backlog': task
-        }
-    }, {new: true}, function (err, project) {
+    let task = new Task(req.body);
+    task.save((err, task) => {
         if (!err) {
-
-            const insertedTask = project.tasks.backlog.pop();
-            console.log('updated task', insertedTask);
-            pusher.trigger(
-                'projects',
-                'task_added',
-                {insertedTask, project_id}
-            );
-            res.status(200).send('ok');
+            res.status(200).json(task);
         } else {
-            res.status(400).send(err.message);
+            console.log('err -->', err);
+            res.status(400).send(err);
         }
-    });
+    })
 
 });
 
