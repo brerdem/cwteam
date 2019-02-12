@@ -15,11 +15,21 @@ const pusher = new Pusher({
 
 router.post('/add', (req, res) => {
 
-
-
+console.log('req.body -->', req.body);
     let task = new Task(req.body);
+    const {assignees, owner} = req.body;
+
     task.save((err, task) => {
         if (!err) {
+            console.log('task -->', task);
+            task.assignees = req.body.assignees;
+            pusher.trigger(
+                'projects',
+                'task_added',
+                {task, assignees, owner}
+
+            );
+
             res.status(200).json(task);
         } else {
             console.log('err -->', err);

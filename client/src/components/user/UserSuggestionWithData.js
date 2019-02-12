@@ -59,7 +59,7 @@ const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, data
 
                         <NumericInput
                             min={minEffort}
-                            value={dataType === 'effort' ? minEffort : user.hourly_fee}
+                            value={dataType === 'effort' ? user.effort : user.hourly_fee}
                             onChange={onDataChange(user)}
                             style={{
                                 input: {

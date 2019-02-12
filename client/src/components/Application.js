@@ -17,6 +17,7 @@ import {withSnackbar} from 'notistack';
 import ReactNotifications from 'react-browser-notifications';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import {getAllTasks} from "../actions/task";
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
@@ -38,23 +39,25 @@ class Application extends Component {
         if (this.n.supported()) this.n.show();
     }
 
-    addTaskDispatch = ({insertedTask, project_id}) => {
-        console.log('add task dispatch ---->', insertedTask, project_id);
-        insertedTask.assignees.forEach(a => {
+    addTaskDispatch = ({task, assignees, owner}) => {
+        console.log('add task dispatch ---->', task);
+        assignees.forEach(a => {
             if (a.user._id === this.props.auth.user._id) {
 
-                this.props.enqueueSnackbar(insertedTask.owner.name + ', sana bir iş atadı.', {
+                this.props.enqueueSnackbar(owner.name + ', sana bir iş atadı.', {
                     variant: 'warning'
                 });
                 this.setState({
                     notifTitle: 'Yeni İş!',
-                    notifBody: insertedTask.owner.name + ', sana bir iş atadı.',
-                    notifIcon: insertedTask.owner.avatar_url ? insertedTask.owner.avatar_url : 'cwteam_logo'
+                    notifBody: owner.name + ', sana bir iş atadı.',
+                    notifIcon: owner.avatar_url ? owner.avatar_url : 'cwteam_logo'
                 }, () => this.showNotifications());
 
             }
         });
-        store.dispatch({type: 'ADD_TASK_DONE', insertedTask, project_id});
+        task.owner = owner;
+        task.assignees = assignees;
+        store.dispatch({type: 'ADD_TASK_DONE', data: task});
 
     };
 
@@ -90,9 +93,9 @@ class Application extends Component {
     };
 
     componentDidMount() {
-        const {getAllProjects, getAllUsers} = this.props;
+        const {getAllProjects, getAllUsers, getAllTasks} = this.props;
 
-        Promise.all([getAllProjects(), getAllUsers()]).then(() => {
+        Promise.all([getAllProjects(), getAllUsers(), getAllTasks()]).then(() => {
             this.setState({loading: false});
         }).catch(err => {
             console.log(err);
@@ -163,13 +166,14 @@ const mapStateToProps = (state) => {
 
     return {
         projects: state.projects,
-        users: state.users
+        users: state.users,
+        tasks: state.tasks,
 
     };
 };
 
 export default compose(
-    connect(mapStateToProps, {doLogout, doLogin, getAllProjects, getAllUsers}),
+    connect(mapStateToProps, {doLogout, doLogin, getAllProjects, getAllUsers, getAllTasks}),
     withSnackbar
 )(Application);
 

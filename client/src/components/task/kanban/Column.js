@@ -11,6 +11,8 @@ import AddTask from "./AddTask";
 const Column = ({column, classes, project, addTask, tasks, auth}) => {
 
 
+    console.log('column tasks -->', tasks);
+
     return (
 
         <Grid item xs={4} style={{borderRadius: 15}}>

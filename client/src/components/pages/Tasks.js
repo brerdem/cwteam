@@ -67,7 +67,7 @@ class Tasks extends Component {
 
     render() {
 
-        const {classes, projects, addTask, reorderTask, auth, users, socket_id} = this.props;
+        const {classes, projects, addTask, reorderTask, auth, users, tasks, socket_id} = this.props;
         console.log('auth is', auth);
 
         return (
@@ -128,6 +128,7 @@ class Tasks extends Component {
 
                                                     return <Project key={index} project={project} users={users}
                                                                     edit={props.match.params.project_id === project._id}><Board
+                                                        tasks={tasks.filter(t => t.project_id === project._id)}
                                                         project={project}
                                                         auth={auth}
                                                         addTask={addTask}
@@ -165,6 +166,7 @@ const mapStateToProps = (state) => {
 
     return {
         projects: state.projects,
+        tasks: state.tasks,
     };
 };
 

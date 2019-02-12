@@ -26,7 +26,7 @@ const columnInfo = {
 
 };
 
-const Board = ({project, socket_id, reorderTask, addTask, auth}) => {
+const Board = ({tasks, socket_id, reorderTask, addTask, auth, project}) => {
 
     const onDragEnd = result => {
         console.log('result', result);
@@ -47,7 +47,7 @@ const Board = ({project, socket_id, reorderTask, addTask, auth}) => {
         const start = source.droppableId;
         const finish = destination.droppableId;
 
-        const task = project.tasks[start].find(t => t._id === draggableId);
+        const task = tasks.find(t => t._id === draggableId);
 
         const payloadData = {
             project_id: project._id,
@@ -69,7 +69,7 @@ const Board = ({project, socket_id, reorderTask, addTask, auth}) => {
     };
 
 
-    console.log('board -->', project.tasks);
+    console.log('board -->', tasks);
     return (
 
         <Grid container spacing={8}>
@@ -77,7 +77,7 @@ const Board = ({project, socket_id, reorderTask, addTask, auth}) => {
                 {columnInfo.columnOrder.map(columnId => {
                     const column = columnInfo.columns[columnId];
 
-                    return <Column key={columnId} column={column} tasks={project.tasks[columnId]} project={project}
+                    return <Column key={columnId} column={column} tasks={tasks.filter(t => t.status === columnId)} project={project}
                                    addTask={addTask} auth={auth}/>;
                 })}
             </DragDropContext>

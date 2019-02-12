@@ -13,13 +13,7 @@ const projectReducer = (state = [], action) => {
                 action.project
             ];
 
-        case 'ADD_TASK_DONE':
-            return produce(state, draft => {
-                const index = draft.findIndex(t => t._id === action.project_id);
-                draft[index].tasks.backlog.push(action.insertedTask);
-
-            });
-        case 'FILTER_TASKS_DONE':
+      /*  case 'FILTER_TASKS_DONE':
             console.log('type:' + action.type, 'item:' + action.item);
             return produce(state, draft => {
 
@@ -30,9 +24,9 @@ const projectReducer = (state = [], action) => {
                 });
 
             });
+*/
 
-
-        case 'REORDER_TASK_DONE':
+      /*  case 'REORDER_TASK_DONE':
 
             return produce(state, draft => {
 
@@ -41,7 +35,7 @@ const projectReducer = (state = [], action) => {
                 project.tasks[action.payload.start].splice(action.payload.sourceIndex, 1);
                 project.tasks[action.payload.finish].splice(action.payload.destinationIndex, 0, action.payload.task);
 
-            });
+            });*/
 
         case 'DELETE_PROJECT_DONE':
             return state.filter(element => element._id !== action.id);

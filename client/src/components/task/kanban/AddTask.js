@@ -78,14 +78,14 @@ class AddTask extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        let assignees = [];
 
-        this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
+
+
         const task = {
             project_id: this.props.project._id,
             title: e.target.title.value,
             note: e.target.note.value,
-            assignees: assignees,
+            assignees: this.state.selectedUsers,
             department: this.state.department,
             startDate: this.state.selectedStartDate,
             endDate: this.state.selectedEndDate,
@@ -96,7 +96,7 @@ class AddTask extends Component {
             headers: {'Authorization': 'bearer ' + getToken()},
 
         })
-            .then(response => {
+            .then(() => {
                 console.log('task added');
                 this.props.onClose();
             })
@@ -107,7 +107,8 @@ class AddTask extends Component {
     };
 
     handleTeamUsers = data => {
-        this.setState({selectedUsers: data});
+        const userData = data.map(m => {return {effort:m.effort, user:m}});
+        this.setState({selectedUsers: userData});
     };
 
     componentDidMount() {
