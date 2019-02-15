@@ -60,8 +60,8 @@ class ProjectDialog extends Component {
     };
 
     handleTeamUsers = data => {
-        const userData = data.map(m => {return {hourly_fee:m.hourly_fee, user:m._id}});
-        this.setState({selectedUsers: userData});
+
+        this.setState({selectedUsers: data});
     };
 
     handleStartDateChange = (date) => {
@@ -95,6 +95,10 @@ class ProjectDialog extends Component {
 
         const {open, onClose, users} = this.props;
         const {selectedStartDate, selectedEndDate} = this.state;
+
+        const teamWithProp = users.map(m => {
+            return {hourly_fee: 100, user: m}
+        });
         return (
             <Dialog
                 onClose={onClose}
@@ -194,7 +198,7 @@ class ProjectDialog extends Component {
 
 
                         </Grid>
-                        <UserSuggestionWithData list={users} onUserAdd={this.handleTeamUsers} dataType="hourly_fee" />
+                        <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsers} dataType="hourly_fee" />
 
                     </DialogContent>
                     <DialogActions>

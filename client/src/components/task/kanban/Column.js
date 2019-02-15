@@ -7,20 +7,24 @@ import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
 import theme from '../../styles/Styles'
 import AddTask from "./AddTask";
+import {AlertCircleOutline, Update, CheckCircleOutline } from 'mdi-material-ui'
 
 const Column = ({column, classes, project, addTask, tasks, auth}) => {
 
+    tasks.sort((a, b) => a.order-b.order);
+    console.log('column tasks -->', tasks);
 
     return (
 
-        <Grid item xs={4} style={{borderRadius: 15}}>
-            <div className={classes.columnItem}>
-                <div className={classes[column.columnTitleColor]}>
-                    <Typography variant="h6" component="h2" style={{color: '#fff'}} align="center">
-                        {column.title}
+        <Grid item xs={4} className={classes.columnItem}>
+
+                <Grid className={classes[column.columnTitleColor]} direction="row" justify="center" alignItems="flex-end" container style={{padding:5}}>
+                    <Grid item style={{color: '#FFF'}}>{column.id === "backlog" ? <AlertCircleOutline/> : column.id === "progress" ? <Update/> : column.id === "done" ? <CheckCircleOutline/> : null}</Grid>
+                    <Typography variant="h6" component="h2" style={{color: '#fff', paddingLeft:5}} align="center" >
+                      {column.title}
                     </Typography>
-                </div>
-                <div style={{padding: 10, border: 'solid 1px lightgray', borderTopWidth: 0}}>
+                </Grid>
+                <div style={{padding: 10, border: 'solid 1px lightgray', borderTopWidth: 0, height: '100%'}}>
                     {column.id === 'backlog' &&
                     <AddTask project={project} addTask={addTask} team={project.team.map(t => t.user)} auth={auth}/>}
 
@@ -42,7 +46,7 @@ const Column = ({column, classes, project, addTask, tasks, auth}) => {
                         )}
                     </Droppable>
                 </div>
-            </div>
+
         </Grid>
     )
 

@@ -131,7 +131,7 @@ export default theme => ({
     },
     columnItem: {
 
-        padding: 0,
+        padding: 4,
 
     },
 

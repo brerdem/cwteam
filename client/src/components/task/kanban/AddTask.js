@@ -53,12 +53,13 @@ const style = {
     }
 };
 
+
+
 class AddTask extends Component {
 
     state = {
         selectedStartDate: this.props.project.startDate,
         selectedEndDate: this.props.project.startDate,
-        team: this.props.team,
         selectedUsers: [],
         department: ''
     };
@@ -78,25 +79,24 @@ class AddTask extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        let assignees = [];
-
-        this.state.selectedUsers.map((member) => assignees.push({user: member._id, effort: member.effort}));
         const task = {
             project_id: this.props.project._id,
             title: e.target.title.value,
             note: e.target.note.value,
-            assignees: assignees,
+            assignees: this.state.selectedUsers,
             department: this.state.department,
             startDate: this.state.selectedStartDate,
             endDate: this.state.selectedEndDate,
             owner: this.props.auth.user
         };
 
+        console.log('sending task -->', task);
+
         axios.post(API_URL + '/task/add', task, {
             headers: {'Authorization': 'bearer ' + getToken()},
 
         })
-            .then(response => {
+            .then(() => {
                 console.log('task added');
                 this.props.onClose();
             })
@@ -106,19 +106,20 @@ class AddTask extends Component {
 
     };
 
-    handleTeamUsers = data => {
+    handleTeamUsersAdd = data => {
+
         this.setState({selectedUsers: data});
     };
-
-    componentDidMount() {
-        this.setState({team: this.props.team})
-    }
 
     render() {
 
         const {selectedStartDate, selectedEndDate, department} = this.state;
         const {open, onClose, classes, team} = this.props;
 
+        const teamWithProp = team.map(m => {
+            return {effort: 1, user: m}
+        });
+        console.log('teamWithProp -->', teamWithProp);
         return (
             <div>
                 <Dialog
@@ -207,7 +208,8 @@ class AddTask extends Component {
 
                             </FormControl>
 
-                            <UserSuggestionWithData list={team} onUserAdd={this.handleTeamUsers} dataType="effort"/>
+                            <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsersAdd}
+                                                    dataType="effort"/>
 
 
                         </DialogContent>

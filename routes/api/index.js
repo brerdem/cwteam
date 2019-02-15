@@ -43,6 +43,18 @@ router.get('/users', (req, res) => {
 
 });
 
+router.get('/tasks', (req, res) => {
+
+    Task.find({}).populate('assignees.user').exec(function (err, users) {
+        if (!err) {
+            res.status(200).json(users);
+        } else {
+            res.status(400).send(err);
+        }
+    });
+
+});
+
 router.get('/', (req, res) => {
     res.status(200).json({message: 'Connected to API!'});
 });

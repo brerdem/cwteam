@@ -3,6 +3,8 @@ require('../../../passport');
 const Project = require('./../../../models/project');
 const Task = require('./../../../models/task');
 
+const async = require('async');
+
 const Pusher = require('pusher');
 
 const pusher = new Pusher({
@@ -15,11 +17,19 @@ const pusher = new Pusher({
 
 router.post('/add', (req, res) => {
 
-
-
+    console.log('req.body -->', req.body);
     let task = new Task(req.body);
+    const {assignees, owner} = req.body;
+
     task.save((err, task) => {
         if (!err) {
+
+            pusher.trigger(
+                'projects',
+                'task_added',
+                {task, assignees, owner}
+            );
+
             res.status(200).json(task);
         } else {
             console.log('err -->', err);
@@ -31,28 +41,49 @@ router.post('/add', (req, res) => {
 
 router.post('/reorder', (req, res) => {
 
-    const {project_id, sourceIndex, destinationIndex, start, finish, socket_id} = req.body;
+    const {project_id, sourceIndex, destinationIndex, start, finish, task, socket_id} = req.body;
 
-    Project.findOne({_id: project_id}, 'tasks', function (err, tasks) {
+    Task.find({project_id: project_id}).lean().exec(function (err, tasks) {
         if (!err) {
-            let temp = tasks.tasks;
-            const task = temp[start][sourceIndex];
 
-            temp[start].splice(sourceIndex, 1);
-            temp[finish].splice(destinationIndex, 0, task);
+            const startTasks = tasks.filter(t => t.status === start).sort((a, b) => a.order - b.order);
+            const finishTasks = tasks.filter(t => t.status === finish).sort((a, b) => a.order - b.order);
+            let newTasks = [];
+            startTasks.splice(sourceIndex, 1);
+            if (start === finish) {
 
-            tasks.tasks = temp;
-            tasks.save().then(() => {
-                pusher.trigger(
-                    'projects',
-                    'task_updated',
-                    req.body,
-                    socket_id
-                );
+                startTasks.splice(destinationIndex, 0, task);
+                startTasks.forEach((t, i) => t.order = i);
+                newTasks = startTasks;
+            } else {
 
-                res.status(200).send('ok');
+                finishTasks.splice(destinationIndex, 0, task);
+                task.status = finish;
+                finishTasks.forEach((t, i) => t.order = i);
+                startTasks.forEach((t, i) => t.order = i);
+                newTasks = startTasks.concat(finishTasks);
 
-            }).catch(err => console.log("err while saving", err));
+            }
+
+            async.eachSeries(newTasks, function updateObject(task, done) {
+                // Model.update(condition, doc, callback)
+                Task.update({_id: task._id}, {$set: {order: task.order, status: task.status}}, done);
+            }, function allDone(err) {
+                if (!err) {
+                    pusher.trigger(
+                        'projects',
+                        'task_updated',
+                        req.body,
+                        socket_id
+                    );
+                    res.status(200).send('ok');
+                } else {
+                    console.log('task reorder error -->', err);
+                }
+            });
+
+
+
 
         } else {
             console.log(err);
