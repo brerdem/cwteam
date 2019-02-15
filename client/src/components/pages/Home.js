@@ -17,27 +17,22 @@ import moment from 'moment';
 
 const DashboardGrid = function (props) {
 
+    const {classes, tasks, projects} = props;
 
 
-    const {classes, projects} = props;
+    const totalBudget = projects.reduce((m, p) => p.budget + m, 0);
 
-    const calculateTotalEffort = (m, t) => {
-        return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m;
+    const getHourlyFee = (t, a) => {
+        const project = projects.find(p => p._id === t.project_id);
+        return project.team.find(m => m.user._id === a.user._id).hourly_fee;
     };
 
     let totalCost = 0;
-    let totalBudget = 0;
-
-    projects.map(project => {
-        let projectCost = 0;
-        totalBudget += project.budget;
-        Object.keys(project.tasks).forEach(p => {
-
-            projectCost += project.tasks[p].length > 0 ? project.tasks[p].reduce(calculateTotalEffort, 0) : 0;
-        });
-
-        return totalCost += projectCost;
+    tasks.map(t => {
+        totalCost += t.assignees.reduce((m, a) =>  getHourlyFee(t, a) * a.effort + m, 0);
+        return totalCost;
     });
+
 
     return (
 
@@ -78,7 +73,7 @@ const DashboardGrid = function (props) {
                         <Grid item xs={8} className={classes.dashboardHeight}>
                             <Avatar className={classes.dashboardAvatar}>
                                 <Typography variant="h3" color="secondary">
-                                    {projects.length > 0 ? projects.reduce(((memo, project) => project.tasks.backlog.length + memo), 0) : 0}
+                                    {tasks.length > 0 ? tasks.filter(t => t.status === "backlog").length : 0}
                                 </Typography>
 
                             </Avatar>
@@ -117,9 +112,9 @@ const DashboardGrid = function (props) {
                         </Grid>
                         <Grid item>
 
-                                <Typography gutterBottom variant="h5" color="textPrimary" align="center">
-                                    Toplam Maliyet
-                                </Typography>
+                            <Typography gutterBottom variant="h5" color="textPrimary" align="center">
+                                Toplam Maliyet
+                            </Typography>
 
 
                         </Grid>
@@ -191,7 +186,7 @@ class Home extends Component {
                                 className={classes.headingPadding}>
                         Hoş geldiniz, {auth.user.name}
                     </Typography>
-                    <Typography variant="h6" align="center" color="primary" gutterBottom style={{marginBottom:20}}>
+                    <Typography variant="h6" align="center" color="primary" gutterBottom style={{marginBottom: 20}}>
                         Sisteme en son girişiniz: {moment(auth.user.lastLogin).format("DD.MM.YYYY HH:mm")}
                     </Typography>
                     <DashboardGridWrapper projects={projects} {...this.props}/>

@@ -119,7 +119,7 @@ class Application extends Component {
 
     render() {
 
-        const {auth, projects, users} = this.props;
+        const {auth, projects, users, tasks} = this.props;
         const {loading, socketId} = this.state;
 
         return (
@@ -145,9 +145,9 @@ class Application extends Component {
                     <Switch>
                         <PropsRoute exact path='/projects' loading={loading} component={Projects}
                                     auth={auth} projects={projects} users={users}/>
-                        <PropsRoute exact path='/' component={Home} auth={auth} projects={projects}/>
-                        <PropsRoute path='/tasks' component={Tasks} auth={auth} projects={projects}
-                                    users={users}
+                        <PropsRoute exact path='/' component={Home} auth={auth} tasks={tasks} projects={projects} />
+                        <PropsRoute path='/tasks' component={Tasks} auth={auth}
+
                                     loading={loading} socket_id={socketId}/>
                         <PropsRoute path='/users' component={Users} users={users} auth={auth}
                         />

@@ -12,7 +12,8 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
-import {addTask, filterTaskByDepartments, getAllProjects, reorderTask} from "../../actions/project";
+import {addTask, filterTaskByDepartments, getAllProjects} from "../../actions/project";
+import {reorderTasks} from "../../actions/task";
 import {compose} from 'recompose';
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Project from "../task/kanban/Project";
@@ -67,7 +68,7 @@ class Tasks extends Component {
 
     render() {
 
-        const {classes, projects, addTask, reorderTask, auth, users, tasks, socket_id} = this.props;
+        const {classes, projects, addTask, reorderTasks, auth, users, tasks, socket_id} = this.props;
         console.log('auth is', auth);
 
         return (
@@ -126,13 +127,13 @@ class Tasks extends Component {
                                             <Grid item xs={12}>
                                                 {projects.map((project, index) => {
 
-                                                    return <Project key={index} project={project} users={users}
+                                                    return <Project key={index} project={project} tasks={tasks.filter(t => t.project_id === project._id)} users={users}
                                                                     edit={props.match.params.project_id === project._id}><Board
                                                         tasks={tasks.filter(t => t.project_id === project._id)}
                                                         project={project}
                                                         auth={auth}
                                                         addTask={addTask}
-                                                        reorderTask={reorderTask}
+                                                        reorderTasks={reorderTasks}
                                                         socket_id={socket_id}
                                                     /></Project>
 
@@ -167,12 +168,13 @@ const mapStateToProps = (state) => {
     return {
         projects: state.projects,
         tasks: state.tasks,
+        users: state.users,
     };
 };
 
 //fixme remove from connect
 export default compose(
-    connect(mapStateToProps, {getAllProjects, addTask, reorderTask, filterTaskByDepartments}),
+    connect(mapStateToProps, {getAllProjects, addTask, reorderTasks, filterTaskByDepartments}),
     withStyles(theme),
     withLoading
 )(Tasks);

@@ -1,4 +1,4 @@
-import produce from 'immer';
+
 
 //todo get rid of produce functions and use spread op
 
@@ -25,17 +25,6 @@ const projectReducer = (state = [], action) => {
 
             });
 */
-
-      /*  case 'REORDER_TASK_DONE':
-
-            return produce(state, draft => {
-
-                const project = draft.find(t => t._id === action.payload.project_id);
-
-                project.tasks[action.payload.start].splice(action.payload.sourceIndex, 1);
-                project.tasks[action.payload.finish].splice(action.payload.destinationIndex, 0, action.payload.task);
-
-            });*/
 
         case 'DELETE_PROJECT_DONE':
             return state.filter(element => element._id !== action.id);

@@ -20,9 +20,8 @@ import NumericInput from "react-numeric-input";
 import Clear from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
-const minEffort = 1;
-
 const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, dataType}) => {
+    console.log('user -->', user);
 
     return (
 
@@ -32,8 +31,7 @@ const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, data
             <CardContent className={classes.cardContent}
                          style={{
                              padding: '12px 0px 12px 16px',
-
-                             borderRight: 'solid 5px ' + departments.find(t => t.name === user.department).color
+                             borderRight: 'solid 5px ' + departments.find(t => t.name === user.user.department).color
                          }}>
                 <Grid container>
 
@@ -47,20 +45,20 @@ const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, data
                             <ListItem alignItems="flex-start" disableGutters>
                                 <ListItemAvatar>
                                     <UserAvatar className={classes.userAvatarText} size={40}
-                                                name={user.name}
-                                                src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>
+                                                name={user.user.name}
+                                                src={user.user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.user.avatar_url}.png` : null}/>
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={user.name}
-                                    secondary={user.title}
+                                    primary={user.user.name}
+                                    secondary={user.user.title}
                                 />
                             </ListItem>
                         </Grid>
 
                         <NumericInput
-                            min={minEffort}
+                            min={1}
                             value={dataType === 'effort' ? user.effort : user.hourly_fee}
-                            onChange={onDataChange(user)}
+                            onChange={onDataChange(user.user._id)}
                             style={{
                                 input: {
                                     width: 50,
@@ -196,16 +194,17 @@ const styles = theme => ({
 class UserSuggestionWithData extends Component {
 
     state = {
-        list: [],
+
         suggestions: [],
         value: [],
+        list: [],
         textFieldInput: '',
 
     };
 
     handleSuggestionsFetchRequested = ({value}) => {
         this.setState({
-            suggestions: getSuggestions(value, this.state.list)
+            suggestions: getSuggestions(value, this.props.list.map(m => m.user))
         })
     };
 
@@ -221,15 +220,14 @@ class UserSuggestionWithData extends Component {
         });
     };
 
-    handleAddMember(member) {
-
-        console.log('member -->', member);
+    handleAddMember(memberName) {
 
         this.setState({
-            value: [...this.state.value, member],
+            value: [...this.state.value, memberName],
             textFieldInput: ''
         }, () => {
-            this.props.onUserAdd(this.state.list.filter(m => this.state.value.includes(m.name)));
+            this.props.onUserAdd(this.state.list.filter(m => this.state.value.includes(m.user.name)));
+
         });
 
     }
@@ -242,24 +240,20 @@ class UserSuggestionWithData extends Component {
 
         this.setState({
             value: temp,
-            //list: this.state.list.push()
-        })
+        }, () => {
+            this.props.onUserAdd(this.state.list.filter(m => this.state.value.includes(m.user.name)));
+        });
     };
 
-    handleMemberDataChange = user => val => {
-
-        user[this.props.dataType] = val;
-        let temp = this.state.value;
-        let foundIndex = temp.findIndex(x => x._id === user._id);
-        temp[foundIndex] = user;
-        this.setState({value: temp}, () => {
-            this.props.onUserAdd(this.state.value)
-        });
+    handleMemberDataChange = userId => val => {
+        let temp = this.state.list.filter(m => this.state.value.includes(m.user.name));
+        temp.find(m => m.user._id === userId)[this.props.dataType] = val;
+        this.setState({list: temp}, () => this.props.onUserAdd(temp));
 
     };
 
     componentDidMount() {
-        this.setState({list: this.props.list});
+        this.setState({list: this.props.list})
     }
 
     render() {
@@ -300,7 +294,7 @@ class UserSuggestionWithData extends Component {
                 <Grid container spacing={8} alignItems="stretch">
                     {value.map((val, index) =>
                         <Grid item xs={4} key={val}>
-                            <AssigneeCard user={list.find(u => u.name === val)}
+                            <AssigneeCard user={list.find(u => u.user.name === val)}
                                           onDataChange={this.handleMemberDataChange}
                                           onDelete={this.handleDeleteMember} index={index} dataType={dataType}/>
                         </Grid>
@@ -317,7 +311,10 @@ class UserSuggestionWithData extends Component {
 
 UserSuggestionWithData.propTypes = {
     classes: PropTypes.object.isRequired,
-    onUserAdd: PropTypes.func
+    onUserAdd: PropTypes.func,
+    onUserDelete: PropTypes.func,
+    onUserDataChange: PropTypes.func,
+
 };
 
 export default withStyles(styles)(UserSuggestionWithData)

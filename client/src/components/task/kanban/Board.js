@@ -9,24 +9,24 @@ const columnInfo = {
         'backlog': {
             id: 'backlog',
             title: 'Backlog',
-            columnTitleColor: 'columnTitleRed'
+            columnTitleColor: 'columnTitleRed',
         },
         'progress': {
             id: 'progress',
             title: 'In Progress',
-            columnTitleColor: 'columnTitleOrange'
+            columnTitleColor: 'columnTitleOrange',
         },
         'done': {
             id: 'done',
             title: 'Done',
-            columnTitleColor: 'columnTitleGreen'
+            columnTitleColor: 'columnTitleGreen',
         },
     },
     columnOrder: ['backlog', 'progress', 'done'],
 
 };
 
-const Board = ({tasks, socket_id, reorderTask, addTask, auth, project}) => {
+const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project}) => {
 
     const onDragEnd = result => {
         console.log('result', result);
@@ -64,7 +64,7 @@ const Board = ({tasks, socket_id, reorderTask, addTask, auth, project}) => {
             payload: payloadData
         });
 
-        reorderTask(payloadData);
+       reorderTasks(payloadData);
 
     };
 

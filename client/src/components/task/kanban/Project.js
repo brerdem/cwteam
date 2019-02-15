@@ -25,9 +25,13 @@ class Project extends Component {
             expanded: !this.state.expanded,
         });
     };
+    getHourlyFee = a => {
+
+        return this.props.project.team.find(m => m.user._id === a.user._id).hourly_fee;
+    };
 
     calculateTotalEffort = (m, t) => {
-        return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(this.calculateTotalEffort, m) : t.effort * t.user.hourly_fee + m;
+        return (t.hasOwnProperty('assignees')) ? t.assignees.reduce(this.calculateTotalEffort, m) : t.effort * this.getHourlyFee(t) + m;
     };
 
 
@@ -35,24 +39,20 @@ class Project extends Component {
     render() {
 
         const {expanded} = this.state;
-        const {classes, project, children, edit} = this.props;
+        const {classes, project, children, edit, tasks} = this.props;
 
         console.log('edit param  ->', edit);
 
-        let totalBudget = 0;
-        Object.keys(project.tasks).forEach(p => {
-            console.log('project-type', project.tasks[p]);
-            totalBudget += project.tasks[p].length > 0 ? project.tasks[p].reduce(this.calculateTotalEffort, 0) : 0;
-        });
+        const totalBudget = tasks.reduce(this.calculateTotalEffort, 0);
 
         const tooltipText = (totalBudget < project.budget ? '-' : '+') + Math.abs(totalBudget - project.budget);
 
         return (
             <ExpansionPanel expanded={expanded}
-                            onChange={this.handleChange} className={classes.expansionPanel}>
+                            onChange={this.handleChange} className={classes.expansionPanel} >
 
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <Grid container style={{padding: 0}} alignItems="center" justify="space-between" direction="row">
+                    <Grid container alignItems="center" justify="space-between" direction="row" style={{padding: 0}}>
 
                         <Typography noWrap className={classes.heading}
                                     color="primary">{project.title} </Typography>
@@ -71,15 +71,15 @@ class Project extends Component {
 
 
                             <Avatar
-                                className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{project.tasks.backlog.length}</Avatar>
+                                className={classNames(classes.avatarSmall, classes.columnTitleRed)}>{tasks.filter(t => t.status === "backlog").length}</Avatar>
 
 
                             <Avatar
-                                className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{project.tasks.progress.length}</Avatar>
+                                className={classNames(classes.avatarSmall, classes.columnTitleOrange)}>{tasks.filter(t => t.status === "progress").length}</Avatar>
 
 
                             <Avatar
-                                className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{project.tasks.done.length}</Avatar>
+                                className={classNames(classes.avatarSmall, classes.columnTitleGreen)}>{tasks.filter(t => t.status === "done").length}</Avatar>
 
                         </Grid>
 
@@ -87,7 +87,7 @@ class Project extends Component {
                     </Grid>
 
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                <ExpansionPanelDetails style={{paddingBottom:60}}>
                     {children}
                 </ExpansionPanelDetails>
             </ExpansionPanel>

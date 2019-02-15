@@ -53,12 +53,13 @@ const style = {
     }
 };
 
+
+
 class AddTask extends Component {
 
     state = {
         selectedStartDate: this.props.project.startDate,
         selectedEndDate: this.props.project.startDate,
-        team: this.props.team,
         selectedUsers: [],
         department: ''
     };
@@ -78,9 +79,6 @@ class AddTask extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-
-
-
         const task = {
             project_id: this.props.project._id,
             title: e.target.title.value,
@@ -91,6 +89,8 @@ class AddTask extends Component {
             endDate: this.state.selectedEndDate,
             owner: this.props.auth.user
         };
+
+        console.log('sending task -->', task);
 
         axios.post(API_URL + '/task/add', task, {
             headers: {'Authorization': 'bearer ' + getToken()},
@@ -106,20 +106,20 @@ class AddTask extends Component {
 
     };
 
-    handleTeamUsers = data => {
-        const userData = data.map(m => {return {effort:m.effort, user:m}});
-        this.setState({selectedUsers: userData});
-    };
+    handleTeamUsersAdd = data => {
 
-    componentDidMount() {
-        this.setState({team: this.props.team})
-    }
+        this.setState({selectedUsers: data});
+    };
 
     render() {
 
         const {selectedStartDate, selectedEndDate, department} = this.state;
         const {open, onClose, classes, team} = this.props;
 
+        const teamWithProp = team.map(m => {
+            return {effort: 1, user: m}
+        });
+        console.log('teamWithProp -->', teamWithProp);
         return (
             <div>
                 <Dialog
@@ -208,7 +208,8 @@ class AddTask extends Component {
 
                             </FormControl>
 
-                            <UserSuggestionWithData list={team} onUserAdd={this.handleTeamUsers} dataType="effort"/>
+                            <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsersAdd}
+                                                    dataType="effort"/>
 
 
                         </DialogContent>
