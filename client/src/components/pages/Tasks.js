@@ -143,7 +143,7 @@ class Tasks extends Component {
 
                                     }/>
                                     <Route path="/tasks/timeline"
-                                           render={() => <Timeline projects={projects}/>}/>
+                                           render={() => <Timeline projects={projects} tasks={tasks} />}/>
                                 </Switch>
 
                             </div>

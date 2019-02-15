@@ -3,7 +3,7 @@ import Gantt from "./timeline/Gantt";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import moment from 'moment';
 
-function makeDataForGantt(projects) {
+function makeDataForGantt(projects, tasks) {
     let data = {};
     data.data = [];
     projects.forEach((project) => {
@@ -20,38 +20,27 @@ function makeDataForGantt(projects) {
             editable: false,
             task_type: 'project'
         });
-        project.tasks.backlog.forEach(t => {
 
-            let startDate =  moment(t.startDate).format("DD-MM-YYYY");
-            let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
+        tasks.forEach(t => {
+            if (t.status === "backlog" || t.status === "progress") {
+                let startDate =  moment(t.startDate).format("DD-MM-YYYY");
+                let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
 
-           data.data.push({
-                id: `${t._id}`,
-                text: t.title,
-                start_date: startDate,
-                duration: duration.days(),
-                holder: t.assignees[0].user.first_name,
-                parent: `${project._id}`,
-                color: t.categoryColor,
-                progress: 0.4
-            })
+                data.data.push({
+                    id: `${t._id}`,
+                    text: t.title,
+                    start_date: startDate,
+                    duration: duration.days(),
+                    holder: t.assignees[0].user.first_name,
+                    parent: `${project._id}`,
+                    color: t.categoryColor,
+                    progress: 0.4
+                })
+            }
+
         });
-        project.tasks.progress.forEach(t => {
 
-            let startDate =  moment(t.startDate).format("DD-MM-YYYY");
-            let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
 
-            data.data.push({
-                id: `${t._id}`,
-                text: t.title,
-                start_date: startDate,
-                duration: duration.days(),
-                holder: t.assignees[0].user.first_name,
-                parent: `${project._id}`,
-                color: t.categoryColor,
-                progress: 0.4
-            })
-        });
 
         /*  {
               id: `${index}_1`,
@@ -105,7 +94,7 @@ const Timeline = function (props) {
     return (
         <Grid container direction="column">
             <Grid item xs={12}>
-                <Gantt tasks={makeDataForGantt(props.projects)}/>
+                <Gantt tasks={makeDataForGantt(props.projects, props.tasks)}/>
             </Grid>
         </Grid>
 
