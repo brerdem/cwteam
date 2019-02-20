@@ -18,6 +18,7 @@ import ReactNotifications from 'react-browser-notifications';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import {getAllTasks} from "../actions/task";
+import ReactAudioPlayer from 'react-audio-player';
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';
@@ -29,7 +30,7 @@ class Application extends Component {
         socketId: null,
         notifTitle: '',
         notifBody: '',
-        notifIcon: 'cwteam_logo'
+        notifIcon: 'cwteam_logo',
 
     };
 
@@ -51,7 +52,10 @@ class Application extends Component {
                     notifTitle: 'Yeni İş!',
                     notifBody: owner.name + ', sana bir iş atadı.',
                     notifIcon: owner.avatar_url ? owner.avatar_url : 'cwteam_logo'
-                }, () => this.showNotifications());
+                }, () => {
+                    this.showNotifications();
+                    this.sound.audioEl.play();
+                });
 
             }
         });
@@ -73,7 +77,10 @@ class Application extends Component {
                     notifTitle: 'İş Durumu Değişti!',
                     notifBody: `Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`,
                     notifIcon: task.owner.avatar_url ? task.owner.avatar_url : 'cwteam_logo'
-                }, () => this.showNotifications());
+                }, () => {
+                    this.showNotifications();
+                    this.sound.audioEl.play();
+                })
             }
         });
         store.dispatch({type: 'REORDER_TASK_DONE', payload});
@@ -115,6 +122,7 @@ class Application extends Component {
         this.channel.bind('project_deleted', this.deleteProjectDispatch);
         this.channel.bind('task_added', this.addTaskDispatch);
         this.channel.bind('task_updated', this.updateTaskDispatch);
+
     }
 
     render() {
@@ -123,7 +131,14 @@ class Application extends Component {
         const {loading, socketId} = this.state;
 
         return (
+
             <Fragment>
+                <ReactAudioPlayer
+                    src={process.env.PUBLIC_URL + "/alert.mp3"}
+                    ref={(element) => {
+                        this.sound = element;
+                    }}
+                />
                 <Loading show={loading} color="white"/>;
 
 
@@ -145,13 +160,14 @@ class Application extends Component {
                     <Switch>
                         <PropsRoute exact path='/projects' loading={loading} component={Projects}
                                     auth={auth} projects={projects} users={users}/>
-                        <PropsRoute exact path='/' component={Home} auth={auth} tasks={tasks} projects={projects} />
+                        <PropsRoute exact path='/' component={Home} auth={auth} tasks={tasks} projects={projects}/>
                         <PropsRoute path='/tasks' component={Tasks} auth={auth}
 
                                     loading={loading} socket_id={socketId}/>
                         <PropsRoute path='/users' component={Users} users={users} auth={auth}
                         />
-                        <PropsRoute path='/user/detail/:id' component={UserDetail} auth={auth} users={users}
+                        <PropsRoute path='/user/detail/:id' component={UserDetail} auth={auth} tasks={tasks}
+                                    users={users}
                                     loading={loading}/>
                     </Switch>
 

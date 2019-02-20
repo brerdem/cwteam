@@ -67,7 +67,7 @@ router.post('/reorder', (req, res) => {
 
             async.eachSeries(newTasks, function updateObject(task, done) {
                 // Model.update(condition, doc, callback)
-                Task.update({_id: task._id}, {$set: {order: task.order, status: task.status}}, done);
+                Task.updateOne({_id: task._id}, {$set: {order: task.order, status: task.status}}, done);
             }, function allDone(err) {
                 if (!err) {
                     pusher.trigger(

@@ -3,30 +3,10 @@ import {DragDropContext} from "react-beautiful-dnd";
 import Column from "./Column";
 import Grid from "@material-ui/core/Grid";
 import {store} from '../../../helpers/store';
+import columnInfo from '../../../helpers/columns';
 
-const columnInfo = {
-    columns: {
-        'backlog': {
-            id: 'backlog',
-            title: 'Backlog',
-            columnTitleColor: 'columnTitleRed',
-        },
-        'progress': {
-            id: 'progress',
-            title: 'In Progress',
-            columnTitleColor: 'columnTitleOrange',
-        },
-        'done': {
-            id: 'done',
-            title: 'Done',
-            columnTitleColor: 'columnTitleGreen',
-        },
-    },
-    columnOrder: ['backlog', 'progress', 'done'],
 
-};
-
-const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project}) => {
+const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project, user}) => {
 
     const onDragEnd = result => {
         console.log('result', result);
@@ -50,7 +30,6 @@ const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project}) => {
         const task = tasks.find(t => t._id === draggableId);
 
         const payloadData = {
-            project_id: project._id,
             sourceIndex: source.index,
             destinationIndex: destination.index,
             start,
@@ -59,12 +38,19 @@ const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project}) => {
             socket_id
         };
 
+        if (project) {
+            payloadData.project_id =  project._id;
+            reorderTasks(payloadData);
+        } else if (user) {
+            payloadData.user_id =  user._id;
+        }
+
         store.dispatch({
             type: 'REORDER_TASK_DONE',
             payload: payloadData
         });
 
-       reorderTasks(payloadData);
+
 
     };
 
@@ -78,7 +64,7 @@ const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project}) => {
                     const column = columnInfo.columns[columnId];
 
                     return <Column key={columnId} column={column} tasks={tasks.filter(t => t.status === columnId)} project={project}
-                                   addTask={addTask} auth={auth}/>;
+                                   addTask={addTask} auth={auth} />;
                 })}
             </DragDropContext>
         </Grid>

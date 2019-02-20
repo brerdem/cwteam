@@ -41,6 +41,10 @@ let taskSchema = new Schema({
         effort: {
             type: Number,
             default: 1
+        },
+        order: {
+            type: Number,
+            default: 1
         }
     }],
     owner: {
