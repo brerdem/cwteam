@@ -19,7 +19,6 @@ const DashboardGrid = function (props) {
 
     const {classes, tasks, projects} = props;
 
-
     const totalBudget = projects.reduce((m, p) => p.budget + m, 0);
 
     const getHourlyFee = (t, a) => {
@@ -29,10 +28,11 @@ const DashboardGrid = function (props) {
 
     let totalCost = 0;
     tasks.map(t => {
-        totalCost += t.assignees.reduce((m, a) =>  getHourlyFee(t, a) * a.effort + m, 0);
+        totalCost += t.assignees.reduce((m, a) => getHourlyFee(t, a) * a.effort + m, 0);
         return totalCost;
     });
 
+    const performance = Math.floor(tasks.filter(t => t.status === 'done').length / tasks.filter(t => t.status === 'progress').length * 100 );
 
     return (
 
@@ -43,8 +43,8 @@ const DashboardGrid = function (props) {
                     <Grid container spacing={24} direction="column" justify="center" alignItems="center">
                         <Grid item xs={8} className={classes.dashboardHeight}>
                             <CircularProgressbar
-                                percentage={67}
-                                text={`${67 }%`}
+                                percentage={performance}
+                                text={`${performance}%`}
                                 className={classes.dashboardProgress}
                             />
                         </Grid>
@@ -57,7 +57,7 @@ const DashboardGrid = function (props) {
 
                         <Grid item>
                             <Typography gutterBottom variant="caption" color="textPrimary" align="center">
-                                Performans, bütün projelerdeki biten işlerin, devam eden ya da atanmamış işlere oranıyla
+                                Performans, bütün projelerdeki biten işlerin, devam eden işlere oranıyla
                                 elde edilir.
                             </Typography>
 

@@ -1,9 +1,9 @@
-const getSortedArray = (arr, p_id, stat) => {
+const getSortedProjectTasks = (arr, p_id, stat) => {
     return arr.filter(t => t.status === stat && t.project_id === p_id).sort((a, b) => a.order - b.order);
 };
 
-const makeOrdered = (arr) => {
-    return arr
+const getSortedUserTasks = (arr, u_id, stat) => {
+    return arr.filter(t => t.status === stat && t.assignees.some(ta => ta.user._id === u_id)).sort((a, b) => a.assignees.find(u => u.user._id === u_id).order - b.assignees.find(u => u._id === u_id).order);
 };
 
 const taskReducer = (state = [], action) => {
@@ -19,29 +19,34 @@ const taskReducer = (state = [], action) => {
 
         case 'REORDER_TASK_DONE':
 
-            const {start, finish, sourceIndex, destinationIndex, task, project_id} = action.payload;
-            const otherProjectTasks = state.filter(t => t.project_id !== project_id);
-            const startTasks = state.filter(t => t.status === start && t.project_id === project_id).sort((a, b) => a.order - b.order);
-            const finishTasks = state.filter(t => t.status === finish && t.project_id === project_id).sort((a, b) => a.order - b.order);
-            startTasks.splice(sourceIndex, 1);
+            const {start, finish, sourceIndex, destinationIndex, task, project_id, user_id} = action.payload;
+            let startTasks, finishTasks, otherTasks;
 
+
+            startTasks = project_id ? getSortedProjectTasks(state, project_id, start): getSortedUserTasks(state, user_id, start);
+            finishTasks = project_id ? getSortedProjectTasks(state, project_id, finish): getSortedUserTasks(state, user_id, finish);
+            startTasks.splice(sourceIndex, 1);
             if (start === finish) {
 
-
                 startTasks.splice(destinationIndex, 0, task);
-                startTasks.forEach((t, i) => t.order = i);
-                const otherTasks = state.filter(t => t.status !== start);
+                startTasks.forEach((t, i) => project_id ? t.order = i : t.assignees.find(u => u.user._id === user_id).order = i);
+                otherTasks = state.filter(t => (project_id ? t.project_id !== project_id: !t.assignees.some(u => u.user._id === user_id) && t.status !== start));
                 console.log('tasks -->', otherTasks, startTasks);
-                return [...otherProjectTasks, ...otherTasks, ...startTasks];
+                return [...otherTasks, ...startTasks];
             }
 
-            const otherTasks = state.filter(t => t.status !== start && t.status !== finish);
+            otherTasks = state.filter(t => (project_id ? t.project_id !== project_id : !t.assignees.some(u => u.user._id === user_id) && t.status !== start && t.status !== finish));
             finishTasks.splice(destinationIndex, 0, task);
             task.status = finish;
-            startTasks.forEach((t, i) => t.order = i);
-            finishTasks.forEach((t, i) => t.order = i);
+            startTasks.forEach((t, i) => project_id ? t.order = i : t.assignees.find(u => u.user._id === user_id).order = i);
+            finishTasks.forEach((t, i) => project_id ? t.order = i : t.assignees.find(u => u.user._id === user_id).order = i);
 
-            return [...otherProjectTasks, ...otherTasks, ...startTasks, ...finishTasks];
+            return [...otherTasks, ...startTasks, ...finishTasks];
+
+        case 'REORDER_USER_TASK_DONE':
+
+
+
 
         default:
             return state

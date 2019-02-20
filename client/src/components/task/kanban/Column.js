@@ -25,7 +25,7 @@ const Column = ({column, classes, project, addTask, tasks, auth}) => {
                     </Typography>
                 </Grid>
                 <div style={{padding: 10, border: 'solid 1px lightgray', borderTopWidth: 0, height: '100%'}}>
-                    {column.id === 'backlog' &&
+                    {column.id === 'backlog' && project &&
                     <AddTask project={project} addTask={addTask} team={project.team.map(t => t.user)} auth={auth}/>}
 
                     <Droppable droppableId={column.id}>

@@ -14,6 +14,8 @@ import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import Icon from "@material-ui/core/es/Icon/Icon";
 import {Chart} from "react-google-charts";
+import Board from "../task/kanban/Board";
+import Paper from "@material-ui/core/Paper";
 
 const data = [
     ["Element", "Saat", {role: "style"}, {role: 'annotation'}],
@@ -27,12 +29,8 @@ const data = [
 
 class UserDetail extends Component {
 
-    componentDidMount() {
-
-    }
-
     render() {
-        const {classes, users, match, loading} = this.props;
+        const {classes, users, match, loading, tasks} = this.props;
 
         const user = users.find(u => u._id === match.params.id);
 
@@ -148,6 +146,18 @@ class UserDetail extends Component {
 
 
                     </Grid>
+
+                    <Grid container style={{marginTop: 30}}>
+                        <Paper style={{width:'100%', padding:'10px 10px 52px 10px'}}>
+                            <Board
+                                tasks={tasks.filter(t => t.assignees.some(ta => ta.user._id === user._id))}
+                                user={user}
+
+
+                            />
+                        </Paper>
+                    </Grid>
+
                 </Grid>
 
         }
