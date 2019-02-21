@@ -16,6 +16,8 @@ import Icon from "@material-ui/core/es/Icon/Icon";
 import {Chart} from "react-google-charts";
 import Board from "../task/kanban/Board";
 import Paper from "@material-ui/core/Paper";
+import _ from 'lodash'
+
 
 const data = [
     ["Element", "Saat", {role: "style"}, {role: 'annotation'}],
@@ -30,7 +32,7 @@ const data = [
 class UserDetail extends Component {
 
     render() {
-        const {classes, users, match, loading, tasks} = this.props;
+        const {classes, users, match, loading, tasks, reorderTasks} = this.props;
 
         const user = users.find(u => u._id === match.params.id);
 
@@ -148,10 +150,11 @@ class UserDetail extends Component {
                     </Grid>
 
                     <Grid container style={{marginTop: 30}}>
-                        <Paper style={{width:'100%', padding:'10px 10px 52px 10px'}}>
+                        <Paper style={{width: '100%', padding: '10px 10px 52px 10px'}}>
                             <Board
-                                tasks={tasks.filter(t => t.assignees.some(ta => ta.user._id === user._id))}
+                                tasks={_.chain(tasks).filter({assignees: [{user: {_id: user._id}}]}).sortBy(t => _.find(t.assignees, {user: {_id: user._id}}).order).value()}
                                 user={user}
+                                reorderTasks={reorderTasks}
 
 
                             />

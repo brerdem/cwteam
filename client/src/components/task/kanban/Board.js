@@ -24,6 +24,13 @@ const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project, user}) =
             return;
         }
 
+        if (
+            destination.droppableId !== source.droppableId &&
+            user
+        ) {
+            return;
+        }
+
         const start = source.droppableId;
         const finish = destination.droppableId;
 
@@ -38,15 +45,17 @@ const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project, user}) =
             socket_id
         };
 
+
         if (project) {
             payloadData.project_id =  project._id;
-            reorderTasks(payloadData);
+
         } else if (user) {
             payloadData.user_id =  user._id;
         }
+        reorderTasks(payloadData);
 
         store.dispatch({
-            type: 'REORDER_TASK_DONE',
+            type: `REORDER_${user ? 'USER_':''}TASK_DONE`,
             payload: payloadData
         });
 
@@ -55,7 +64,6 @@ const Board = ({tasks, socket_id, reorderTasks, addTask, auth, project, user}) =
     };
 
 
-    console.log('board -->', tasks);
     return (
 
         <Grid container spacing={8}>

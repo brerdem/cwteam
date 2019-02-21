@@ -21,12 +21,18 @@ export const addTask = (task) => {
 };
 
 export const reorderTasks = (data) => dispatch => {
+    let orderType = '';
+    if (data.project_id) {
+        orderType = 'project';
+    } else if (data.user_id) {
+        orderType = 'user';
+    }
 
-    axios.post(API_URL + '/task/reorder', data, {
+    axios.post(API_URL + `/task/reorder?type=${orderType}`, data, {
         headers: {'Authorization': 'bearer ' + getToken()},
 
     })
-        .then(response => {
+        .then(() => {
             console.log('task reordered');
         })
         .catch(error => {
