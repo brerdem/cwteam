@@ -83,7 +83,7 @@ class LoginGroup extends Component {
 
 
                     <IconButton color="inherit" onClick={() =>  this.props.history.push(`/user/detail/${auth.user._id}`)}>
-                        <UserAvatar size={40} name={auth.user.name} src={auth.user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${auth.user.avatar_url}.png`: null } />
+                        <UserAvatar size={40} name={auth.user.name} src={auth.user.avatar_url ? `/img/users/${auth.user.avatar_url}.png`: null } />
                     </IconButton>
 
                     <Popper open={open} anchorEl={anchorEl} transition disablePortal placement="bottom-end" style={{marginTop:10}}>

@@ -34,7 +34,7 @@ function renderInput(inputProps) {
                     key={key}
                     className={classes.chipWithAvatar}
                     avatar={<UserAvatar style={{color: '#FFF'}} size={32} name={value}
-                                        src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>}
+                                        src={user.avatar_url ? `/img/users/${user.avatar_url}.png` : null}/>}
                     label={value}
                     onDelete={handleDelete}
 

@@ -17,9 +17,8 @@ import {withSnackbar} from 'notistack';
 import ReactNotifications from 'react-browser-notifications';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import {getAllTasks} from "../actions/task";
+import {getAllTasks, reorderTasks} from "../actions/task";
 import ReactAudioPlayer from 'react-audio-player';
-import {reorderTasks} from "../actions/task";
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
 const PUSHER_APP_CLUSTER = 'eu';

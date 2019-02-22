@@ -44,7 +44,7 @@ class UserDetail extends Component {
                 <Grid container alignItems="center" direction="column"><UserAvatar className={classes.userAvatarText}
                                                                                    size={140}
                                                                                    name={user.name}
-                                                                                   src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>
+                                                                                   src={user.avatar_url ? `/img/users/${user.avatar_url}.png` : null}/>
 
                     <Typography variant="h4" align="center" color="primary" className={classes.headingPadding}
                                 style={{margin: '20px 0 8px 0'}}>
