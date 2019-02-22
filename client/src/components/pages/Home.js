@@ -138,7 +138,7 @@ const DashboardGrid = function (props) {
                         <CardActionArea onClick={() => props.history.push(item.link)}>
                             <CardMedia
                                 className={classes.cardmedia}
-                                image={`https://www.clockwork.com.tr/mailing/cwteam/${item.img}`}
+                                image={`/img/${item.img}`}
                                 title={item.title}
                             />
                             <CardContent className={classes.cardContent}>

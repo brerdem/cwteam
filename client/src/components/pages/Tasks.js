@@ -23,7 +23,7 @@ import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlL
 import FormGroup from "@material-ui/core/es/FormGroup/FormGroup";
 import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
 import departments from '../../helpers/departments';
-import _ from 'underscore';
+import _ from 'lodash';
 import withLoading from "../withLoading";
 
 const extraTheme = createMuiTheme({
@@ -62,7 +62,7 @@ class Tasks extends Component {
 
     handleDepartmentChange = name => event => {
         this.setState({[name]: event.target.checked}, () => {
-            this.props.filterTaskByDepartments(_.chain(departments).filter(t => this.state[t.def]).pluck('name').value());
+            this.props.filterTaskByDepartments(_.chain(departments).filter(t => this.state[t.def]).map('name').value());
         });
     };
 

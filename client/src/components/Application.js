@@ -17,7 +17,7 @@ import {withSnackbar} from 'notistack';
 import ReactNotifications from 'react-browser-notifications';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import {getAllTasks} from "../actions/task";
+import {getAllTasks, reorderTasks} from "../actions/task";
 import ReactAudioPlayer from 'react-audio-player';
 
 const PUSHER_APP_KEY = '8042ee8184c51b5ff049';
@@ -127,7 +127,7 @@ class Application extends Component {
 
     render() {
 
-        const {auth, projects, users, tasks} = this.props;
+        const {auth, projects, users, tasks, reorderTasks} = this.props;
         const {loading, socketId} = this.state;
 
         return (
@@ -162,12 +162,12 @@ class Application extends Component {
                                     auth={auth} projects={projects} users={users}/>
                         <PropsRoute exact path='/' component={Home} auth={auth} tasks={tasks} projects={projects}/>
                         <PropsRoute path='/tasks' component={Tasks} auth={auth}
-
                                     loading={loading} socket_id={socketId}/>
                         <PropsRoute path='/users' component={Users} users={users} auth={auth}
                         />
                         <PropsRoute path='/user/detail/:id' component={UserDetail} auth={auth} tasks={tasks}
                                     users={users}
+                                    reorderTasks={reorderTasks}
                                     loading={loading}/>
                     </Switch>
 
@@ -189,7 +189,7 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {doLogout, doLogin, getAllProjects, getAllUsers, getAllTasks}),
+    connect(mapStateToProps, {doLogout, doLogin, getAllProjects, getAllUsers, getAllTasks, reorderTasks}),
     withSnackbar
 )(Application);
 

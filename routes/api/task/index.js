@@ -41,55 +41,90 @@ router.post('/add', (req, res) => {
 
 router.post('/reorder', (req, res) => {
 
-    const {project_id, sourceIndex, destinationIndex, start, finish, task, socket_id} = req.body;
+    const orderType = req.query.type || '';
+    const {sourceIndex, destinationIndex, start, finish, task, socket_id} = req.body;
 
-    Task.find({project_id: project_id}).lean().exec(function (err, tasks) {
-        if (!err) {
+    if (orderType && orderType === 'project') {
 
-            const startTasks = tasks.filter(t => t.status === start).sort((a, b) => a.order - b.order);
-            const finishTasks = tasks.filter(t => t.status === finish).sort((a, b) => a.order - b.order);
-            let newTasks = [];
-            startTasks.splice(sourceIndex, 1);
-            if (start === finish) {
+        Task.find({project_id: req.body.project_id}).lean().exec(function (err, tasks) {
+            if (!err) {
 
-                startTasks.splice(destinationIndex, 0, task);
-                startTasks.forEach((t, i) => t.order = i);
-                newTasks = startTasks;
+                const startTasks = tasks.filter(t => t.status === start).sort((a, b) => a.order - b.order);
+                const finishTasks = tasks.filter(t => t.status === finish).sort((a, b) => a.order - b.order);
+                let newTasks = [];
+                startTasks.splice(sourceIndex, 1);
+                if (start === finish) {
+
+                    startTasks.splice(destinationIndex, 0, task);
+                    startTasks.forEach((t, i) => t.order = i);
+                    newTasks = startTasks;
+                } else {
+
+                    finishTasks.splice(destinationIndex, 0, task);
+                    task.status = finish;
+                    finishTasks.forEach((t, i) => t.order = i);
+                    startTasks.forEach((t, i) => t.order = i);
+                    newTasks = startTasks.concat(finishTasks);
+
+                }
+
+                async.eachSeries(newTasks, function updateObject(task, done) {
+                    // Model.update(condition, doc, callback)
+                    Task.updateOne({_id: task._id}, {$set: {order: task.order, status: task.status}}, done);
+                }, function allDone(err) {
+                    if (!err) {
+                        pusher.trigger(
+                            'projects',
+                            'task_updated',
+                            req.body,
+                            socket_id
+                        );
+                        res.status(200).send('ok');
+                    } else {
+                        console.log('task reorder project error -->', err);
+                    }
+                });
+
             } else {
-
-                finishTasks.splice(destinationIndex, 0, task);
-                task.status = finish;
-                finishTasks.forEach((t, i) => t.order = i);
-                startTasks.forEach((t, i) => t.order = i);
-                newTasks = startTasks.concat(finishTasks);
-
+                console.log(err);
+                res.status(400).send("Reorder task project not found");
             }
+        });
+    } else if (orderType === 'user') {
+        let user_id = req.body.user_id;
 
-            async.eachSeries(newTasks, function updateObject(task, done) {
+        Task.find({
+            status: start,
+            assignees: {$elemMatch: {user: user_id}}
+        }).populate('assignees.user').lean().exec(function (err, tasks) {
+
+            const startTasks = tasks.sort((a, b) => a.assignees.find(u => u.user._id.equals(user_id)).order - b.assignees.find(u => u.user._id.equals(user_id)).order);
+            startTasks.splice(sourceIndex, 1);
+            startTasks.splice(destinationIndex, 0, task);
+            console.log('startTasks -->', startTasks);
+            startTasks.forEach((t, i) => t.assignees.find(u => u.user._id.toString() === user_id).order = i);
+
+            async.eachSeries(startTasks, function updateObject(task, done) {
                 // Model.update(condition, doc, callback)
-                Task.updateOne({_id: task._id}, {$set: {order: task.order, status: task.status}}, done);
+                Task.updateOne({_id: task._id}, {$set: {assignees: task.assignees}}, done);
             }, function allDone(err) {
                 if (!err) {
-                    pusher.trigger(
-                        'projects',
-                        'task_updated',
-                        req.body,
-                        socket_id
-                    );
+                    /* pusher.trigger(
+                         'projects',
+                         'task_updated',
+                         req.body,
+                         socket_id
+                     );*/
                     res.status(200).send('ok');
                 } else {
-                    console.log('task reorder error -->', err);
+                    console.log('task reorder user error -->', err);
                 }
             });
 
+            // res.status(200).send('ok');
+        })
 
-
-
-        } else {
-            console.log(err);
-            res.status(400).send("Reorder task project not found");
-        }
-    });
+    }
 
 });
 

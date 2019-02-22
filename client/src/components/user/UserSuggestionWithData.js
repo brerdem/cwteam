@@ -46,7 +46,7 @@ const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, data
                                 <ListItemAvatar>
                                     <UserAvatar className={classes.userAvatarText} size={40}
                                                 name={user.user.name}
-                                                src={user.user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.user.avatar_url}.png` : null}/>
+                                                src={user.user.avatar_url ? `/img/users/${user.user.avatar_url}.png` : null}/>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={user.user.name}

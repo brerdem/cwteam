@@ -52,7 +52,7 @@ class Users extends Component {
                                                         <ListItemAvatar>
                                                             <UserAvatar className={classes.userAvatarText} size={40}
                                                                         name={user.name}
-                                                                        src={user.avatar_url ? `http://www.clockwork.com.tr/mailing/cwteam/users/${user.avatar_url}.png` : null}/>
+                                                                        src={user.avatar_url ? `/img/users/${user.avatar_url}.png` : null}/>
                                                         </ListItemAvatar>
                                                         <ListItemText
                                                             primary={user.name}
