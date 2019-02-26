@@ -174,7 +174,7 @@ class Home extends Component {
     };
 
     render() {
-        const {classes, projects, auth} = this.props;
+        const {classes, projects, auth, tasks} = this.props;
         console.log('projects from home', projects);
 
         return (
@@ -189,7 +189,7 @@ class Home extends Component {
                     <Typography variant="h6" align="center" color="primary" gutterBottom style={{marginBottom: 20}}>
                         Sisteme en son girişiniz: {moment(auth.user.lastLogin).format("DD.MM.YYYY HH:mm")}
                     </Typography>
-                    <DashboardGridWrapper projects={projects} {...this.props}/>
+                    <DashboardGridWrapper projects={projects} tasks={tasks} {...this.props}/>
 
                 </div>
 

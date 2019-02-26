@@ -5,7 +5,6 @@ import AppBar from "@material-ui/core/es/AppBar/AppBar";
 import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
-import Typography from "@material-ui/core/es/Typography/Typography";
 import Drawer from "@material-ui/core/es/Drawer/Drawer";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import List from "@material-ui/core/es/List/List";
@@ -130,8 +129,7 @@ class Navigation extends Component {
                             >
                                 <MenuIcon/>
                             </IconButton>
-                            <Typography variant="h6" color="inherit" noWrap>
-                                CW Team </Typography>
+                            <img src={'/img/logo.png'} alt="Logo" style={{width:180, height:46}} />
 
                             {auth.isLoggedIn && <LoginGroup auth={auth}/>}
                         </Grid>

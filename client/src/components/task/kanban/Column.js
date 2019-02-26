@@ -12,7 +12,6 @@ import {AlertCircleOutline, Update, CheckCircleOutline } from 'mdi-material-ui'
 const Column = ({column, classes, project, addTask, tasks, auth}) => {
 
     tasks.sort((a, b) => a.order-b.order);
-    console.log('column tasks -->', tasks);
 
     return (
 

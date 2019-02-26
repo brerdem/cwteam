@@ -69,7 +69,6 @@ class Tasks extends Component {
     render() {
 
         const {classes, projects, addTask, reorderTasks, auth, users, tasks, socket_id} = this.props;
-        console.log('auth is', auth);
 
         return (
             <div>

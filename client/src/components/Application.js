@@ -70,12 +70,15 @@ class Application extends Component {
         const {task, start, finish} = payload;
         task.assignees.forEach(a => {
             if (a.user._id === this.props.auth.user._id) {
-                this.props.enqueueSnackbar(`Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`, {
+
+                const message = (start === finish) ? `Sana ait "${task.title}" işinin "${start}" kategorisinde sıralaması değişti.`:`Sana ait "${task.title}" işi "${start}" kategorisinden "${finish}" kategorisine taşındı.`;
+
+                this.props.enqueueSnackbar(message, {
                     variant: 'warning'
                 });
                 this.setState({
                     notifTitle: 'İş Durumu Değişti!',
-                    notifBody: `Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`,
+                    notifBody: message,
                     notifIcon: task.owner.avatar_url ? task.owner.avatar_url : 'cwteam_logo'
                 }, () => {
                     this.showNotifications();

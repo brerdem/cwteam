@@ -39,9 +39,7 @@ class Project extends Component {
     render() {
 
         const {expanded} = this.state;
-        const {classes, project, children, edit, tasks} = this.props;
-
-        console.log('edit param  ->', edit);
+        const {classes, project, children, tasks} = this.props;
 
         const totalBudget = tasks.reduce(this.calculateTotalEffort, 0);
 

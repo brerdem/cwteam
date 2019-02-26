@@ -1,5 +1,8 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+const autoIncrement = require('mongoose-auto-increment');
+
+autoIncrement.initialize(mongoose.connection);
 
 let taskSchema = new Schema({
     project_id: {
@@ -42,10 +45,7 @@ let taskSchema = new Schema({
             type: Number,
             default: 1
         },
-        order: {
-            type: Number,
-            default: 1
-        }
+        order: Number,
     }],
     owner: {
         type: Schema.Types.ObjectId,
@@ -53,5 +53,7 @@ let taskSchema = new Schema({
     }
 
 });
+
+taskSchema.plugin(autoIncrement.plugin, {model: 'Task', field: 'order'});
 
 module.exports = mongoose.model('Task', taskSchema);

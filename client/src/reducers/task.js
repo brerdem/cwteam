@@ -8,7 +8,10 @@ const getSortedUserTasks = (arr, u_id, stat) => {
 
     //return arr.filter(t => t.status === stat && t.assignees.some(ta => ta.user._id === u_id)).sort((a, b) => a.assignees.find(u => u.user._id === u_id).order - b.assignees.find(u => u.user._id === u_id).order);
 
-    return _.chain(arr).filter({status: stat, assignees: [{user: {_id: u_id}}]}).sortBy(t => _.find(t.assignees, {user: {_id: u_id}}).order).value();
+    return _.chain(arr).filter({
+        status: stat,
+        assignees: [{user: {_id: u_id}}]
+    }).sortBy(t => _.find(t.assignees, {user: {_id: u_id}}).order).value();
 };
 
 const taskReducer = (state = [], action) => {
@@ -24,25 +27,40 @@ const taskReducer = (state = [], action) => {
 
         case 'REORDER_TASK_DONE':
 
+            let temp = _.clone(state);
+
             const {start, finish, sourceIndex, destinationIndex, task, project_id} = action.payload;
             let startProjectTasks, finishProjectTasks, otherProjectTasks;
 
-            startProjectTasks = getSortedProjectTasks(state, project_id, start);
-            finishProjectTasks = getSortedProjectTasks(state, project_id, finish);
-            startProjectTasks.splice(sourceIndex, 1);
-            if (start === finish) {
+            startProjectTasks = getSortedProjectTasks(temp, project_id, start);
+            finishProjectTasks = getSortedProjectTasks(temp, project_id, finish);
 
+            if (start === finish) {
+                startProjectTasks.splice(sourceIndex, 1);
                 startProjectTasks.splice(destinationIndex, 0, task);
                 startProjectTasks.forEach((t, i) => t.order = i);
-                otherProjectTasks = _.difference(state, startProjectTasks);
+
+                //todo make difference with lodash
+                otherProjectTasks = _.differenceWith(temp, startProjectTasks, _.isEqual);
+                //otherProjectTasks = state.filter(t => t.project_id !== project_id && (t.project_id === project_id && t.status !== start));
+                console.log('otherProjectTasks -->', otherProjectTasks);
                 return [...otherProjectTasks, ...startProjectTasks];
             }
-
+            console.log('task is found: -->', _.find(startProjectTasks, {_id: task._id}));
+            startProjectTasks.splice(sourceIndex, 1);
             finishProjectTasks.splice(destinationIndex, 0, task);
+
             task.status = finish;
-            otherProjectTasks = _.difference(state, [...startProjectTasks, ...finishProjectTasks]);
+
+            console.log('startProjectTasks -->', startProjectTasks);
+            console.log('finishProjectTasks -->', finishProjectTasks);
             startProjectTasks.forEach((t, i) => t.order = i);
             finishProjectTasks.forEach((t, i) => t.order = i);
+
+            otherProjectTasks = _.differenceWith(temp, [...startProjectTasks, ...finishProjectTasks], _.isEqual);
+            _.pull(otherProjectTasks, task);
+            console.log('otherProjectTasks -->', otherProjectTasks);
+            //otherProjectTasks = state.filter(t => t.project_id !== project_id && (t.project_id === project_id && t.status !== start && t.status !== finish ));
 
             return [...otherProjectTasks, ...startProjectTasks, ...finishProjectTasks];
 

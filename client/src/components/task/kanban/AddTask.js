@@ -119,7 +119,6 @@ class AddTask extends Component {
         const teamWithProp = team.map(m => {
             return {effort: 1, user: m}
         });
-        console.log('teamWithProp -->', teamWithProp);
         return (
             <div>
                 <Dialog
