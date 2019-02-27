@@ -32,7 +32,7 @@ const data = [
 class UserDetail extends Component {
 
     render() {
-        const {classes, users, match, loading, tasks, reorderTasks} = this.props;
+        const {classes, users, match, loading, tasks, reorderTasks, socket_id} = this.props;
 
         const user = users.find(u => u._id === match.params.id);
 
@@ -155,6 +155,7 @@ class UserDetail extends Component {
                                 tasks={_.chain(tasks).filter({assignees: [{user: {_id: user._id}}]}).sortBy(t => _.find(t.assignees, {user: {_id: user._id}}).order).value()}
                                 user={user}
                                 reorderTasks={reorderTasks}
+                                socket_id={socket_id}
 
 
                             />

@@ -79,7 +79,7 @@ class Application extends Component {
                 this.setState({
                     notifTitle: 'İş Durumu Değişti!',
                     notifBody: message,
-                    notifIcon: task.owner.avatar_url ? task.owner.avatar_url : 'cwteam_logo'
+                    notifIcon: task.owner.avatar_url || 'cwteam_logo'
                 }, () => {
                     this.showNotifications();
                     this.sound.audioEl.play();
@@ -87,6 +87,30 @@ class Application extends Component {
             }
         });
         store.dispatch({type: 'REORDER_TASK_DONE', payload});
+
+    };
+    updateUserTaskDispatch = (payload) => {
+        console.log('update task dispatch ---->', payload);
+        const {task, start} = payload;
+        task.assignees.forEach(a => {
+            if (a.user._id === this.props.auth.user._id) {
+
+                const message = `Sana ait "${task.title}" işinin "${start}" kategorisinde önceliği değişti.`;
+
+                this.props.enqueueSnackbar(message, {
+                    variant: 'warning'
+                });
+                this.setState({
+                    notifTitle: 'İş Durumu Değişti!',
+                    notifBody: message,
+                    notifIcon: task.owner.avatar_url || 'cwteam_logo'
+                }, () => {
+                    this.showNotifications();
+                    this.sound.audioEl.play();
+                })
+            }
+        });
+        store.dispatch({type: 'REORDER_USER_TASK_DONE', payload});
 
     };
 
@@ -125,6 +149,7 @@ class Application extends Component {
         this.channel.bind('project_deleted', this.deleteProjectDispatch);
         this.channel.bind('task_added', this.addTaskDispatch);
         this.channel.bind('task_updated', this.updateTaskDispatch);
+        this.channel.bind('user_task_updated', this.updateUserTaskDispatch);
 
     }
 
@@ -171,6 +196,7 @@ class Application extends Component {
                         <PropsRoute path='/user/detail/:id' component={UserDetail} auth={auth} tasks={tasks}
                                     users={users}
                                     reorderTasks={reorderTasks}
+                                    socket_id={socketId}
                                     loading={loading}/>
                     </Switch>
 

@@ -87,7 +87,7 @@ router.post('/reorder', (req, res) => {
 
             } else {
                 console.log(err);
-                res.status(400).send("Reorder task project not found");
+                res.status(400).send("Reorder task project error:" + err);
             }
         });
     } else if (orderType === 'user') {
@@ -109,15 +109,15 @@ router.post('/reorder', (req, res) => {
                 Task.updateOne({_id: task._id}, {$set: {assignees: task.assignees}}, done);
             }, function allDone(err) {
                 if (!err) {
-                    /* pusher.trigger(
-                         'projects',
-                         'task_updated',
-                         req.body,
-                         socket_id
-                     );*/
+                    pusher.trigger(
+                        'projects',
+                        'user_task_updated',
+                        req.body,
+                        socket_id
+                    );
                     res.status(200).send('ok');
                 } else {
-                    console.log('task reorder user error -->', err);
+                    res.status(400).send("Reorder user task error: " + err);
                 }
             });
 

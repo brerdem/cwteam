@@ -56,12 +56,10 @@ const taskReducer = (state = [], action) => {
             console.log('finishProjectTasks -->', finishProjectTasks);
             startProjectTasks.forEach((t, i) => t.order = i);
             finishProjectTasks.forEach((t, i) => t.order = i);
-
+            //otherProjectTasks = temp.filter(t => t.project_id !== project_id && (t.project_id === project_id && t.status !== start && t.status !== finish && t._id !== task._id ));
             otherProjectTasks = _.differenceWith(temp, [...startProjectTasks, ...finishProjectTasks], _.isEqual);
-            _.pull(otherProjectTasks, task);
+            otherProjectTasks = otherProjectTasks.filter(t => t._id !== task._id);
             console.log('otherProjectTasks -->', otherProjectTasks);
-            //otherProjectTasks = state.filter(t => t.project_id !== project_id && (t.project_id === project_id && t.status !== start && t.status !== finish ));
-
             return [...otherProjectTasks, ...startProjectTasks, ...finishProjectTasks];
 
         case 'REORDER_USER_TASK_DONE':
@@ -74,7 +72,8 @@ const taskReducer = (state = [], action) => {
             startUserTasks.splice(action.payload.destinationIndex, 0, action.payload.task);
             console.log('startUserTasks -->', startUserTasks);
             _.forEach(startUserTasks, (t, i) => _.find(t.assignees, {user: {_id: action.payload.user_id}}).order = i);
-            otherUserTasks = _.difference(state, startUserTasks);
+            otherUserTasks = _.differenceWith(state, startUserTasks, _.isEqual);
+            otherUserTasks = otherUserTasks.filter(t => t._id !== action.payload.task._id);
             console.log('otherUserTasks -->', otherUserTasks);
             return [...otherUserTasks, ...startUserTasks];
 
