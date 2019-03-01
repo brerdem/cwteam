@@ -19,6 +19,7 @@ import {withSnackbar} from 'notistack';
 import ZReport from "./components/pages/ZReport";
 import Navigation from "./components/Navigation";
 import Application from "./components/Application";
+import Gallery from "./components/pages/Gallery";
 
 const styles = theme => ({
     root: {
@@ -26,7 +27,9 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        paddingTop: theme.spacing.unit * 3,
+        backgroundRepeat: 'no-repeat',
+
     },
 
 });
@@ -35,7 +38,8 @@ class App extends Component {
 
     render() {
 
-        const {ui, auth, classes, doLogout, doLogin} = this.props;
+        const {ui, auth, classes, doLogout, doLogin, pathname, tasks} = this.props;
+        console.log('pathname -->', pathname);
 
         return (
 
@@ -45,13 +49,14 @@ class App extends Component {
                     {!ui.isGanttFullscreen &&
 
                     <div>
-                        {auth.isLoggedIn && <Navigation auth={auth} doLogout={doLogout}/>
+                        {auth.isLoggedIn && <Navigation auth={auth} doLogout={doLogout} tasks={tasks}/>
 
                         }
                     </div>
                     }
 
-                    <main className={classes.content}>
+                    <main className={classes.content}
+                          style={{backgroundImage: pathname.indexOf('detail') > -1 ? 'url(/img/bg_user_detail.jpg)' : 'none'}}>
 
 
                         <Switch>
@@ -59,6 +64,7 @@ class App extends Component {
                                    render={props => <Login doLogin={doLogin} {...props} />}/>
                             <Route exact path='/register' component={Register}/>
                             <Route exact path='/library' component={Library}/>
+                            <Route exact path='/gallery' component={Gallery}/>
                             <Route exact path='/accounting' component={Accounting}/>
                             <Route exact path='/passwords' component={Passwords}/>
                             <Route exact path='/settings' component={Settings}/>
@@ -83,6 +89,8 @@ const mapStateToProps = (state) => {
     return {
         auth: state.auth,
         ui: state.ui,
+        pathname: state.router.location.pathname,
+        tasks: state.tasks
     };
 };
 

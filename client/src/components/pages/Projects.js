@@ -11,7 +11,7 @@ import Add from "@material-ui/icons/Add";
 import theme from '../styles/Styles';
 import {withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
-import ProjectDialog from "../project/ProjectDialog";
+import AddProjectDialog from "../project/AddProjectDialog";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import Dialog from "@material-ui/core/es/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
@@ -22,6 +22,7 @@ import classNames from "classnames";
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import API_URL from '../../helpers/api_url';
+import Icon from "@material-ui/core/Icon";
 
 //todo make alert dialogs as a new component
 
@@ -97,8 +98,10 @@ class Projects extends Component {
 
         if (projects.length === 0) {
             content =
-                <Typography component="h4" variant="h6" style={{color: 'grey'}}>Herhangi bir proje
-                    bulunmamakta</Typography>
+                <div>
+                <Icon style={{fontSize:100, textAlign:'center', color: '#b4b4b4'}}>error</Icon>
+                <Typography component="h4" variant="h6" style={{color: '#b4b4b4', fontWeight: 200}} align="center">Proje Yok!</Typography>
+                </div>
         } else {
 
             content = <Grid container spacing={40}>
@@ -187,8 +190,8 @@ class Projects extends Component {
             <div>
 
 
-                <ProjectDialog open={this.state.open} addProject={this.handleProjectAdd} onClose={this.closeDialog}
-                               users={users}/>
+                <AddProjectDialog open={this.state.open} addProject={this.handleProjectAdd} onClose={this.closeDialog}
+                                  users={users}/>
 
                 <main className={classes.layout}>
                     {/* Hero unit */}

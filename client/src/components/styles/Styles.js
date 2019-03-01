@@ -151,7 +151,7 @@ export default theme => ({
     },
 
     dashboardPaper: {
-        minHeight: 200,
+        height: '100%',
         padding: 10
 
     },
@@ -162,6 +162,7 @@ export default theme => ({
 
     },
     dashboardHeight: {
+        marginTop:10,
         height: 140
 
     },
@@ -189,6 +190,11 @@ export default theme => ({
     userAvatarText: {
         color: '#FFF',
         fontWeight: 600
+    },
+    userDetailAvatarText: {
+        color: '#FFF',
+        fontWeight: 600,
+        fontSize: 48
     },
 
 

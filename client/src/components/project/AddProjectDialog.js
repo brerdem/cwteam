@@ -14,13 +14,9 @@ import UserSuggestionWithData from "../user/UserSuggestionWithData";
 
 const style = {
 
-    dialog: {
-        padding: 0,
-        margin: 0
-    },
     dialogContent: {
-        paddingTop: 0,
-        margin: 0
+
+        backgroundColor: '#f8f8ff'
     },
 
     dialogTitle: {
@@ -44,12 +40,27 @@ const style = {
     titleTextInput: {
         style: {
             fontSize: 24,
+
+        }
+
+    },
+    titleTextBg: {
+        style: {
+            fontSize: 24,
+            backgroundColor: '#f9fbe7'
+        }
+
+    },
+    descBg: {
+        style: {
+
+            backgroundColor: '#f9fbe7'
         }
 
     }
 };
 
-class ProjectDialog extends Component {
+class AddProjectDialog extends Component {
 
     state = {
         selectedStartDate: new Date(),
@@ -106,7 +117,6 @@ class ProjectDialog extends Component {
                 open={open}
                 fullWidth={true}
                 maxWidth="md"
-                style={style.dialog}
 
             >
 
@@ -121,9 +131,10 @@ class ProjectDialog extends Component {
                                 id="project-name"
                                 name="title"
                                 placeholder="Proje İsmi"
-                                margin="normal"
+                                margin="dense"
                                 InputLabelProps={style.titleTextInput}
-                                inputProps={style.titleTextInput}
+                                inputProps={style.titleTextBg}
+                                variant="outlined"
                                 fullWidth
 
                             />
@@ -132,6 +143,8 @@ class ProjectDialog extends Component {
                                 name="description"
                                 placeholder="Proje Açıklaması"
                                 margin="dense"
+                                inputProps={style.descBg}
+                                variant="outlined"
                                 fullWidth
 
                             />
@@ -146,7 +159,7 @@ class ProjectDialog extends Component {
                                         color="primary"
                                     />
                                 }
-                                label="Başlangıç ve bitiş tarihleri belli"
+                                label="Başlangıç ve bitiş tarihleri belli mi?"
                             />
                             {this.state.isSetStartEndDate &&
 
@@ -198,7 +211,10 @@ class ProjectDialog extends Component {
 
 
                         </Grid>
-                        <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsers} dataType="hourly_fee" />
+                        <div style={{marginTop: 22}}>
+                            <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsers}
+                                                    dataType="hourly_fee"/>
+                        </div>
 
                     </DialogContent>
                     <DialogActions>
@@ -215,9 +231,8 @@ class ProjectDialog extends Component {
     }
 }
 
-ProjectDialog.propTypes = {
+AddProjectDialog.propTypes = {
     addProject: PropTypes.func
 };
 
-
-export default ProjectDialog;
+export default AddProjectDialog;

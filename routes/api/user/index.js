@@ -23,11 +23,93 @@ router.get('/makeusers', (req, res) => {
             first_name: 'Burak',
             last_name: 'Erdem',
             email: 'burak.erdem@clockwork.com.tr',
-            avatar_url: 'burak',
-            password: 'burak',
-            department: 'Müşteri',
+            avatar_url: 'burak_erdem',
+            password: 'burak.erdem',
+            department: 'Yazılım',
             title: 'Kurucu Ortak',
             access: 'admin',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Burak Poyraz",
+            first_name: 'Burak',
+            last_name: 'Poyraz',
+            email: 'burak.poyraz@clockwork.com.tr',
+            avatar_url: 'burak_poyraz',
+            password: 'burak.poyraz',
+            department: 'Tasarım',
+            title: 'Grafik Tasarımcı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Zeynep Abdullahoğlu",
+            first_name: 'Zeynep',
+            last_name: 'Abdullahoğlu',
+            email: 'zeynep.abdullahoglu@clockwork.com.tr',
+            avatar_url: 'zeynep',
+            password: 'zeynep',
+            department: 'Tasarım',
+            title: 'Grafik Tasarımcısı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Büşra Bilmiş",
+            first_name: 'Büşra',
+            last_name: 'Bilmiş',
+            email: 'busra.bilmis@clockwork.com.tr',
+            avatar_url: 'busra',
+            password: 'busra',
+            department: 'Sosyal Medya',
+            title: 'Sosyal Medya Uzmanı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Gizem Günaydın",
+            first_name: 'Gizem',
+            last_name: 'Günaydın',
+            email: 'gizem.gunaydin@clockwork.com.tr',
+            avatar_url: 'gizem',
+            password: 'gizem',
+            department: 'Sosyal Medya',
+            title: 'Sosyal Medya Uzmanı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Buse Kuran",
+            first_name: 'Buse',
+            last_name: 'Kuran',
+            email: 'buse.kuran@clockwork.com.tr',
+            avatar_url: 'buse',
+            password: 'buse',
+            department: 'Sosyal Medya',
+            title: 'Sosyal Medya Uzmanı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Damla Baştürk",
+            first_name: 'Damla',
+            last_name: 'Baştürk',
+            email: 'damla.basturk@clockwork.com.tr',
+            password: 'damla',
+            department: 'Sosyal Medya',
+            title: 'Sosyal Medya Uzmanı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Barış Karadereli",
+            first_name: 'Barış',
+            last_name: 'Karadereli',
+            email: 'baris.karadereli@clockwork.com.tr',
+            password: 'baris',
+            department: 'Yazılım',
+            title: 'Ara Yüz Geliştirici',
+            access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
@@ -38,7 +120,18 @@ router.get('/makeusers', (req, res) => {
             avatar_url: 'hakan',
             password: 'hakan',
             department: 'Yazılım',
-            title: 'Front-End Developer',
+            title: 'Ara Yüz Geliştirici',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Saied Khatibi",
+            first_name: 'Saied',
+            last_name: 'Khatibi',
+            email: 'saied.khatibi@clockwork.com.tr',
+            password: 'hakan',
+            department: 'Yazılım',
+            title: 'Ara Yüz Geliştirici',
             access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
@@ -71,9 +164,10 @@ router.get('/makeusers', (req, res) => {
             first_name: 'Nazım',
             last_name: 'Tunç',
             email: 'nazim.tunc@clockwork.com.tr',
+            avatar_url: 'nazim',
             password: 'nazim',
             department: 'Tasarım',
-            title: 'Art Direktör',
+            title: 'Kreatif Direktör',
             access: 'admin',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
@@ -90,18 +184,138 @@ router.get('/makeusers', (req, res) => {
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
         {
+            name: "Hüseyin Ay",
+            first_name: 'Hüseyin',
+            last_name: 'Ay',
+            email: 'huseyin.ay@clockwork.com.tr',
+            avatar_url: 'huseyin',
+            password: 'huseyin',
+            department: 'Sosyal Medya',
+            title: 'Sosyal Medya Yöneticisi',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
             name: "Deniz Zengin",
             first_name: 'Deniz',
             last_name: 'Zengin',
             email: 'deniz.zengin@clockwork.com.tr',
+            avatar_url: 'deniz',
             password: 'deniz',
             department: 'Müşteri',
             title: 'Müşteri Yöneticisi',
             access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
-    ];
+        {
+            name: "Özdemir Gümüş",
+            first_name: 'Özdemir',
+            last_name: 'Gümüş',
+            email: 'ozdemir.gumus@clockwork.com.tr',
+            avatar_url: 'ozdemir',
+            password: 'ozdemir',
+            department: 'Müşteri',
+            title: 'Genel Müdür',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Devran Eroğul",
+            first_name: 'Devran',
+            last_name: 'Eroğul',
+            email: 'devran.erogul@clockwork.com.tr',
+            avatar_url: 'devran',
+            password: 'devran',
+            department: 'Yazılım',
+            title: 'Yazılım Yöneticisi',
+            access: 'admin',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Yağmur Kızıltan",
+            first_name: 'Yağmur',
+            last_name: 'Kızıltan',
+            email: 'yagmur.kiziltan@clockwork.com.tr',
+            avatar_url: 'yagmur',
+            password: 'yagmur',
+            department: 'Sosyal Medya',
+            title: 'Metin Yazarı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Gökhan Kaygısız",
+            first_name: 'Gökhan',
+            last_name: 'Kaygısız',
+            email: 'gokhan.kaygisiz@clockwork.com.tr',
+            avatar_url: 'gokhan',
+            password: 'gokhan',
+            department: 'Müşteri',
+            title: 'Müşteri Yöneticisi',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Simge Yel",
+            first_name: 'Simge',
+            last_name: 'Yel',
+            email: 'simge.yel@clockwork.com.tr',
+            avatar_url: 'simge',
+            password: 'simge',
+            department: 'Müşteri',
+            title: 'Müşteri Yöneticisi',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Çağla Küçük",
+            first_name: 'Çağla',
+            last_name: 'Küçük',
+            email: 'cagla.kücük@clockwork.com.tr',
+            avatar_url: 'cagla',
+            password: 'cagla',
+            department: 'Tasarım',
+            title: 'Kıdemli Grafik Tasarımcısı',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Onur Yücedağ",
+            first_name: 'Onur',
+            last_name: 'Yücedağ',
+            email: 'onur.yucedag@clockwork.com.tr',
+            avatar_url: 'onur',
+            password: 'onur',
+            department: 'Yazılım',
+            title: 'Arka Plan Geliştirici',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Saied Khatibi",
+            first_name: 'Saied',
+            last_name: 'Khatibi',
+            email: 'saied.khatibi@clockwork.com.tr',
+            password: 'saied',
+            department: 'Yazılım',
+            title: 'Arka Plan Geliştirici',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
+        {
+            name: "Faruk Aydın",
+            first_name: 'Faruk',
+            last_name: 'Aydın',
+            email: 'faruk.aydin@clockwork.com.tr',
+            avatar_url: 'faruk',
+            password: 'faruk',
+            department: 'Yazılım',
+            title: 'Arka Plan Geliştirici',
+            access: 'user',
+            avatar_bg: randomcolor({luminosity: 'dark'})
+        },
 
+    ];
 
     User.insertMany(arr, (err, docs) => {
         if (!err) {

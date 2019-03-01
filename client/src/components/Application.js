@@ -51,7 +51,7 @@ class Application extends Component {
                 this.setState({
                     notifTitle: 'Yeni İş!',
                     notifBody: owner.name + ', sana bir iş atadı.',
-                    notifIcon: owner.avatar_url ? owner.avatar_url : 'cwteam_logo'
+                    notifIcon: owner.avatar_url || 'cwteam_logo'
                 }, () => {
                     this.showNotifications();
                     this.sound.audioEl.play();
@@ -64,19 +64,45 @@ class Application extends Component {
         store.dispatch({type: 'ADD_TASK_DONE', data: task});
 
     };
+    deleteTaskDispatch = ({id}) => {
+
+       /* assignees.forEach(a => {
+            if (a.user._id === this.props.auth.user._id) {
+
+                this.props.enqueueSnackbar(owner.name + ', sana bir iş atadı.', {
+                    variant: 'warning'
+                });
+                this.setState({
+                    notifTitle: 'Yeni İş!',
+                    notifBody: owner.name + ', sana bir iş atadı.',
+                    notifIcon: owner.avatar_url || 'cwteam_logo'
+                }, () => {
+                    this.showNotifications();
+                    this.sound.audioEl.play();
+                });
+
+            }
+        });*/
+
+        store.dispatch({type: 'REMOVE_TASK_DONE', id});
+
+    };
 
     updateTaskDispatch = (payload) => {
         console.log('update task dispatch ---->', payload);
         const {task, start, finish} = payload;
         task.assignees.forEach(a => {
             if (a.user._id === this.props.auth.user._id) {
-                this.props.enqueueSnackbar(`Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`, {
+
+                const message = (start === finish) ? `Sana ait "${task.title}" işinin "${start}" kategorisinde sıralaması değişti.`:`Sana ait "${task.title}" işi "${start}" kategorisinden "${finish}" kategorisine taşındı.`;
+
+                this.props.enqueueSnackbar(message, {
                     variant: 'warning'
                 });
                 this.setState({
                     notifTitle: 'İş Durumu Değişti!',
-                    notifBody: `Sana ait bir iş "${start}" kategorisinden "${finish}" kategorisine taşındı.`,
-                    notifIcon: task.owner.avatar_url ? task.owner.avatar_url : 'cwteam_logo'
+                    notifBody: message,
+                    notifIcon: task.owner.avatar_url || 'cwteam_logo'
                 }, () => {
                     this.showNotifications();
                     this.sound.audioEl.play();
@@ -84,6 +110,30 @@ class Application extends Component {
             }
         });
         store.dispatch({type: 'REORDER_TASK_DONE', payload});
+
+    };
+    updateUserTaskDispatch = (payload) => {
+        console.log('update task dispatch ---->', payload);
+        const {task, start} = payload;
+        task.assignees.forEach(a => {
+            if (a.user._id === this.props.auth.user._id) {
+
+                const message = `Sana ait "${task.title}" işinin "${start}" kategorisinde önceliği değişti.`;
+
+                this.props.enqueueSnackbar(message, {
+                    variant: 'warning'
+                });
+                this.setState({
+                    notifTitle: 'İş Durumu Değişti!',
+                    notifBody: message,
+                    notifIcon: task.owner.avatar_url || 'cwteam_logo'
+                }, () => {
+                    this.showNotifications();
+                    this.sound.audioEl.play();
+                })
+            }
+        });
+        store.dispatch({type: 'REORDER_USER_TASK_DONE', payload});
 
     };
 
@@ -122,6 +172,8 @@ class Application extends Component {
         this.channel.bind('project_deleted', this.deleteProjectDispatch);
         this.channel.bind('task_added', this.addTaskDispatch);
         this.channel.bind('task_updated', this.updateTaskDispatch);
+        this.channel.bind('task_deleted', this.deleteTaskDispatch);
+        this.channel.bind('user_task_updated', this.updateUserTaskDispatch);
 
     }
 
@@ -146,7 +198,7 @@ class Application extends Component {
                     onRef={ref => (this.n = ref)} // Required
                     title={this.state.notifTitle} // Required
                     body={this.state.notifBody}
-                    icon={`https://www.clockwork.com.tr/mailing/cwteam/users/${this.state.notifIcon}.png`}
+                    icon={`/img/users/${this.state.notifIcon}.jpg`}
                     tag="abcdef"
                     timeout="5000"
 
@@ -161,13 +213,12 @@ class Application extends Component {
                         <PropsRoute exact path='/projects' loading={loading} component={Projects}
                                     auth={auth} projects={projects} users={users}/>
                         <PropsRoute exact path='/' component={Home} auth={auth} tasks={tasks} projects={projects}/>
-                        <PropsRoute path='/tasks' component={Tasks} auth={auth}
-                                    loading={loading} socket_id={socketId}/>
-                        <PropsRoute path='/users' component={Users} users={users} auth={auth}
-                        />
+                        <PropsRoute path='/tasks' component={Tasks} auth={auth} loading={loading} socket_id={socketId} />
+                        <PropsRoute path='/users' component={Users} users={users} auth={auth} />
                         <PropsRoute path='/user/detail/:id' component={UserDetail} auth={auth} tasks={tasks}
                                     users={users}
                                     reorderTasks={reorderTasks}
+                                    socket_id={socketId}
                                     loading={loading}/>
                     </Switch>
 

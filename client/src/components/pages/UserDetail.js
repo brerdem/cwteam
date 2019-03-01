@@ -18,7 +18,6 @@ import Board from "../task/kanban/Board";
 import Paper from "@material-ui/core/Paper";
 import _ from 'lodash'
 
-
 const data = [
     ["Element", "Saat", {role: "style"}, {role: 'annotation'}],
     ["Pt", 4, "#b87333", '4'],
@@ -32,7 +31,7 @@ const data = [
 class UserDetail extends Component {
 
     render() {
-        const {classes, users, match, loading, tasks, reorderTasks} = this.props;
+        const {classes, users, match, loading, tasks, reorderTasks, socket_id} = this.props;
 
         const user = users.find(u => u._id === match.params.id);
 
@@ -41,10 +40,15 @@ class UserDetail extends Component {
             content = <CircularProgress className={classes.progress} color="secondary"/>
         } else {
             content =
-                <Grid container alignItems="center" direction="column"><UserAvatar className={classes.userAvatarText}
-                                                                                   size={140}
-                                                                                   name={user.name}
-                                                                                   src={user.avatar_url ? `/img/users/${user.avatar_url}.png` : null}/>
+
+                <Grid container alignItems="center" direction="column" style={{marginTop: 150}}>
+
+                    <div
+                        style={{borderRadius: '50%', width: 200, height: 200, backgroundColor: '#eeeeee', padding: 10}}>
+                        <UserAvatar className={classes.userDetailAvatarText}
+                                    size={180}
+                                    name={user.name}
+                                    src={user.avatar_url ? `/img/users/${user.avatar_url}.jpg` : null}/></div>
 
                     <Typography variant="h4" align="center" color="primary" className={classes.headingPadding}
                                 style={{margin: '20px 0 8px 0'}}>
@@ -155,6 +159,7 @@ class UserDetail extends Component {
                                 tasks={_.chain(tasks).filter({assignees: [{user: {_id: user._id}}]}).sortBy(t => _.find(t.assignees, {user: {_id: user._id}}).order).value()}
                                 user={user}
                                 reorderTasks={reorderTasks}
+                                socket_id={socket_id}
 
 
                             />

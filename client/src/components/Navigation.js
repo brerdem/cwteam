@@ -5,7 +5,6 @@ import AppBar from "@material-ui/core/es/AppBar/AppBar";
 import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
-import Typography from "@material-ui/core/es/Typography/Typography";
 import Drawer from "@material-ui/core/es/Drawer/Drawer";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import List from "@material-ui/core/es/List/List";
@@ -20,6 +19,8 @@ import Icon from "@material-ui/core/es/Icon/Icon";
 import MenuIcon from '@material-ui/icons/Menu';
 import {compose} from 'recompose';
 import {withRouter} from 'react-router-dom';
+import Badge from "@material-ui/core/Badge";
+import _ from "lodash";
 
 const drawerWidth = 240;
 
@@ -80,6 +81,17 @@ const styles = theme => ({
 
 });
 
+const BadgeWithIcon = ({id, icon, tasks, auth, classes}) => {
+    if (id === "tasks") {
+        const userTaskCount = _.chain(tasks).filter({
+            status: "progress",
+            assignees: [{user: {_id: auth.user._id}}]
+        }).size().value();
+        return <Badge color="secondary" badgeContent={userTaskCount} className={classes.margin}><Icon>{icon}</Icon></Badge>;
+    }
+    return <Icon>{icon}</Icon>;
+};
+
 class Navigation extends Component {
 
     state = {
@@ -106,7 +118,7 @@ class Navigation extends Component {
 
     render() {
 
-        const {auth, classes, theme} = this.props;
+        const {auth, classes, theme, tasks} = this.props;
 
         return (
             <div>
@@ -130,8 +142,7 @@ class Navigation extends Component {
                             >
                                 <MenuIcon/>
                             </IconButton>
-                            <Typography variant="h6" color="inherit" noWrap>
-                                CW Team </Typography>
+                            <img src={'/img/logo.png'} alt="Logo" style={{width: 180, height: 46}}/>
 
                             {auth.isLoggedIn && <LoginGroup auth={auth}/>}
                         </Grid>
@@ -164,7 +175,9 @@ class Navigation extends Component {
                         </ListItem>
                         {menuContent.map(item => (
                             <ListItem button key={item.title} onClick={this.handleMenuButton(item.link)}>
-                                <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
+                                <ListItemIcon>
+                                    <BadgeWithIcon id={item.id} icon={item.icon} auth={auth} tasks={tasks} classes={classes}/>
+                                </ListItemIcon>
                                 <ListItemText primary={item.title}/>
                             </ListItem>
                         ))}

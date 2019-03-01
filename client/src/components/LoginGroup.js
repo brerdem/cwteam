@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import Icon from '@material-ui/core/Icon';
 import {withStyles} from "@material-ui/core/styles/index";
 import IconButton from "@material-ui/core/IconButton";
 import MailIcon from '@material-ui/icons/Mail';
-import Button from "@material-ui/core/Button";
 import Badge from "@material-ui/core/Badge";
 import Grid from "@material-ui/core/Grid";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -63,12 +61,12 @@ class LoginGroup extends Component {
 
             <Grid container justify="flex-end" alignItems="center" className={classes.container}>
 
-                <Button color="inherit" variant="outlined" href="https://www.basecamp.com"
+             {/*   <Button color="inherit" variant="outlined" href="https://www.basecamp.com"
                         target="_blank"
                         className={classes.leftIcon}>
                     <Icon className={classes.leftIcon}>launch</Icon>
                     BASECAMP'E GİT
-                </Button>
+                </Button> */}
 
 
                 <div><IconButton color="inherit"
@@ -83,7 +81,7 @@ class LoginGroup extends Component {
 
 
                     <IconButton color="inherit" onClick={() =>  this.props.history.push(`/user/detail/${auth.user._id}`)}>
-                        <UserAvatar size={40} name={auth.user.name} src={auth.user.avatar_url ? `/img/users/${auth.user.avatar_url}.png`: null } />
+                        <UserAvatar size={40} name={auth.user.name} src={auth.user.avatar_url ? `/img/users/${auth.user.avatar_url}.jpg`: null } />
                     </IconButton>
 
                     <Popper open={open} anchorEl={anchorEl} transition disablePortal placement="bottom-end" style={{marginTop:10}}>

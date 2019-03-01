@@ -14,11 +14,27 @@ import departments from '../../helpers/departments'
 import UserAvatar from 'react-user-avatar'
 import Icon from "@material-ui/core/es/Icon/Icon";
 import {compose} from 'recompose';
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Checkbox from "@material-ui/core/Checkbox";
 
 class Users extends Component {
 
     state = {
         loading: true,
+        software: true,
+        design: true,
+        account: true,
+        social: true,
+        users: this.props.users
+    };
+
+    handleDepartmentChange = name => event => {
+        this.setState({[name]: event.target.checked}, () => {
+            console.log('this.props.users.length -->', this.props.users.length);
+            this.setState({users: this.props.users.filter(u => departments.map(d => this.state[d.def] ? d.name : '').includes(u.department))})
+        });
     };
 
     handleLink = id => e => {
@@ -26,7 +42,9 @@ class Users extends Component {
     };
 
     render() {
-        const {classes, users} = this.props;
+        const {classes} = this.props;
+        const {users} = this.state;
+
 
         return (
 
@@ -37,6 +55,25 @@ class Users extends Component {
                                 className={classes.headingPadding}>
                         KULLANICILAR
                     </Typography>
+
+                    <FormControl component="fieldset" className={classes.formControl}>
+                        <FormGroup>
+                            <Grid container justify="center" alignItems="center" direction="row">
+                                {departments.map(department =>
+
+                                    <FormControlLabel key={department.def}
+                                                      control={
+                                                          <Checkbox style={{color: department.color}}
+                                                                    checked={this.state[department.def]}
+                                                                    onChange={this.handleDepartmentChange(department.def)}
+                                                                    value={department.def}/>
+                                                      }
+                                                      label={department.name}
+                                    />
+                                )}
+                            </Grid>
+                        </FormGroup>
+                    </FormControl>
                     <Grid container spacing={24}>
                         {users.map((user, index) => (
                             <Grid item xs={4} key={index}>
@@ -52,7 +89,7 @@ class Users extends Component {
                                                         <ListItemAvatar>
                                                             <UserAvatar className={classes.userAvatarText} size={40}
                                                                         name={user.name}
-                                                                        src={user.avatar_url ? `/img/users/${user.avatar_url}.png` : null}/>
+                                                                        src={user.avatar_url ? `/img/users/${user.avatar_url}.jpg` : null}/>
                                                         </ListItemAvatar>
                                                         <ListItemText
                                                             primary={user.name}

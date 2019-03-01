@@ -6,13 +6,12 @@ import {withStyles} from '@material-ui/core/styles';
 import {Droppable} from "react-beautiful-dnd";
 import classNames from "classnames";
 import theme from '../../styles/Styles'
-import AddTask from "./AddTask";
+import AddTask from "./AddTaskDialog";
 import {AlertCircleOutline, Update, CheckCircleOutline } from 'mdi-material-ui'
 
 const Column = ({column, classes, project, addTask, tasks, auth}) => {
 
     tasks.sort((a, b) => a.order-b.order);
-    console.log('column tasks -->', tasks);
 
     return (
 

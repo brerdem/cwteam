@@ -9,13 +9,11 @@ import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import Button from "@material-ui/core/es/Button/Button";
 import {DatePicker} from "material-ui-pickers";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import FormControl from "@material-ui/core/es/FormControl/FormControl";
 import Select from "@material-ui/core/es/Select/Select";
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 import Brightness from "@material-ui/icons/Brightness1";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
-import InputLabel from "@material-ui/core/es/InputLabel/InputLabel";
 import PropTypes from 'prop-types';
 import axios from "axios";
 import {getToken} from "../../../actions/auth";
@@ -25,12 +23,11 @@ import UserSuggestionWithData from "../../user/UserSuggestionWithData";
 
 const styles = theme => ({
     selectEmpty: {
-        marginTop: theme.spacing.unit * 2,
         width: 200
     },
 
     formControl: {
-        margin: '10px 0',
+        margin: 0,
         minWidth: 120,
     },
     menuItem: {
@@ -48,14 +45,27 @@ const style = {
     titleTextInput: {
         style: {
             fontSize: 24,
+
+        }
+
+    },
+    titleTextBg: {
+        style: {
+            fontSize: 24,
+            backgroundColor: '#f9fbe7'
+        }
+
+    },
+    descBg: {
+        style: {
+
+            backgroundColor: '#f9fbe7'
         }
 
     }
 };
 
-
-
-class AddTask extends Component {
+class AddTaskDialog extends Component {
 
     state = {
         selectedStartDate: this.props.project.startDate,
@@ -79,6 +89,8 @@ class AddTask extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
+
+
         const task = {
             project_id: this.props.project._id,
             title: e.target.title.value,
@@ -89,6 +101,7 @@ class AddTask extends Component {
             endDate: this.state.selectedEndDate,
             owner: this.props.auth.user
         };
+
 
         console.log('sending task -->', task);
 
@@ -119,7 +132,6 @@ class AddTask extends Component {
         const teamWithProp = team.map(m => {
             return {effort: 1, user: m}
         });
-        console.log('teamWithProp -->', teamWithProp);
         return (
             <div>
                 <Dialog
@@ -129,34 +141,40 @@ class AddTask extends Component {
                     fullWidth={true}
                     maxWidth="md"
 
+
                 >
                     <form onSubmit={this.handleSubmit}>
-                        <DialogContent>
+                        <DialogContent  style={{backgroundColor: '#f8f8ff'}}>
                             <Grid container direction="column" alignItems="flex-start">
 
 
                                 <TextField
                                     id="task-name"
                                     name="title"
-                                    placeholder="Başlık"
-                                    margin="normal"
+                                    label="İşin Başlığı"
+                                    margin="dense"
                                     InputLabelProps={style.titleTextInput}
-                                    inputProps={style.titleTextInput}
+                                    inputProps={style.titleTextBg}
+                                    variant="outlined"
                                     fullWidth
+
 
                                 />
                                 <TextField
                                     id="task-description"
                                     name="note"
-                                    placeholder="Açıklama"
+                                    placeholder="İşin Açıklaması"
                                     margin="dense"
+                                    variant="outlined"
+                                    inputProps={style.descBg}
                                     fullWidth
+
 
                                 />
                             </Grid>
 
 
-                            <Grid container direction="row" alignItems="center" spacing={24}>
+                            <Grid container direction="row" alignItems="center" spacing={24} style={{marginTop: 20}}>
 
                                 <Grid item>
                                     <b>Başlangıç:</b>
@@ -174,42 +192,50 @@ class AddTask extends Component {
                                     <DatePicker id="selectedEndDate" value={selectedEndDate} format="DD/MM/YYYY"
                                                 onChange={this.handleEndDateChange}/>
                                 </Grid>
+                                <Grid item>
+                                    <b>Departman:</b>
+                                </Grid>
+                                <Grid item>
+
+                                    <Select
+                                        value={department}
+                                        onChange={this.handleDepartmentChange}
+                                        name="department"
+                                        displayEmpty
+                                        className={classes.selectEmpty}
+                                        renderValue={value => value}
+                                        inputProps={{
+                                            name: 'department',
+                                            id: 'department-select',
+                                            style: {margin: 0}
+                                        }}
+                                    >
+
+                                        {
+                                            departments.map((department, key) =>
+                                                <MenuItem key={key} value={department.name}
+                                                          className={classes.menuItem}>
+                                                    <ListItemIcon><Brightness
+                                                        style={{color: department.color}}/></ListItemIcon>
+                                                    <ListItemText inset primary={department.name}
+                                                                  className={classes.listItemText}/>
+                                                </MenuItem>
+                                            )
+
+                                        }
+
+
+                                    </Select>
+
+
+                                </Grid>
 
                             </Grid>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel htmlFor={'department-select'}>Departman</InputLabel>
-                                <Select
-                                    value={department}
-                                    onChange={this.handleDepartmentChange}
-                                    name="department"
 
-                                    className={classes.selectEmpty}
-                                    renderValue={value => value}
-                                    inputProps={{
-                                        name: 'department',
-                                        id: 'department-select',
-                                    }}
-                                >
-
-                                    {
-                                        departments.map((department, key) =>
-                                            <MenuItem key={key} value={department.name} className={classes.menuItem}>
-                                                <ListItemIcon><Brightness
-                                                    style={{color: department.color}}/></ListItemIcon>
-                                                <ListItemText inset primary={department.name}
-                                                              className={classes.listItemText}/>
-                                            </MenuItem>
-                                        )
-
-                                    }
-
-
-                                </Select>
-
-                            </FormControl>
-
-                            <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsersAdd}
-                                                    dataType="effort"/>
+                            <div style={{marginTop: 22}}>
+                                <UserSuggestionWithData list={teamWithProp} onUserAdd={this.handleTeamUsersAdd}
+                                                        dataType="effort"/>
+                            </div>
 
 
                         </DialogContent>
@@ -231,7 +257,7 @@ class AddTask extends Component {
     }
 }
 
-AddTask.propTypes = {
+AddTaskDialog.propTypes = {
     addTask: PropTypes.func.isRequired,
     project: PropTypes.object.isRequired,
 
@@ -240,4 +266,4 @@ AddTask.propTypes = {
 export default compose(
     withStyles(styles),
     withAddButton
-)(AddTask);
+)(AddTaskDialog);
