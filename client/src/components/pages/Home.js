@@ -11,9 +11,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Paper from "@material-ui/core/Paper";
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import menuContent from '../../helpers/menu'
 import moment from 'moment';
+import Chart from 'react-google-charts';
+import green from '@material-ui/core/colors/green';
+import orange from "@material-ui/core/colors/orange";
+import red from "@material-ui/core/colors/red";
 
 const DashboardGrid = function (props) {
 
@@ -32,7 +35,7 @@ const DashboardGrid = function (props) {
         return totalCost;
     });
 
-    const performance = Math.floor(tasks.filter(t => t.status === 'done').length / tasks.filter(t => t.status === 'progress').length * 100 );
+    const performance = Math.floor(tasks.filter(t => t.status === 'done').length / tasks.filter(t => t.status === 'progress').length * 100);
 
     return (
 
@@ -49,7 +52,7 @@ const DashboardGrid = function (props) {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
+                            <Typography variant="h5" component="h2" color="textPrimary" align="center">
                                 Performans
                             </Typography>
 
@@ -70,23 +73,41 @@ const DashboardGrid = function (props) {
             <Grid item xs={4}>
                 <Paper className={classes.dashboardPaper}>
                     <Grid container spacing={24} direction="column" justify="center" alignItems="center">
-                        <Grid item xs={8} className={classes.dashboardHeight}>
-                            <Avatar className={classes.dashboardAvatar}>
-                                <Typography variant="h3" color="secondary">
-                                    {tasks.length > 0 ? tasks.filter(t => t.status === "backlog").length : 0}
-                                </Typography>
+                        <div style={{marginTop: 5}}>
+                            <Chart
+                                width={'300px'}
+                                height={'140px'}
+                                chartType="PieChart"
+                                loader={<div>Yükleniyor...</div>}
+                                data={[
+                                    ['Task', 'Task Count'],
+                                    ['Backlog', tasks.filter(t => t.status === "backlog").length],
+                                    ['In Progress', tasks.filter(t => t.status === "progress").length],
+                                    ['Done', tasks.filter(t => t.status === "done").length],
 
-                            </Avatar>
-                        </Grid>
+                                ]}
+                                options={{
+                                    is3D: true,
+                                    pieSliceText: 'value',
+                                    colors: [red[400], orange[400], green[400]],
+                                    chartArea: {left: 0, top: 10, right: 0, bottom: 10},
+                                    legend: {position: 'right', alignment: 'center'}
+                                }}
+
+
+                            />
+                        </div>
+
+
                         <Grid item>
-                            <Typography gutterBottom variant="h5" component="h2" color="textPrimary" align="center">
-                                Atanmamış İşler
+                            <Typography variant="h5" component="h2" color="textPrimary" align="center">
+                                İşler
                             </Typography>
 
                         </Grid>
                         <Grid item>
                             <Typography gutterBottom variant="caption" color="textPrimary" align="center">
-                                Bütün projelerdeki atanmamış ya da henüz başlamamış işler
+                                Bütün projelerdeki bütün işlerin kategorisel olarak gösterimi
                             </Typography>
 
                         </Grid>
@@ -112,7 +133,7 @@ const DashboardGrid = function (props) {
                         </Grid>
                         <Grid item>
 
-                            <Typography gutterBottom variant="h5" color="textPrimary" align="center">
+                            <Typography variant="h5" color="textPrimary" align="center">
                                 Toplam Maliyet
                             </Typography>
 

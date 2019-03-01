@@ -54,6 +54,6 @@ let taskSchema = new Schema({
 
 });
 
-taskSchema.plugin(autoIncrement.plugin, {model: 'Task', field: 'order'});
+//taskSchema.plugin(autoIncrement.plugin, {model: 'Task', field: 'order'});
 
 module.exports = mongoose.model('Task', taskSchema);

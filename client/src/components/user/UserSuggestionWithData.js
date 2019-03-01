@@ -178,7 +178,6 @@ const styles = theme => ({
         left: 0,
         right: 0,
 
-
     },
     suggestion: {
         display: 'block'
@@ -286,6 +285,7 @@ class UserSuggestionWithData extends Component {
                         this.handleAddMember(suggestionValue);
 
                     }}
+                    highlightFirstSuggestion={true}
                     focusInputOnSuggestionClick={true}
                     inputProps={{
                         classes,
