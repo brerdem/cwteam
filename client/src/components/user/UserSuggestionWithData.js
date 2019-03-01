@@ -46,7 +46,7 @@ const AssigneeCardContent = ({user, classes, onDataChange, onDelete, index, data
                                 <ListItemAvatar>
                                     <UserAvatar className={classes.userAvatarText} size={40}
                                                 name={user.user.name}
-                                                src={user.user.avatar_url ? `/img/users/${user.user.avatar_url}.png` : null}/>
+                                                src={user.user.avatar_url ? `/img/users/${user.user.avatar_url}.jpg` : null}/>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={user.user.name}
@@ -105,12 +105,14 @@ function renderSuggestion(suggestion, {query, isHighlighted}) {
 
     return (
         <MenuItem
+
             selected={isHighlighted}
             component='div'
             onMouseDown={(e) => e.preventDefault()} // prevent the click causing the input to be blurred
         >
             <div>
                 {parts.map((part, index) => {
+                    console.log('part -->', part);
                     return part.highlight ? (
                         <span key={String(index)} style={{fontWeight: 300}}>
               {part.text}
@@ -142,7 +144,7 @@ function getSuggestionValue(suggestion) {
 
 function getSuggestions(value, suggestions) {
 
-    const inputValue = value.trim().toLocaleLowerCase();
+    const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
 
@@ -164,16 +166,19 @@ const styles = theme => ({
     container: {
         marginTop: 10,
         flexGrow: 1,
-        position: 'relative',
-        minHeight: 80
+        minHeight: 80,
+        height: '100%'
 
     },
     suggestionsContainerOpen: {
-        position: 'absolute',
+        position: 'relative',
+        display: 'block',
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit * 3,
         left: 0,
-        right: 0
+        right: 0,
+
+
     },
     suggestion: {
         display: 'block'
@@ -186,9 +191,7 @@ const styles = theme => ({
     textField: {
         width: '100%'
     },
-    chipWithAvatar: {
-        margin: '0 5px 18px 0'
-    }
+
 });
 
 class UserSuggestionWithData extends Component {
@@ -278,12 +281,12 @@ class UserSuggestionWithData extends Component {
                     renderSuggestionsContainer={renderSuggestionsContainer}
                     getSuggestionValue={getSuggestionValue}
                     renderSuggestion={renderSuggestion}
-                    highlightFirstSuggestion={true}
                     onSuggestionSelected={(e, {suggestionValue}) => {
+                        e.preventDefault();
                         this.handleAddMember(suggestionValue);
-                        e.preventDefault()
+
                     }}
-                    focusInputOnSuggestionClick={false}
+                    focusInputOnSuggestionClick={true}
                     inputProps={{
                         classes,
                         onChange: this.handletextFieldInputChange,

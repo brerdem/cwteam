@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Add from "@material-ui/icons/Add";
+import Add from "@material-ui/icons/AddCircle";
 import Button from "@material-ui/core/es/Button/Button";
 import Grid from "@material-ui/core/es/Grid/Grid";
 

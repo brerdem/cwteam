@@ -39,6 +39,29 @@ router.post('/add', (req, res) => {
 
 });
 
+
+router.post('/delete', (req, res) => {
+
+    console.log('req.body -->', req.body);
+
+    Task.findOneAndRemove({_id: req.body.id}, (err) => {
+        if (!err) {
+
+            pusher.trigger(
+                'projects',
+                'task_deleted',
+                {id: req.body.id}
+            );
+
+            res.status(200).send("task removed");
+        } else {
+            console.log('err -->', err);
+            res.status(400).send(err);
+        }
+    })
+
+});
+
 router.post('/reorder', (req, res) => {
 
     const orderType = req.query.type || '';

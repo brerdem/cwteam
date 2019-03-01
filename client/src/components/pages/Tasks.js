@@ -67,7 +67,7 @@ class Tasks extends Component {
     };
 
     render() {
-
+//todo render props düşünülebilir
         const {classes, projects, addTask, reorderTasks, auth, users, tasks, socket_id} = this.props;
 
         return (
@@ -124,9 +124,12 @@ class Tasks extends Component {
                                     <Route path="/tasks/kanban/:project_id?" render={(props) =>
                                         <Grid container spacing={24}>
                                             <Grid item xs={12}>
+
                                                 {projects.map((project, index) => {
 
-                                                    return <Project key={index} project={project} tasks={tasks.filter(t => t.project_id === project._id)} users={users}
+                                                    return <Project key={index} project={project}
+                                                                    tasks={tasks.filter(t => t.project_id === project._id)}
+                                                                    users={users}
                                                                     edit={props.match.params.project_id === project._id}><Board
                                                         tasks={tasks.filter(t => t.project_id === project._id)}
                                                         project={project}
@@ -142,7 +145,7 @@ class Tasks extends Component {
 
                                     }/>
                                     <Route path="/tasks/timeline"
-                                           render={() => <Timeline projects={projects} tasks={tasks} />}/>
+                                           render={() => <Timeline projects={projects} tasks={tasks}/>}/>
                                 </Switch>
 
                             </div>

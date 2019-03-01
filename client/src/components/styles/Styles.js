@@ -190,6 +190,11 @@ export default theme => ({
         color: '#FFF',
         fontWeight: 600
     },
+    userDetailAvatarText: {
+        color: '#FFF',
+        fontWeight: 600,
+        fontSize: 48
+    },
 
 
     taskInfoText: {

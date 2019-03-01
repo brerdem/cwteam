@@ -43,7 +43,7 @@ class Project extends Component {
 
         const totalBudget = tasks.reduce(this.calculateTotalEffort, 0);
 
-        const tooltipText = (totalBudget < project.budget ? '-' : '+') + Math.abs(totalBudget - project.budget);
+        const tooltipText = Math.abs(totalBudget - project.budget) + ' TL ' + (totalBudget < project.budget ? 'daha kullanılabilir' : 'efor aşımı var');
 
         return (
             <ExpansionPanel expanded={expanded}

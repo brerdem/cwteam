@@ -7,7 +7,7 @@ import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_fullscreen'
 import Fab from "@material-ui/core/Fab";
 import theme from "../../../components/styles/Styles";
 import {withStyles} from '@material-ui/core/styles';
-import Fullscreen from '@material-ui/icons/Fullscreen';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExit from '@material-ui/icons/FullscreenExit';
 import {connect} from "react-redux";
 import {compose} from 'recompose';
@@ -58,6 +58,14 @@ class Gantt extends Component {
             gantt.refreshData();
         });
 
+        gantt.attachEvent("onExpand", () => {
+            this.props.setFullScreen(true);
+        });
+
+        gantt.attachEvent("onCollapse",() => {
+            this.props.setFullScreen(false);
+        });
+
         /* gantt.attachEvent("onTaskDblClick", function (id, e) {
              e.preventDefault();
              if (gantt.hasChild(id)) {
@@ -84,31 +92,30 @@ class Gantt extends Component {
     }
 
     handleClick = () => {
+        console.log('gantt.getState().fullscreen -->', gantt.getState().fullscreen);
         if (!gantt.getState().fullscreen) {
-            // expanding the gantt to full screen
-            gantt.expand();
-            this.props.setFullScreen(true);
 
-        }
-        else {
-            // collapsing the gantt to the normal mode
+            gantt.expand();
+
+        } else {
+
             gantt.collapse();
-            this.props.setFullScreen(false);
         }
 
     };
 
     render() {
 
-        const {classes} = this.props;
+        const {classes, ui} = this.props;
         return (
+
             <div style={{height: 500}}>
                 <div ref={(input) => {
                     this.ganttContainer = input
                 }} style={{width: '100%', height: '100%'}}/>
 
                 <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
-                    {this.props.ui.isGanttFullscreen ? <FullscreenExit/> : <Fullscreen/>}
+                    {ui.isGanttFullscreen ? <FullscreenExit/> : <FullscreenIcon/>}
 
                 </Fab>
 

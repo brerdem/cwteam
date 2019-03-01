@@ -22,6 +22,9 @@ const taskReducer = (state = [], action) => {
                 action.data
             ];
 
+        case 'REMOVE_TASK_DONE':
+            return state.filter(t => t._id !== action.id);
+
         case 'GET_ALL_TASKS_DONE':
             return action.payload.data;
 

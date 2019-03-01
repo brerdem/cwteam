@@ -3,7 +3,7 @@ import axios from "axios";
 import API_URL from "../helpers/api_url";
 
 //action creators
-export const addTask = (task) => {
+export const addTask = (task) => dispatch => {
     console.log('task', task);
 
     return {
