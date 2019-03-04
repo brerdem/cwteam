@@ -7,7 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
-import Timeline from "../task/Timeline";
+import GanttContainer from "../task/timeline/GanttContainer";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
@@ -145,7 +145,7 @@ class Tasks extends Component {
 
                                     }/>
                                     <Route path="/tasks/timeline"
-                                           render={() => <Timeline projects={projects} tasks={tasks}/>}/>
+                                           render={() => <GanttContainer projects={projects} tasks={tasks}/>}/>
                                 </Switch>
 
                             </div>

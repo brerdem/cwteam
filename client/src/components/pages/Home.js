@@ -35,7 +35,8 @@ const DashboardGrid = function (props) {
         return totalCost;
     });
 
-    const performance = Math.floor(tasks.filter(t => t.status === 'done').length / tasks.filter(t => t.status === 'progress').length * 100);
+    let performance = Math.floor(tasks.filter(t => t.status === 'done').length / tasks.filter(t => t.status === 'progress').length * 100);
+    performance = isNaN(performance) || !isFinite(performance) ? 0 : performance;
 
     return (
 

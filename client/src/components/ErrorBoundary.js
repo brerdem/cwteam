@@ -17,7 +17,10 @@ class ErrorBoundary extends Component {
         this.setState({ error });
         if (this.props.user) {
             Sentry.configureScope(scope => {
-                scope.setUser({"email": this.props.user.email});
+                scope.setUser({
+                    name: this.props.user.name,
+                    email: this.props.user.email
+                });
             })
         }
         Sentry.withScope(scope => {
@@ -32,7 +35,7 @@ class ErrorBoundary extends Component {
         if (this.state.error) {
             //render fallback UI
             return (
-                <a onClick={() => Sentry.showReportDialog()}>Lütfen geri bildirimde bulunun</a>
+                <button onClick={() => Sentry.showReportDialog()}>Lütfen geri bildirimde bulunun</button>
             );
         } else {
             //when there's not an error, render children untouched

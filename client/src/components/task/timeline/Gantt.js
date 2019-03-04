@@ -20,13 +20,23 @@ function setTitleGridRow(task) {
     return task.text;
 }
 
+
+
 class Gantt extends Component {
 
     state = {
         fullscreen: false
     };
 
+    handleZoomChange(zoom) {
+        this.setState({
+            currentZoom: zoom
+        });
+    }
+
     componentDidMount() {
+
+
 
         gantt.config.columns = [
             {name: "text", label: "Görev Adı", tree: true, width: 300, template: setTitleGridRow},
@@ -38,7 +48,6 @@ class Gantt extends Component {
         gantt.config.sort = true;
         gantt.config.order_branch = true;
 
-        //gantt.config.details_on_dblclick = false;
         gantt.templates.leftside_text = function (start, end, task) {
             if (task.task_type) {
                 return "<b style='font-size:14px'>%" + Math.floor(task.progress * 100) + "</b>";
@@ -91,6 +100,51 @@ class Gantt extends Component {
 
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return this.props.zoom !== nextProps.zoom;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        gantt.render();
+    }
+
+    setZoom = (value) => {
+        switch (value){
+            case 'Hours':
+                gantt.config.scale_unit = 'day';
+                gantt.config.date_scale = '%d %M';
+
+                gantt.config.scale_height = 60;
+                gantt.config.min_column_width = 30;
+                gantt.config.subscales = [
+                    {unit:'hour', step:1, date:'%H'}
+                ];
+                break;
+            case 'Days':
+                gantt.config.min_column_width = 70;
+                gantt.config.scale_unit = "week";
+                gantt.config.date_scale = "#%W";
+                gantt.config.subscales = [
+                    {unit: "day", step: 1, date: "%d %M"}
+                ];
+                gantt.config.scale_height = 60;
+                break;
+            case 'Months':
+                gantt.config.min_column_width = 70;
+                gantt.config.scale_unit = "month";
+                gantt.config.date_scale = "%F";
+                gantt.config.scale_height = 60;
+                gantt.config.subscales = [
+                    {unit:"week", step:1, date:"#%W"}
+                ];
+                break;
+            default:
+                break;
+        }
+    };
+
+
+
     handleClick = () => {
         console.log('gantt.getState().fullscreen -->', gantt.getState().fullscreen);
         if (!gantt.getState().fullscreen) {
@@ -106,7 +160,9 @@ class Gantt extends Component {
 
     render() {
 
-        const {classes, ui} = this.props;
+        const {classes, ui, zoom} = this.props;
+
+        this.setZoom(zoom);
         return (
 
             <div style={{height: 500}}>
