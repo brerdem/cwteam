@@ -14,31 +14,35 @@ import history from './helpers/history';
 import {getToken} from "./actions/auth";
 import {AUTH_LOGIN} from "./actions/types";
 import jwt from 'jsonwebtoken';
+import ErrorBoundary from './components/ErrorBoundary'
 
 moment.locale('tr');
 
 //todo move check token to actions
 const token = getToken();
+let user = null;
 if (token) {
     const decoded = jwt.decode(token, {complete: true});
-    store.dispatch({type: AUTH_LOGIN, user: jwt.decode(token, decoded.payload)});
+    user = jwt.decode(token, decoded.payload);
+    store.dispatch({type: AUTH_LOGIN, user});
 }
 
-
 render((
-    <Provider store={store}>
+    <ErrorBoundary user={user}>
+        <Provider store={store}>
 
-        <ConnectedRouter history={history}>
-            <SnackbarProvider maxSnack={3}>
-                <MuiPickersUtilsProvider utils={MomentUtils} locale="tr" moment={moment}>
+            <ConnectedRouter history={history}>
+                <SnackbarProvider maxSnack={3}>
+                    <MuiPickersUtilsProvider utils={MomentUtils} locale="tr" moment={moment}>
 
-                    <App/>
+                        <App/>
 
-                </MuiPickersUtilsProvider>
-            </SnackbarProvider>
-        </ConnectedRouter>
+                    </MuiPickersUtilsProvider>
+                </SnackbarProvider>
+            </ConnectedRouter>
 
-    </Provider>
+        </Provider>
+    </ErrorBoundary>
 ), document.getElementById('root'));
 
 
