@@ -103,7 +103,7 @@ class Tasks extends Component {
                         <BrowserRouter>
                             <div className={classes.todoTabContainer}>
                                 <MuiThemeProvider theme={extraTheme}>
-                                    <AppBar position="static" color="primary">
+                                    <AppBar position="static" color="primary" elevation={0}>
 
                                         <Tabs
                                             value={this.state.value}
@@ -145,7 +145,7 @@ class Tasks extends Component {
 
                                     }/>
                                     <Route path="/tasks/timeline"
-                                           render={() => <GanttContainer projects={projects} tasks={tasks}/>}/>
+                                           render={() => <GanttContainer projects={projects} tasks={tasks} />}/>
                                 </Switch>
 
                             </div>
@@ -171,6 +171,7 @@ const mapStateToProps = (state) => {
         projects: state.projects,
         tasks: state.tasks,
         users: state.users,
+        ui: state.ui,
     };
 };
 

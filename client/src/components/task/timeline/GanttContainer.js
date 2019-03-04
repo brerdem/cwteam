@@ -1,17 +1,32 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Gantt from "./Gantt";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import moment from 'moment';
-
-
+import GanttToolbar from "./GanttToolbar";
+import Fab from "@material-ui/core/Fab";
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExit from '@material-ui/icons/FullscreenExit';
+import theme from "../../../components/styles/Styles";
+import withStyles from "@material-ui/core/es/styles/withStyles";
+import Fullscreen from "react-full-screen";
 
 class GanttContainer extends Component {
 
     state = {
-        zoom: 1
+        zoom: 1,
+        isFull: false
+
     };
 
+    handleZoomChange = (zoom) => {
+        this.setState({
+            currentZoom: zoom
+        });
+    };
+    handleFullScreenClick = () => {
+        this.setState({isFull: !this.state.isFull});
 
+    };
 
     makeDataForGantt = (projects, tasks) => {
         let data = {};
@@ -19,7 +34,6 @@ class GanttContainer extends Component {
         projects.forEach((project) => {
             //  let projectStartDate =  moment(project.startDate).format("DD-MM-YYYY");
             //  let projectDuration = moment.duration(moment(project.endDate).diff(moment(project.startDate)));
-
 
             data.data.push({
                 id: `${project._id}`,
@@ -33,7 +47,7 @@ class GanttContainer extends Component {
 
             tasks.forEach(t => {
                 if (t.status === "backlog" || t.status === "progress") {
-                    let startDate =  moment(t.startDate).format("DD-MM-YYYY");
+                    let startDate = moment(t.startDate).format("DD-MM-YYYY");
                     let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
 
                     data.data.push({
@@ -49,8 +63,6 @@ class GanttContainer extends Component {
                 }
 
             });
-
-
 
             /*  {
                   id: `${index}_1`,
@@ -99,25 +111,39 @@ class GanttContainer extends Component {
 
     };
 
-
-
-
     render() {
-        const {zoom} = this.state;
-        const {projects, tasks} = this.props;
+        const {currentZoom, isFull} = this.state;
+        const {projects, tasks, ui, classes} = this.props;
 
         return (
-            <Grid container direction="column">
-                <Grid item xs={12}>
-                    <Gantt tasks={this.makeDataForGantt(projects, tasks)} zoom={zoom}/>
-                </Grid>
-            </Grid>
+            <Fullscreen enabled={this.state.isFull}
+                        onChange={isFull => this.setState({isFull})}
+            >
+                <Fragment>
+                    <Grid container direction="column">
+                        <Grid item style={{backgroundColor: '#efefef'}}>
+                            <GanttToolbar
+                                zoom={currentZoom}
+                                onZoomChange={this.handleZoomChange}
+                            />
+
+                        </Grid>
+
+                            <Gantt tasks={this.makeDataForGantt(projects, tasks)} zoom={currentZoom} fullscreen={this.state.isFull}/>
+
+                    </Grid>
+                    <Fab color="primary" onClick={this.handleFullScreenClick} className={classes.fabButton}>
+                        {isFull ? <FullscreenExit/> : <FullscreenIcon/>}
+
+                    </Fab>
+                </Fragment>
+            </Fullscreen>
 
         )
     }
 }
 
-export default GanttContainer;
+export default withStyles(theme)(GanttContainer);
 
 
 

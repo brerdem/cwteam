@@ -4,14 +4,8 @@ import 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import 'dhtmlx-gantt/codebase/locale/locale_tr'
 import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_fullscreen'
-import Fab from "@material-ui/core/Fab";
 import theme from "../../../components/styles/Styles";
 import {withStyles} from '@material-ui/core/styles';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExit from '@material-ui/icons/FullscreenExit';
-import {connect} from "react-redux";
-import {compose} from 'recompose';
-import {setFullScreen} from "../../../actions/ui";
 
 function setTitleGridRow(task) {
     if (task.task_type) {
@@ -20,23 +14,9 @@ function setTitleGridRow(task) {
     return task.text;
 }
 
-
-
 class Gantt extends Component {
 
-    state = {
-        fullscreen: false
-    };
-
-    handleZoomChange(zoom) {
-        this.setState({
-            currentZoom: zoom
-        });
-    }
-
     componentDidMount() {
-
-
 
         gantt.config.columns = [
             {name: "text", label: "Görev Adı", tree: true, width: 300, template: setTitleGridRow},
@@ -67,14 +47,6 @@ class Gantt extends Component {
             gantt.refreshData();
         });
 
-        gantt.attachEvent("onExpand", () => {
-            this.props.setFullScreen(true);
-        });
-
-        gantt.attachEvent("onCollapse",() => {
-            this.props.setFullScreen(false);
-        });
-
         /* gantt.attachEvent("onTaskDblClick", function (id, e) {
              e.preventDefault();
              if (gantt.hasChild(id)) {
@@ -100,16 +72,13 @@ class Gantt extends Component {
 
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return this.props.zoom !== nextProps.zoom;
-    }
-
     componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('component updated -->');
         gantt.render();
     }
 
     setZoom = (value) => {
-        switch (value){
+        switch (value) {
             case 'Hours':
                 gantt.config.scale_unit = 'day';
                 gantt.config.date_scale = '%d %M';
@@ -117,7 +86,7 @@ class Gantt extends Component {
                 gantt.config.scale_height = 60;
                 gantt.config.min_column_width = 30;
                 gantt.config.subscales = [
-                    {unit:'hour', step:1, date:'%H'}
+                    {unit: 'hour', step: 1, date: '%H'}
                 ];
                 break;
             case 'Days':
@@ -135,7 +104,7 @@ class Gantt extends Component {
                 gantt.config.date_scale = "%F";
                 gantt.config.scale_height = 60;
                 gantt.config.subscales = [
-                    {unit:"week", step:1, date:"#%W"}
+                    {unit: "week", step: 1, date: "#%W"}
                 ];
                 break;
             default:
@@ -143,55 +112,21 @@ class Gantt extends Component {
         }
     };
 
-
-
-    handleClick = () => {
-        console.log('gantt.getState().fullscreen -->', gantt.getState().fullscreen);
-        if (!gantt.getState().fullscreen) {
-
-            gantt.expand();
-
-        } else {
-
-            gantt.collapse();
-        }
-
-    };
-
     render() {
 
-        const {classes, ui, zoom} = this.props;
+        const {zoom, fullscreen} = this.props;
+        console.log('fullscreen -->', fullscreen);
 
         this.setZoom(zoom);
         return (
 
-            <div style={{height: 500}}>
-                <div ref={(input) => {
-                    this.ganttContainer = input
-                }} style={{width: '100%', height: '100%'}}/>
-
-                <Fab color="primary" onClick={this.handleClick} className={classes.fabButton}>
-                    {ui.isGanttFullscreen ? <FullscreenExit/> : <FullscreenIcon/>}
-
-                </Fab>
-
-            </div>
+            <div ref={(input) => {
+                this.ganttContainer = input
+            }} style={{width: '100%', height: fullscreen ? window.innerHeight - 80 : 500}}/>
 
         );
     }
 
 }
 
-const mapStateToProps = (state) => {
-    return {
-
-        ui: state.ui
-
-    };
-};
-
-export default compose(
-    connect(mapStateToProps,
-        {setFullScreen}),
-    withStyles(theme)
-)(Gantt);
+export default withStyles(theme)(Gantt);
