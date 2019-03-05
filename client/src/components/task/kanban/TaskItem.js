@@ -85,14 +85,10 @@ class TaskItem extends Component {
     };
 
     handleMenu = id => event => {
-        this.setState({anchorEl: event.currentTarget, selectedTaskId: id});
+        this.setState({anchorEl: event.currentTarget, open: true, selectedTaskId: id});
     };
 
-    handleClickOpen = () => {
-        this.setState({
-            open: true,
-        });
-    };
+
     handleClose = () => {
         this.setState({anchorEl: null, open: false});
     };
@@ -181,7 +177,7 @@ class TaskItem extends Component {
 
                                 <Paper
 
-                                    onClick={this.handleClickOpen}
+
                                     className={classNames(classes.taskItem, snapshot.isDragging ? classes.taskItemDragging : '')}
                                     style={{borderLeft: `solid 5px ${departmentColor}`}}
                                     elevation={1}>

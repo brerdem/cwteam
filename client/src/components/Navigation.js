@@ -21,6 +21,7 @@ import {compose} from 'recompose';
 import {withRouter} from 'react-router-dom';
 import Badge from "@material-ui/core/Badge";
 import _ from "lodash";
+import Typography from "@material-ui/core/Typography/Typography";
 
 const drawerWidth = 240;
 
@@ -74,7 +75,7 @@ const styles = theme => ({
     toolbar: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         padding: '0 8px',
         ...theme.mixins.toolbar,
     },
@@ -144,6 +145,7 @@ class Navigation extends Component {
                             </IconButton>
                             <img src={'/img/logo.png'} alt="Logo" style={{width: 180, height: 46}}/>
 
+
                             {auth.isLoggedIn && <LoginGroup auth={auth}/>}
                         </Grid>
                     </Toolbar>
@@ -163,9 +165,11 @@ class Navigation extends Component {
                     open={this.state.open}
                 >
                     <div className={classes.toolbar}>
+                        <Typography variant='caption' style={{justifySelf: 'start'}}>v0.2.6</Typography>
                         <IconButton onClick={this.handleDrawerClose}>
                             {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                         </IconButton>
+
                     </div>
                     <Divider/>
                     <List>

@@ -17,9 +17,6 @@ const pusher = new Pusher({
 
 
 
-const channel = 'projects';
-
-
 const app = express();
 
 //PORT
