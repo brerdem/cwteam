@@ -23,6 +23,16 @@
   color: #61dafb;
 }
 
+
+.weekend {
+  background: #f4f7f4;
+}
+
+.gantt_selected .weekend {
+  background: #f7eb91;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -213,7 +213,7 @@ class Application extends Component {
                         <PropsRoute exact path='/projects' loading={loading} component={Projects}
                                     auth={auth} projects={projects} users={users}/>
                         <PropsRoute exact path='/' component={Home} auth={auth} tasks={tasks} projects={projects}/>
-                        <PropsRoute path='/tasks' component={Tasks} auth={auth} loading={loading} socket_id={socketId} />
+                        <PropsRoute path='/tasks/:mode?/:id?' component={Tasks} auth={auth} loading={loading} socket_id={socketId} />
                         <PropsRoute path='/users' component={Users} users={users} auth={auth} />
                         <PropsRoute path='/user/detail/:id' component={UserDetail} auth={auth} tasks={tasks}
                                     users={users}

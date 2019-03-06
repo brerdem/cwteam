@@ -9,6 +9,7 @@ import FullscreenExit from '@material-ui/icons/FullscreenExit';
 import theme from "../../../components/styles/Styles";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Fullscreen from "react-full-screen";
+import 'moment-business-days';
 
 class GanttContainer extends Component {
 
@@ -29,8 +30,14 @@ class GanttContainer extends Component {
     };
 
     makeDataForGantt = (projects, tasks) => {
+
+        moment.updateLocale('tr', {
+            workingWeekdays: [1, 2, 3, 4, 5]
+        });
+
         let data = {};
         data.data = [];
+
         projects.forEach((project) => {
             //  let projectStartDate =  moment(project.startDate).format("DD-MM-YYYY");
             //  let projectDuration = moment.duration(moment(project.endDate).diff(moment(project.startDate)));
@@ -46,21 +53,27 @@ class GanttContainer extends Component {
             });
 
             tasks.forEach(t => {
-                if (t.status === "backlog" || t.status === "progress") {
-                    let startDate = moment(t.startDate).format("DD-MM-YYYY");
-                    let duration = moment.duration(moment(t.endDate).diff(moment(t.startDate)));
+
+                if (t.project_id === project._id) {
+                    //if (t.status === "backlog" || t.status === "progress") {
+
+                    let startDate = moment(t.startDate);
+                    let weekDaysDuration = startDate.businessDiff(moment(t.endDate));
+                    console.log('weekDaysDuration -->', weekDaysDuration);
 
                     data.data.push({
                         id: `${t._id}`,
                         text: t.title,
-                        start_date: startDate,
-                        duration: duration.days(),
+                        start_date: startDate.format("DD-MM-YYYY"),
+                        duration: weekDaysDuration + 1,
                         holder: t.assignees[0].user.first_name,
                         parent: `${project._id}`,
                         color: t.categoryColor,
-                        progress: 0.4
+                        progress: 0.4,
+                        task_type: t.status
                     })
                 }
+                // }
 
             });
 
@@ -105,6 +118,7 @@ class GanttContainer extends Component {
                   progress: 0.8
               },*/
         });
+        console.log('data -->', data);
 
         data.links = [];
         return data;
@@ -113,7 +127,7 @@ class GanttContainer extends Component {
 
     render() {
         const {currentZoom, isFull} = this.state;
-        const {projects, tasks, ui, classes} = this.props;
+        const {projects, tasks, classes} = this.props;
 
         return (
             <Fullscreen enabled={this.state.isFull}
@@ -121,22 +135,23 @@ class GanttContainer extends Component {
             >
                 <Fragment>
                     <Grid container direction="column">
-                        <Grid item style={{backgroundColor: '#efefef'}}>
-                            <GanttToolbar
-                                zoom={currentZoom}
-                                onZoomChange={this.handleZoomChange}
-                            />
 
-                        </Grid>
+                        <GanttToolbar
+                            zoom={currentZoom}
+                            onZoomChange={this.handleZoomChange}
+                        />
 
-                            <Gantt tasks={this.makeDataForGantt(projects, tasks)} zoom={currentZoom} fullscreen={this.state.isFull}/>
+
+                        <Gantt tasks={this.makeDataForGantt(projects, tasks)} zoom={currentZoom}
+                               fullscreen={this.state.isFull}/>
 
                     </Grid>
-                    <Fab color="primary" onClick={this.handleFullScreenClick} className={classes.fabButton}>
-                        {isFull ? <FullscreenExit/> : <FullscreenIcon/>}
 
-                    </Fab>
                 </Fragment>
+                <Fab color="primary" onClick={this.handleFullScreenClick} className={classes.fabButton}>
+                    {isFull ? <FullscreenExit/> : <FullscreenIcon/>}
+
+                </Fab>
             </Fullscreen>
 
         )

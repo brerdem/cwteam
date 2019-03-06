@@ -2,8 +2,10 @@ const router = require('express').Router();
 require('../../../passport');
 const Project = require('./../../../models/project');
 const Task = require('./../../../models/task');
-
+const xlsx = require('node-xlsx');
 const async = require('async');
+const fs = require('fs');
+const stream = require('stream');
 
 const Pusher = require('pusher');
 
@@ -61,6 +63,29 @@ router.post('/delete', (req, res) => {
     })
 
 });
+
+router.get('/excel', (req, res) => {
+
+    console.log('req.body -->', req.body);
+
+    const data = [[1, 2, 3], [true, false, null, '<b>sheetjs</b>'], ['foo', 'bar', new Date('2014-02-19T14:30Z'), '0.3'], ['baz', null, 'qux']];
+    const buffer = xlsx.build([{name: "mySheetName", data: data}]); // Returns a buffer
+
+    const fileName = "helloworld.xlsx";
+    const savedFilePath = 'client/build/temp/'+fileName;
+
+    fs.writeFile(savedFilePath, buffer, function (err) {
+        if (err) return console.log(err);
+        //console.log('Wrote Hello World in file helloworld.txt, just check it');
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+       res.status(200).download(savedFilePath, fileName);
+    });
+
+
+
+});
+
+
 
 router.post('/reorder', (req, res) => {
 

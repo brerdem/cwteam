@@ -8,7 +8,6 @@ import Tab from '@material-ui/core/Tab';
 import ViewWeek from '@material-ui/icons/ViewWeek';
 import ClearAll from '@material-ui/icons/ClearAll';
 import GanttContainer from "../task/timeline/GanttContainer";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import blue from '@material-ui/core/colors/blue';
 import {connect} from "react-redux";
@@ -39,7 +38,7 @@ class Tasks extends Component {
 
     state = {
 
-        value: 0,
+        value: this.props.location.pathname.match(/\/tasks\/kanban[/.*]?/) ? '/tasks/kanban' : '/tasks/timeline',
         software: true,
         design: true,
         account: true,
@@ -47,17 +46,10 @@ class Tasks extends Component {
 
     };
 
-    componentDidMount() {
-
-        this.setState({
-            value: this.props.location.pathname === '/todos/timeline' ? 1 : 0
-        });
-
-    };
-
     handleChange = (event, value) => {
-
         this.setState({value});
+        this.props.history.push(value);
+
     };
 
     handleDepartmentChange = name => event => {
@@ -69,6 +61,7 @@ class Tasks extends Component {
     render() {
 //todo render props düşünülebilir
         const {classes, projects, addTask, reorderTasks, auth, users, tasks, socket_id} = this.props;
+        const {value} = this.state;
 
         return (
             <div>
@@ -100,58 +93,55 @@ class Tasks extends Component {
                             </FormGroup>
                         </FormControl>
 
-                        <BrowserRouter>
-                            <div className={classes.todoTabContainer}>
-                                <MuiThemeProvider theme={extraTheme}>
-                                    <AppBar position="static" color="primary" elevation={0}>
+                        <div className={classes.todoTabContainer}>
+                            <MuiThemeProvider theme={extraTheme}>
+                                <AppBar position="static" color="primary" elevation={0}>
 
-                                        <Tabs
-                                            value={this.state.value}
-                                            onChange={this.handleChange}
-                                            fullWidth
-                                            indicatorColor="secondary"
-                                            textColor="inherit"
-                                        >
-                                            <Tab icon={<ViewWeek/>} label="KANBAN" component={Link} to="/tasks/kanban"/>
-                                            <Tab icon={<ClearAll/>} label="TIMELINE" component={Link}
-                                                 to="/tasks/timeline"/>
+                                    <Tabs
+                                        value={value}
+                                        onChange={this.handleChange}
+                                        fullWidth
+                                        indicatorColor="secondary"
+                                        textColor="inherit"
+                                    >
+                                        <Tab icon={<ViewWeek/>} label="KANBAN" value="/tasks/kanban"/>
+                                        <Tab icon={<ClearAll/>} label="TIMELINE" value="/tasks/timeline"/>
 
-                                        </Tabs>
+                                    </Tabs>
 
-                                    </AppBar>
-                                </MuiThemeProvider>
-                                <Switch>
-                                    <Route path="/tasks/kanban/:project_id?" render={(props) =>
-                                        <Grid container spacing={24}>
-                                            <Grid item xs={12}>
+                                </AppBar>
+                            </MuiThemeProvider>
+                            {value.match(/\/tasks\/kanban[.*]?/) &&
+                            <Grid container spacing={24}>
+                                <Grid item xs={12}>
 
-                                                {projects.map((project, index) => {
+                                    {projects.map((project, index) => {
+                                        console.log('this.props.match.params -->', this.props);
 
-                                                    return <Project key={index} project={project}
-                                                                    tasks={tasks.filter(t => t.project_id === project._id)}
-                                                                    users={users}
-                                                                    edit={props.match.params.project_id === project._id}><Board
+                                        return <Project key={index} project={project}
                                                         tasks={tasks.filter(t => t.project_id === project._id)}
-                                                        project={project}
-                                                        auth={auth}
-                                                        addTask={addTask}
-                                                        reorderTasks={reorderTasks}
-                                                        socket_id={socket_id}
-                                                    /></Project>
+                                                        users={users}
+                                                        edit={this.props.match.params.id === project._id}><Board
+                                            tasks={tasks.filter(t => t.project_id === project._id)}
+                                            project={project}
+                                            auth={auth}
+                                            addTask={addTask}
+                                            reorderTasks={reorderTasks}
+                                            socket_id={socket_id}
+                                        /></Project>
 
-                                                })}
-                                            </Grid>
-                                        </Grid>
+                                    })}
+                                </Grid>
+                            </Grid>
 
-                                    }/>
-                                    <Route path="/tasks/timeline"
-                                           render={() => <GanttContainer projects={projects} tasks={tasks} />}/>
-                                </Switch>
+                            }
+                            {value === '/tasks/timeline' &&
+                            <GanttContainer projects={projects} tasks={tasks}/>
+                            }
 
-                            </div>
-                        </BrowserRouter>
+
+                        </div>
                     </div>
-
 
                 </main>
 

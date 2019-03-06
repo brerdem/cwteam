@@ -35,7 +35,7 @@ let userSchema = new Schema({
     },
     access: {
         type: String,
-        enum: ['admin', 'user', 'client'],
+        enum: ['admin', 'user', 'moderator'],
         default: 'user'
     },
     lastLogin: Date

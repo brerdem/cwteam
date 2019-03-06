@@ -38,7 +38,7 @@ router.get('/makeusers', (req, res) => {
             avatar_url: 'burak_poyraz',
             password: 'burak.poyraz',
             department: 'Tasarım',
-            title: 'Grafik Tasarımcı',
+            title: 'Grafik Tasarımcısı',
             access: 'user',
             avatar_bg: randomcolor({luminosity: 'dark'})
         },
