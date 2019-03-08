@@ -6,6 +6,7 @@ import theme from "../styles/Styles";
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ReactMarkdown from "react-markdown";
 
 const ExpansionPanel = withStyles({
     root: {
@@ -88,13 +89,26 @@ class Library extends Component {
                 <div>
                     <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
                         <ExpansionPanelSummary>
-                            <Typography variant="h6">Projeleri yayına almadan önce yapılması gerekenler</Typography>
+                            <Typography variant="h6">CW Team Yönetim Sistemi Giriş</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Typography>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                                ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
+                                <ReactMarkdown source={'Login bilgileri\n' +
+                                '---------------\n' +
+                                '\n' +
+                                '1.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n' +
+                                '    tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim\n' +
+                                '    veniam**, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n' +
+                                '    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit\n' +
+                                '    esse cillum dolore\n' +
+                                '\n' +
+                                'Diğer bilgiler\n' +
+                                '--------------\n' +
+                                '\n' +
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor\n' +
+                                'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis\n' +
+                                'nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n' +
+                                'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore\n'}/>
                             </Typography>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
