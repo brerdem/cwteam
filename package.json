@@ -1,6 +1,6 @@
 {
   "name": "cwteam",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "CwTeam Project Management System",
   "license": "ISC",
   "scripts": {
@@ -19,7 +19,6 @@
     "jsonwebtoken": "^8.4.0",
     "localStorage": "^1.0.4",
     "mongoose": "^5.3.14",
-    "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
     "node-xlsx": "^0.14.1",
