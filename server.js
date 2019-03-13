@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 const Pusher = require('pusher');
+var cron = require('node-cron');
+
 
 const pusher = new Pusher({
     appId      : '689385',
@@ -14,6 +16,8 @@ const pusher = new Pusher({
     cluster    : 'eu',
     useTLS  : true,
 });
+
+const channel = 'projects';
 
 
 
@@ -70,6 +74,13 @@ db.once('open', () => {
 
 
 */
+
+const task = cron.schedule('* * * * *', () => {
+    console.log('triggered');
+    pusher.trigger(channel, 'z-report', {});
+});
+
+task.start();
 
 
 //routes

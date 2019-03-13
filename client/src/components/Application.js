@@ -142,6 +142,11 @@ class Application extends Component {
         store.dispatch({type: 'ADD_PROJECT_DONE', project});
 
     };
+    fetchZReport = () => {
+
+        this.props.history.push('/z-report');
+
+    };
 
     deleteProjectDispatch = id => {
 
@@ -150,6 +155,7 @@ class Application extends Component {
     };
 
     componentDidMount() {
+
         const {getAllProjects, getAllUsers, getAllTasks} = this.props;
 
         Promise.all([getAllProjects(), getAllUsers(), getAllTasks()]).then(() => {
@@ -174,6 +180,7 @@ class Application extends Component {
         this.channel.bind('task_updated', this.updateTaskDispatch);
         this.channel.bind('task_deleted', this.deleteTaskDispatch);
         this.channel.bind('user_task_updated', this.updateUserTaskDispatch);
+        this.channel.bind('z-report', this.fetchZReport);
 
     }
 
