@@ -75,12 +75,12 @@ db.once('open', () => {
 
 */
 
-const task = cron.schedule('* * * * *', () => {
+/*const task = cron.schedule('* * * * *', () => {
     console.log('triggered');
     pusher.trigger(channel, 'z-report', {});
-});
+});*/
 
-task.start();
+//task.start();
 
 
 //routes

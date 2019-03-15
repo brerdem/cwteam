@@ -216,6 +216,22 @@ export default theme => ({
         marginRight: 0
     },
 
+    //user detail header
+    cardHeaderBackground: {
+        margin: '0 30px',
+        borderRadius: 15,
+        position: 'relative',
+        padding: '5px 0',
+        top: 15
+    },
+
+     cardHeaderText: {
+       color: '#161616',
+         fontSize: '1rem'
+    },
+
+
+
 
 
 

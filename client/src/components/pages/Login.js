@@ -14,9 +14,10 @@ import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import Checkbox from "@material-ui/core/es/Checkbox/Checkbox";
 import {Link} from "react-router-dom";
 import axios from "axios/index";
-import {withSnackbar} from 'notistack';
 import {compose} from 'recompose';
-
+import {reduxForm} from 'redux-form';
+import Field from "redux-form/es/Field";
+import TextField from "@material-ui/core/TextField";
 
 const styles = theme => ({
     main: {
@@ -51,6 +52,18 @@ const styles = theme => ({
     },
 });
 
+const email = value =>
+    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
+        'Invalid email address' : undefined;
+
+const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+    <TextField hintText={label}
+               floatingLabelText={label}
+               errorText={touched && error}
+               {...input}
+               {...custom}
+    />
+)
 
 class Login extends Component {
 
@@ -79,7 +92,6 @@ class Login extends Component {
 
                 }
 
-
             })
             .catch((error) => {
                 let errStr;
@@ -95,7 +107,6 @@ class Login extends Component {
         this.props.doLogin(user, token);
         this.props.history.push('/');
     };
-
 
     render() {
 
@@ -120,10 +131,9 @@ class Login extends Component {
                         </Typography>
                     </Link>
                     <form className={classes.form} onSubmit={this.handleSubmit}>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email">Email Adresi</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus/>
-                        </FormControl>
+
+                        <Field component={renderTextField} hintText="Mail" label="E-mail Adresi" name="email" />
+
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Şifre</InputLabel>
                             <Input name="password" type="password" id="password" autoComplete="current-password"/>
@@ -153,9 +163,8 @@ Login.propTypes = {
 
 };
 
-
 export default compose(
     withStyles(styles),
-    withSnackbar,
+    reduxForm({form: 'loginForm'})
 )(Login);
 

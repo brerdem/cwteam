@@ -191,6 +191,7 @@ class TaskItem extends Component {
                                                 </Typography>
                                                 <IconButton
                                                     onClick={this.handleMenu(task._id)}
+
                                                     style={{
                                                         background: 'none',
                                                         margin: '-22px -24px 0 0'

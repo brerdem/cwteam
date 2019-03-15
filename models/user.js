@@ -38,6 +38,18 @@ let userSchema = new Schema({
         enum: ['admin', 'user', 'moderator'],
         default: 'user'
     },
+    salary: {
+        type: Number,
+        validate : {
+            validator : Number.isInteger,
+            message   : '{VALUE} is not an integer value'
+        }
+    },
+    settings: {
+        sound: Boolean,
+        dark_theme: Boolean
+
+    },
     lastLogin: Date
 
 });

@@ -12,11 +12,21 @@ import CardContent from "@material-ui/core/es/CardContent/CardContent";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import {AccountClock, CashMultiple} from 'mdi-material-ui'
 import Icon from "@material-ui/core/es/Icon/Icon";
 import {Chart} from "react-google-charts";
 import Board from "../task/kanban/Board";
 import Paper from "@material-ui/core/Paper";
 import _ from 'lodash'
+import indigo from "@material-ui/core/es/colors/indigo";
+import purple from "@material-ui/core/es/colors/purple";
+import cyan from "@material-ui/core/es/colors/cyan";
+import teal from "@material-ui/core/es/colors/teal";
+
+
+const styles = {
+
+};
 
 const data = [
     ["Element", "Saat", {role: "style"}, {role: 'annotation'}],
@@ -62,8 +72,10 @@ class UserDetail extends Component {
 
                     <Grid container direction="row" alignItems="center" spacing={24} style={{marginTop: 20}}>
                         <Grid item xs={4}>
-                            <Typography variant="h6" align="center" style={{color: 'gray'}} gutterBottom>İş Durumu
-                            </Typography>
+
+
+                            <div className={classes.cardHeaderBackground} style={{backgroundColor: indigo[200]}}><Typography variant="h6" align="center" className={classes.cardHeaderText}>İş
+                                Durumu</Typography></div>
                             <Card className={classes.userDetailCard}>
 
                                 <CardContent className={classes.userDetailCardContent}>
@@ -97,9 +109,7 @@ class UserDetail extends Component {
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography variant="h6" align="center" gutterBottom style={{color: 'gray'}}>
-                                Muhasebe
-                            </Typography>
+                            <div className={classes.cardHeaderBackground} style={{backgroundColor: purple[200]}}><Typography variant="h6" align="center" className={classes.cardHeaderText}>Muhasebe</Typography></div>
                             <Card className={classes.userDetailCard}> <CardContent
                                 className={classes.userDetailCardContent}>
 
@@ -113,8 +123,7 @@ class UserDetail extends Component {
                                 </ListItem>
                                 <Divider/>
                                 <ListItem alignItems="flex-start" disableGutters>
-                                    <ListItemIcon className={classes.userDetailCardListIcon}><Icon
-                                    >money</Icon></ListItemIcon>
+                                    <ListItemIcon className={classes.userDetailCardListIcon}><CashMultiple /></ListItemIcon>
                                     <ListItemText
                                         primary="Şu anki aylık masraf"
                                         secondary="2.430 TL"
@@ -122,8 +131,7 @@ class UserDetail extends Component {
                                 </ListItem>
                                 <Divider/>
                                 <ListItem alignItems="flex-start" disableGutters>
-                                    <ListItemIcon className={classes.userDetailCardListIcon}><Icon
-                                    >local_hotel</Icon></ListItemIcon>
+                                    <ListItemIcon className={classes.userDetailCardListIcon}><AccountClock/></ListItemIcon>
                                     <ListItemText
                                         primary="Adam/Saat Fiyatı"
                                         secondary="100 TL"
@@ -134,9 +142,7 @@ class UserDetail extends Component {
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
-                            <Typography variant="h6" align="center" gutterBottom style={{color: 'gray'}}>
-                                Çalışma Süresi
-                            </Typography>
+                            <div className={classes.cardHeaderBackground} style={{backgroundColor: teal[200]}}><Typography variant="h6" align="center" className={classes.cardHeaderText}>Çalışma Süresi</Typography></div>
                             <Card className={classes.userDetailCard}>
 
                                 <CardContent className={classes.userDetailCardContent}>
