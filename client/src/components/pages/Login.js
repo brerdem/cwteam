@@ -52,18 +52,39 @@ const styles = theme => ({
     },
 });
 
-const email = value =>
-    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
-        'Invalid email address' : undefined;
+const validate = values => {
+    const errors = {};
+    const requiredFields = [
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-    <TextField hintText={label}
-               floatingLabelText={label}
-               errorText={touched && error}
-               {...input}
-               {...custom}
+        'email',
+        'password'
+
+    ];
+    requiredFields.forEach(field => {
+        if (!values[field]) {
+            errors[field] = 'Zorunlu Alan'
+        }
+    });
+    if (
+        values.email &&
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+        errors.email = 'Invalid email address'
+    }
+    return errors
+};
+
+const renderTextField = ({input, label, meta: {touched, error}, ...custom}) => (
+
+    <TextField
+        label={label}
+        helperText={touched && error}
+        error={touched && error}
+        fullWidth
+        {...input}
+        {...custom}
     />
-)
+);
 
 class Login extends Component {
 
@@ -77,12 +98,11 @@ class Login extends Component {
         })
     };
 
-    handleSubmit = e => {
-        e.preventDefault();
+    handleLoginSubmit = props => {
 
         axios.post('/api/auth/login', {
-            email: e.target.email.value,
-            password: e.target.password.value
+            email: props.email,
+            password: props.password
 
         })
             .then((response) => {
@@ -110,7 +130,7 @@ class Login extends Component {
 
     render() {
 
-        const {classes} = this.props;
+        const {classes, handleSubmit, submitting, pristine, invalid} = this.props;
 
         return (
             <main className={classes.main}>
@@ -130,14 +150,13 @@ class Login extends Component {
                             Kaydol
                         </Typography>
                     </Link>
-                    <form className={classes.form} onSubmit={this.handleSubmit}>
+                    <form className={classes.form} onSubmit={handleSubmit(this.handleLoginSubmit)}>
 
-                        <Field component={renderTextField} hintText="Mail" label="E-mail Adresi" name="email" />
+                        <Field component={renderTextField} hintText="Mail" label="E-mail Adresi" name="email"/>
+                        <Field component={renderTextField} hintText="Password" label="Şifre" name="password"
+                               type='password'/>
 
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password">Şifre</InputLabel>
-                            <Input name="password" type="password" id="password" autoComplete="current-password"/>
-                        </FormControl>
+
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
                             label="Beni hatırla"
@@ -148,6 +167,7 @@ class Login extends Component {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={pristine || submitting || invalid}
                         >
                             GİRİŞ
                         </Button>
@@ -165,6 +185,6 @@ Login.propTypes = {
 
 export default compose(
     withStyles(styles),
-    reduxForm({form: 'loginForm'})
+    reduxForm({form: 'loginForm', validate})
 )(Login);
 
