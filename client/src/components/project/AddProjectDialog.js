@@ -11,6 +11,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import InputAdornment from "@material-ui/core/es/InputAdornment/InputAdornment";
 import UserSuggestionWithData from "../user/UserSuggestionWithData";
+import {reduxForm} from "redux-form";
+import Field from "redux-form/es/Field";
 
 const style = {
 
@@ -59,6 +61,34 @@ const style = {
 
     }
 };
+const validate = values => {
+    const errors = {};
+    const requiredFields = [
+
+        'title',
+        'description'
+
+    ];
+    requiredFields.forEach(field => {
+        if (!values[field]) {
+            errors[field] = 'Zorunlu Alan'
+        }
+    });
+
+    return errors
+};
+
+const renderTextField = ({input, label, meta: {touched, error}, ...custom}) => (
+
+    <TextField
+        label={label}
+        helperText={touched && error}
+        error={touched && error}
+        fullWidth
+        {...input}
+        {...custom}
+    />
+);
 
 class AddProjectDialog extends Component {
 
@@ -88,7 +118,7 @@ class AddProjectDialog extends Component {
         this.setState({isProjectApproved: !this.state.isProjectApproved});
     };
 
-    handleSubmit = (e) => {
+    handleFormSubmit = (e) => {
         e.preventDefault();
         console.log(this.state.selectedUsers);
         this.props.addProject({
@@ -104,7 +134,7 @@ class AddProjectDialog extends Component {
 
     render() {
 
-        const {open, onClose, users} = this.props;
+        const {open, onClose, users, handleSubmit, submitting, pristine, invalid} = this.props;
         const {selectedStartDate, selectedEndDate} = this.state;
 
         const teamWithProp = users.map(m => {
@@ -120,34 +150,21 @@ class AddProjectDialog extends Component {
 
             >
 
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={handleSubmit(this.handleFormSubmit)}>
                     <DialogContent style={style.dialogContent}>
 
 
                         <Grid container direction="column" alignItems="flex-start">
+                            <Field component={renderTextField} label="Proje İsmi" name="title" variant="outlined"
+                                   margin="dense" InputLabelProps={style.titleTextInput}
+                                   inputProps={style.titleTextBg}/>
 
 
-                            <TextField
-                                id="project-name"
-                                name="title"
-                                placeholder="Proje İsmi"
-                                margin="dense"
-                                InputLabelProps={style.titleTextInput}
-                                inputProps={style.titleTextBg}
-                                variant="outlined"
-                                fullWidth
+                            <Field component={renderTextField} label="Proje Açıklaması" name="description" variant="outlined"
+                                   margin="dense"
+                                   inputProps={style.descBg}/>
 
-                            />
-                            <TextField
-                                id="project-description"
-                                name="description"
-                                placeholder="Proje Açıklaması"
-                                margin="dense"
-                                inputProps={style.descBg}
-                                variant="outlined"
-                                fullWidth
 
-                            />
 
 
                             <FormControlLabel
@@ -221,7 +238,7 @@ class AddProjectDialog extends Component {
                         <Button onClick={onClose} color="primary">
                             VAZGEÇ
                         </Button>
-                        <Button color="primary" type="submit">
+                        <Button color="primary" type="submit" disabled={pristine || submitting || invalid}>
                             KAYDET
                         </Button>
                     </DialogActions>
@@ -235,4 +252,4 @@ AddProjectDialog.propTypes = {
     addProject: PropTypes.func
 };
 
-export default AddProjectDialog;
+export default reduxForm({form: 'addProjectForm', validate})(AddProjectDialog);
