@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 const Pusher = require('pusher');
-var cron = require('node-cron');
+let cron = require('node-cron');
 
 
 const pusher = new Pusher({
