@@ -88,7 +88,7 @@ app.use('/', routes);
 
 // Index route
 app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
