@@ -1,4 +1,4 @@
-import * as path from "path";
+const path = require('path');
 
 const routes = require('express').Router();
 const api = require('./api');
