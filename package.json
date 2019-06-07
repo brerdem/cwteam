@@ -5,11 +5,12 @@
   "license": "ISC",
   "scripts": {
     "client": "cd client && yarn start",
+    "build": "cd client && yarn build",
     "server": "nodemon --ignore 'client/**' server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "version": "auto-changelog -p && git add CHANGELOG.md",
     "start": "node server.js",
-    "heroku-postbuild": "cd client && yarn install && yarn install"
+    "heroku-postbuild": "cd client && yarn install && yarn install && yarn build"
 
   },
   "dependencies": {
