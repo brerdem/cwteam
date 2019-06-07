@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const Pusher = require('pusher');
 let cron = require('node-cron');
-const api = require('./api');
+const api = require('./routes/api');
 
 
 const pusher = new Pusher({
