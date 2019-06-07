@@ -19,10 +19,7 @@ router.post('/login', (req, res) => {
                 res.send(err);
             }
             // generate a signed son web token with the contents of user object and return it in the response
-            const token = jwt.sign(user.toJSON(), 'MIGpAgEAAiEAz5EYGJlmW/rIW6I9UpstI3/i6oabVoeGxoNHXIb4haMCAwEAAQIg\n' +
-                'EI7WiT/Tdoru6MBse+Z9Fy8ZKtEHXlg9anfzbVGTR6ECEQDoKNQBV3to8xZ7vJFs\n' +
-                '1kDVAhEA5OHBZ/lCwMSFp6tw9BsolwIQRXwK0Af98NBo10n+AKQzrQIQMwm8bQkC\n' +
-                'P6YS/76VI3ni5QIQKrx93E1t59XUAS26ISvUcw==');
+            const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET || 'uQCnvuHuaroLmca86tZ_CVZolA-QVJ2kt3Ra3x6ZDJ8Ei8_XncUulB5B9PFqUd3tiszu2LvpXSfpRKQ-ABlGqtmpCJbXcSJj2UFVWJMFThAMJ5w67X0_deG0jZQllFV0rv_FMTpeVxD7uoF52XfiE1-5C7ncAfK-DQ80UQ0RLEEtaXCvcWrNpGBszaW026EHw45g6rzWiFzHrA2myzQd7jTutYbFEFgL-NHCbuhtWs4zQLO1VgxfXjek0Vpv_mCJVQbEyfDLxRkVDb7RXKgPYuKptXYImxUlVDv277guNVws4n7EoJkQlfc4xtAYY7fexrF83RtMjjmd3SZ7JrK3Qw');
             return res.json({user, token});
         });
     })(req, res);
