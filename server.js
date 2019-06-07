@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const Pusher = require('pusher');
 let cron = require('node-cron');
+const api = require('./api');
 
 
 const pusher = new Pusher({
@@ -84,14 +85,15 @@ db.once('open', () => {
 
 
 //routes
-app.use('/', routes);
+//app.use('/', routes);
+app.use('/api', api);
 
 // Index route
 /*app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
 });*/
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
